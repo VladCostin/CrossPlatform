@@ -1,0 +1,56 @@
+/**
+ * This theme is an example to show how you can create your own.
+ */
+.pika-single.dark-theme {
+    color: #f2eeb3;
+    background: #59323c;
+    border: 1px solid #666;
+    border-bottom-color: #f2eeb3;
+}
+
+.dark-theme .pika-label {
+    background-color: #59323c;
+}
+
+.dark-theme .pika-prev,
+.dark-theme .is-rtl .pika-next {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAQAAACGG/bgAAAAQ0lEQVR4Ae3KIQ4AIBTD0N0/IeHGI3UIRA3ut/Zl+ltXc5++htVAmIAwAWECwgSEKbgthEoIlRAqIVRCqINQB9nDgQd7ktwFo6UpWQAAAABJRU5ErkJggg==');
+}
+
+.dark-theme .pika-next,
+.dark-theme .is-rtl .pika-prev {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAQAAACGG/bgAAAAP0lEQVQ4y+3TMQoAMAgEwfwfAvvjTZ1uGzuvHhBPPGczEG+FRqqRaqQaqUaqkX6QBmmjacvQ6qEVTjsh+xizebvlaWptGXZAAAAAAElFTkSuQmCC');
+}
+
+.dark-theme .pika-table th {
+    color: #f2eeb3;
+}
+
+.dark-theme .pika-button {
+    color: #260126;
+    background: #f2eeb3;
+}
+
+.dark-theme .pika-week {
+    color: #f2eeb3;
+}
+
+.dark-theme .is-today .pika-button {
+    color: #d46139;
+}
+
+.dark-theme .is-selected .pika-button {
+    color: #f2eeb3;
+    background: #260126;
+    box-shadow: inset 0 1px 3px #bb7abb;
+}
+
+.dark-theme .is-disabled .pika-button {
+    color: #f2eeb3;
+    opacity: .3;
+}
+
+.dark-theme .pika-button:hover {
+    color: #f2eeb3!important;
+    background: #260126 !important;
+}
