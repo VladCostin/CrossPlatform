@@ -302,11 +302,12 @@ function MyApplication() {
             function(imgData) {
                // console.log(imgData);
                 //$('.story-photos img').attr('src', "data:image/jpeg;base64,"+imgData);
-                var img = $('<div class="image-wrap"><div class="deleteImg"></div><img src=""data:image/jpeg;base64,"+imgData"></div>');
-
-                //var img = $('<img />');
-                //img.attr('src',  "data:image/jpeg;base64,"+imgData);
-                img.appendTo('.story-photos');
+                var div = $('<div class="image-wrap"><div class="deleteImg"></div></div>');
+               
+                var img = $('<img />');
+                img.attr('src',  "data:image/jpeg;base64,"+imgData);
+                img.appendTo(div);
+                div.appendTo('.story-photos');
             },
             function() {
                 alert('Error taking picture', 'Error');
