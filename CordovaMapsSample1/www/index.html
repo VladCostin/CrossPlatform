@@ -148,6 +148,7 @@
                     </li>
                 </ul>
             </div>
+             <!--h4>
             <div data-role="footer"  data-position="fixed" data-tap-toggle="false">
                 <a data-role="button" data-rel="external" href="#story" id="addStoryView" style="margin: 0.4em; float: left" data-cache="false" data-icon="add"
                    data-iconpos="left" class="ui-btn-left">
@@ -159,8 +160,20 @@
                    data-iconpos="left" class="ui-btn-right">
                     Delete Trip
                 </a>
-                <!--h4></h4-->
+              
             </div>
+              </h4-->
+             
+             <div id="footer">
+                <a data-role="button" data-rel="external" href="#story" id="addStoryView" style="margin: 0.4em; float: left" data-cache="false" data-icon="add"
+                   data-iconpos="left" class="ui-btn-left">
+                    Add Story
+                </a>
+                <a data-role="button" data-rel="external" href="#" id="deleteTrip" style="margin: 0.4em; float: right" data-cache="false" data-icon="delete"
+                   data-iconpos="left" class="ui-btn-right">
+                    Delete Trip
+                </a>
+             </div>
         </div>
         
         
@@ -224,18 +237,16 @@
                 <!--input name="" id="addressfield" placeholder="address..." value="" type="text">
                 <input type="button" value="Search" onclick="validateSearchField('addressfield', 'results');"-->
             </div>
-            <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-                 <a data-role="button" data-rel="external" href="#" id="addDay" style="margin: 0.4em; float: left" data-cache="false" data-icon="add"
+             <div id="footer">
+                <a data-role="button" data-rel="external" href="#story" id="addStoryView" style="margin: 0.4em; float: left" data-cache="false" data-icon="add"
                    data-iconpos="left" class="ui-btn-left">
                     Add Story
                 </a>
-                <div class="vline"></div>
-
                 <a data-role="button" data-rel="external" href="#" id="deleteTrip" style="margin: 0.4em; float: right" data-cache="false" data-icon="delete"
                    data-iconpos="left" class="ui-btn-right">
-                    Delete Day
+                     Delete Day
                 </a>
-            </div>
+             </div>
         </div>
        
         <!--New Trip-->
@@ -273,12 +284,11 @@
                     </div>
                 </div>
             </div>
-            <div data-role="footer"  data-position="fixed" data-tap-toggle="false" >
+            <div id="footer" >
                 <a data-role="button" data-rel="external" href="#index" id="cancel" style="margin: 0.5em; float: left" data-cache="false" data-icon="delete"
                    data-iconpos="left" class="ui-btn-left">
                     Cancel
                 </a>
-                <div class="vline"></div>
 
                 <a data-role="button" data-rel="external" href="#index" id="save" style="margin: 0.5em; float: right" data-cache="false" data-icon="save"
                    data-iconpos="left" class="ui-btn-right">

@@ -20,6 +20,17 @@ and open the template in the editor.
 .ui-mobile, .ui-mobile .ui-page {
     background: #260126;
 }
+/*added a footer  */
+#footer {
+   position:fixed;
+   left:0px;
+   bottom:0px;
+   height:50px;
+   width:100%;
+   background:#999;
+}
+
+
 .ui-bar-a{
     background: #59323c;
     color: #bfaf80;
