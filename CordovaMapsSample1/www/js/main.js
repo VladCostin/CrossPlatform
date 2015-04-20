@@ -34,26 +34,7 @@ $(document).ready(function() {
         directory: 'css/images'
     });
    
-    //add Day
-  /*  $("#date").change(function(e)
-    {
-        if($("#days").children().length>0){
-            count=$("#days .day").length+1;
-        } else {
-            count = 1;
-        }
-        $("#days").append("<div class='day' data-number='"+count+"'>"+
-                               "<h2>Day "+count+" - "+$("#date").val() +"</h2>"+
-                               "<a  class='ui-link' href='#story'>Add More Stories...</a></div>");
-        $("#selectedDay").val(count);
-       
-       // day = new day(count,$("#date").val(),[]);
-       // days.push(day);
-        
-        $.mobile.changePage( "#story", { transition: "slideup", changeHash: false });
-
-    });
-    */
+  
    //init date
    var d = new Date();
    var strDate = (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
@@ -70,7 +51,16 @@ $(document).ready(function() {
    $(".deleteImg").live( "click", function(){
        $(this).parent().remove();
    });
-    //add story
+   
+   //cancel story
+   $("#cancelStory").on( "click", function(){
+        //clear fields
+        $("#story-title").val('');
+        $("#desc-story").val('');
+        $("#rating_simple").val('0'); 
+        $(".story-photos").children().remove();
+   });
+   //add story
     $("#addStory").on( "click", function(){
        
         //data
@@ -92,7 +82,6 @@ $(document).ready(function() {
             for (i=1; i<=rateNum; i++){
                 rating += '<span class="heart"></span>';
             }
-            //rating ='<span class="heart"></span><span class="heart"></span><span class="heart"></span><span class="heart"></span>';
             //adding story to day
             //adding html
             nextId++;

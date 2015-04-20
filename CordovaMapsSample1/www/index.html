@@ -20,6 +20,10 @@
                 $.mobile.defaultPageTransition = 'none';
                 $.mobile.defaultDialogTransition = 'none';
                 $.mobile.useFastClick = true;
+              //  $.support.touchOverflow = true;
+
+             // $.mobile.touchOverflowEnabled = true;
+             // $.mobile.fixedToolbars.setTouchToggleEnabled(false);
               //  $.mobile.page.prototype.options.degradeInputs.date = true;
             });
         </script>
@@ -221,8 +225,6 @@
                         </div>
                     </div>
                 </div>
-                <!--input name="" id="addressfield" placeholder="address..." value="" type="text">
-                <input type="button" value="Search" onclick="validateSearchField('addressfield', 'results');"-->
             </div>
             <div data-role="footer" data-position="fixed" data-tap-toggle="false">
                  <a data-role="button" data-rel="external" href="#" id="addDay" style="margin: 0.4em; float: left" data-cache="false" data-icon="add"
@@ -241,7 +243,7 @@
         <!--New Trip-->
         <div data-dom-cache="false" data-role="page" id="new">
             <div data-role="header">
-                <a data-role="button" data-rel="back" href="#page1" data-icon="back"
+                <a data-role="button" data-rel="back" href="index.html" data-icon="back"
                    data-iconpos="left" class="ui-btn-left">
                 </a>
                 <h1 id="addressHeader">Create New Trip</h1>
@@ -253,7 +255,7 @@
                     <div id="add-story-link"><a href="#story" >Add Story</a></div>
                     <div class="new-stories" >
                         <div class="day-story"  id="set" data-role="collapsible-set">
-                            <div class="story-btn">
+                            <!--div class="story-btn">
                                 <a  href="#" class="btn-delete-story" ></a>
                                 <a  href="#" class="btn-edit-story" ></a>
                             </div>
@@ -268,7 +270,7 @@
                                      <span class="heart"></span>
                                      <span class="heart"></span>
                                 </div>
-                            </div>
+                            </div-->
                         </div>
                     </div>
                 </div>
@@ -286,76 +288,11 @@
                 </a>
             </div>
         </div>
-        <!--div data-dom-cache="false" data-role="page" id="new">
-            <div data-role="header">
-                <a data-role="button" data-rel="back" href="#page1" data-icon="back"
-                   data-iconpos="left" class="ui-btn-left">
-                </a>
-                <h1 id="addressHeader">Create New Trip</h1></div>
-            <div data-role="content" style="padding:0;">
-              <div class="edit-area">
-                <input name="trip-title" id="trip-title" placeholder="Trip Title..." value="" type="text">
-                <textarea name="desc-trip" placeholder="Description..." rows="10" cols="10"></textarea>
-                Add Day: <input type="date" name="date" id="date" value=""/>
-                <div id="days">
-                    <div class="day" data-count="1">
-                        <h2>Day 1 - Sun Apr 04 2015</h2>
-                        <div class="day-story" data-role="collapsible-set" id="set">
-                             
-                            <div class="story-btn">
-                                <a  href="#deleteStory" class="btn-delete-story" ></a>
-                                <a  href="#editStory" class="btn-edit-story" ></a>
-                            </div>
-                            <div data-role="collapsible" id="set1"  data-collapsed="true">
-                                <h3>Lunch</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore. </p>
-                                <img src="img/1.jpg" alt="Lunch">
-                                <div class="map"></div>
-                                <div class="rating">
-                                     <span class="heart"></span>
-                                     <span class="heart"></span>
-                                     <span class="heart"></span>
-                                </div>
-                            </div>
-                        </div>
-                         <div class="day-story" data-role="collapsible-set" id="set">
-                            <div data-role="collapsible" id="set1" data-collapsed="true">
-                                <h3>Museum</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore. </p>
-                                <img src="img/2.jpg" alt="Lunch">
-                                <img src="img/2.jpg" alt="Lunch">
-                                <img src="img/2.jpg" alt="Lunch">
-                                <div class="map"></div>
-                                <div class="rating">
-                                     <span class="heart"></span>
-                                     <span class="heart"></span>
-                                     <span class="heart"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#story">Add More Stories...</a>
-                    </div> 
-                </div>
-              </div>
-              </div>
-            <div data-role="footer"  data-position="fixed"  >
-                <a data-role="button" data-rel="external" href="#" id="cancel" style="margin: 0.5em; float: left" data-cache="false" data-icon="delete"
-                   data-iconpos="left" class="ui-btn-left">
-                    Cancel
-                </a>
-                <div class="vline"></div>
-
-                <a data-role="button" data-rel="external" href="#" id="save" style="margin: 0.5em; float: right" data-cache="false" data-icon="save"
-                   data-iconpos="left" class="ui-btn-right">
-                    Done
-                </a>
-            </div>
-        </div>
         <!--New Story-->
         <div data-dom-cache="false" data-role="page" id="story">
             <input type="hidden" name="selectedDay" id="selectedDay" value="">
             <div data-role="header">
-                <a data-role="button" data-rel="back" href="#new" data-icon="back"
+                <a data-role="button" data-rel="back" href="#page1" data-icon="back"
                    data-iconpos="left" class="ui-btn-left">
                 </a>
                 <h1 id="addressHeader">Create Story</h1>
@@ -385,12 +322,11 @@
                 </div>
             </div>
             <div data-role="footer"  data-position="fixed" data-tap-toggle="false" >
-                <a data-role="button" data-rel="external" href="#new" id="cancel" style="margin: 0.5em; float: left" data-cache="false" data-icon="delete"
+                <a data-role="button"  data-rel="back" href="#page1" id="cancelStory" style="margin: 0.5em; float: left" data-icon="delete"
                    data-iconpos="left" class="ui-btn-left">
                     Cancel
                 </a>
                 <div class="vline"></div>
-
                 <a data-role="button" data-rel="external" href="#" id="addStory" style="margin: 0.5em; float: right" data-cache="false" data-icon="plus"
                    data-iconpos="left" class="ui-btn-right">
                     Add

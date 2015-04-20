@@ -248,7 +248,7 @@ h1.details-headline{
     height:100%;
     text-align: center;
 }
-.btn-edit-story {
+.btn-edit-story-view {
       background: url("images/icons-18-yellow.png") no-repeat scroll -880px 20% rgba(0, 0, 0, 0);
     float: left;
     height: 25px;
@@ -256,7 +256,7 @@ h1.details-headline{
     width: 30px;
 
 }
-.btn-delete-story {
+.btn-delete-story-view {
      background: url("images/icons-18-yellow.png") no-repeat scroll -910px 20% rgba(0, 0, 0, 0);
     float: right;
     height: 25px;

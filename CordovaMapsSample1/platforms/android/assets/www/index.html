@@ -20,6 +20,10 @@
                 $.mobile.defaultPageTransition = 'none';
                 $.mobile.defaultDialogTransition = 'none';
                 $.mobile.useFastClick = true;
+                $.support.touchOverflow = true;
+
+              $.mobile.touchOverflowEnabled = true;
+              $.mobile.fixedToolbars.setTouchToggleEnabled(false);
               //  $.mobile.page.prototype.options.degradeInputs.date = true;
             });
         </script>
@@ -241,7 +245,7 @@
         <!--New Trip-->
         <div data-dom-cache="false" data-role="page" id="new">
             <div data-role="header">
-                <a data-role="button" data-rel="back" href="#page1" data-icon="back"
+                <a data-role="button" data-rel="back" href="index.html" data-icon="back"
                    data-iconpos="left" class="ui-btn-left">
                 </a>
                 <h1 id="addressHeader">Create New Trip</h1>
@@ -355,7 +359,7 @@
         <div data-dom-cache="false" data-role="page" id="story">
             <input type="hidden" name="selectedDay" id="selectedDay" value="">
             <div data-role="header">
-                <a data-role="button" data-rel="back" href="#new" data-icon="back"
+                <a data-role="button" data-rel="back" href="#page1" data-icon="back"
                    data-iconpos="left" class="ui-btn-left">
                 </a>
                 <h1 id="addressHeader">Create Story</h1>
@@ -385,7 +389,7 @@
                 </div>
             </div>
             <div data-role="footer"  data-position="fixed" data-tap-toggle="false" >
-                <a data-role="button" data-rel="external" href="#new" id="cancel" style="margin: 0.5em; float: left" data-cache="false" data-icon="delete"
+                <a data-role="button" data-rel="external" href="#page1" id="cancel" style="margin: 0.5em; float: left" data-cache="false" data-icon="delete"
                    data-iconpos="left" class="ui-btn-left">
                     Cancel
                 </a>
