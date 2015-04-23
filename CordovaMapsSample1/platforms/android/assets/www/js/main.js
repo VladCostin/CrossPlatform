@@ -34,26 +34,7 @@ $(document).ready(function() {
         directory: 'css/images'
     });
    
-    //add Day
-  /*  $("#date").change(function(e)
-    {
-        if($("#days").children().length>0){
-            count=$("#days .day").length+1;
-        } else {
-            count = 1;
-        }
-        $("#days").append("<div class='day' data-number='"+count+"'>"+
-                               "<h2>Day "+count+" - "+$("#date").val() +"</h2>"+
-                               "<a  class='ui-link' href='#story'>Add More Stories...</a></div>");
-        $("#selectedDay").val(count);
-       
-       // day = new day(count,$("#date").val(),[]);
-       // days.push(day);
-        
-        $.mobile.changePage( "#story", { transition: "slideup", changeHash: false });
-
-    });
-    */
+  
    //init date
    var d = new Date();
    var strDate = (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
@@ -70,7 +51,16 @@ $(document).ready(function() {
    $(".deleteImg").live( "click", function(){
        $(this).parent().remove();
    });
-    //add story
+   
+   //cancel story
+   $("#cancelStory").on( "click", function(){
+        //clear fields
+        $("#story-title").val('');
+        $("#desc-story").val('');
+        $("#rating_simple").val('0'); 
+        $(".story-photos").children().remove();
+   });
+   //add story
     $("#addStory").on( "click", function(){
        
         //data
@@ -92,7 +82,6 @@ $(document).ready(function() {
             for (i=1; i<=rateNum; i++){
                 rating += '<span class="heart"></span>';
             }
-            //rating ='<span class="heart"></span><span class="heart"></span><span class="heart"></span><span class="heart"></span>';
             //adding story to day
             //adding html
             nextId++;
@@ -128,9 +117,9 @@ function story(number, date, title, desc, imgs)
 function onDeviceReady() {
 
     console.log("Ready");
-    $(window).bind('pageshow resize orientationchange', function(e) { // resize page if needed
-        maxHeight();
-    });
+    //$(window).bind('pageshow resize orientationchange', function(e) { // resize page if needed
+    //    maxHeight();
+    //});
     
     $('.call-camera-btn').click(function(e){
         e.stopImmediatePropagation();
@@ -146,7 +135,7 @@ function onDeviceReady() {
         app.selectPicture();
     });
     
-     $('.tag-loction-btn').click(function(e){
+            /*    $('.tag-loction-btn').click(function(e){
         e.stopImmediatePropagation();
         e.preventDefault();
         var app = new MyApplication();
@@ -200,6 +189,7 @@ function onDeviceReady() {
     });
 
     maxHeight();
+    */
     var app = new MyApplication();
     
     
@@ -239,7 +229,7 @@ function MyApplication() {
     var self = this;
     var connectionLess = ["undefinedAction", "about", "compass", "contacts", "addresses"];
     var forceConnectionCheck = ["search", "directions", "showAddress"];
-    var states = {};
+   /* var states = {};
     states[Connection.UNKNOWN] = 'Unknown';
     states[Connection.ETHERNET] = 'Ethernet';
     states[Connection.WIFI] = 'WiFi';
@@ -247,7 +237,7 @@ function MyApplication() {
     states[Connection.CELL_3G] = 'Mobile';
     states[Connection.CELL_4G] = 'Mobile';
     states[Connection.NONE] = 'No network';
-
+    */
     function hasConnection() {
         if (window.navigator.connection.type === Connection.NONE) {
             return false;
@@ -321,7 +311,7 @@ function MyApplication() {
      * @returns {undefined}
      */
     this.route = function() {
-        window.navigator.compass.clearWatch(compassWatchId);
+    /*    window.navigator.compass.clearWatch(compassWatchId);
         window.navigator.geolocation.clearWatch(locationWatchId);
         var _h = window.location.hash || "#undefinedAction";
         var stop = _h.length;
@@ -342,6 +332,7 @@ function MyApplication() {
         } else {
             window.console.log("action function not found: " + _h);
         }
+        */
     };
 
     function checkOK(page) {

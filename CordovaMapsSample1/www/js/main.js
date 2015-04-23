@@ -117,9 +117,9 @@ function story(number, date, title, desc, imgs)
 function onDeviceReady() {
 
     console.log("Ready");
-    $(window).bind('pageshow resize orientationchange', function(e) { // resize page if needed
-        maxHeight();
-    });
+    //$(window).bind('pageshow resize orientationchange', function(e) { // resize page if needed
+    //    maxHeight();
+    //});
     
     $('.call-camera-btn').click(function(e){
         e.stopImmediatePropagation();
@@ -135,7 +135,7 @@ function onDeviceReady() {
         app.selectPicture();
     });
     
-     $('.tag-loction-btn').click(function(e){
+            /*    $('.tag-loction-btn').click(function(e){
         e.stopImmediatePropagation();
         e.preventDefault();
         var app = new MyApplication();
@@ -189,6 +189,7 @@ function onDeviceReady() {
     });
 
     maxHeight();
+    */
     var app = new MyApplication();
     
     
@@ -228,7 +229,7 @@ function MyApplication() {
     var self = this;
     var connectionLess = ["undefinedAction", "about", "compass", "contacts", "addresses"];
     var forceConnectionCheck = ["search", "directions", "showAddress"];
-    var states = {};
+   /* var states = {};
     states[Connection.UNKNOWN] = 'Unknown';
     states[Connection.ETHERNET] = 'Ethernet';
     states[Connection.WIFI] = 'WiFi';
@@ -236,7 +237,7 @@ function MyApplication() {
     states[Connection.CELL_3G] = 'Mobile';
     states[Connection.CELL_4G] = 'Mobile';
     states[Connection.NONE] = 'No network';
-
+    */
     function hasConnection() {
         if (window.navigator.connection.type === Connection.NONE) {
             return false;
@@ -310,7 +311,7 @@ function MyApplication() {
      * @returns {undefined}
      */
     this.route = function() {
-        window.navigator.compass.clearWatch(compassWatchId);
+    /*    window.navigator.compass.clearWatch(compassWatchId);
         window.navigator.geolocation.clearWatch(locationWatchId);
         var _h = window.location.hash || "#undefinedAction";
         var stop = _h.length;
@@ -331,6 +332,7 @@ function MyApplication() {
         } else {
             window.console.log("action function not found: " + _h);
         }
+        */
     };
 
     function checkOK(page) {

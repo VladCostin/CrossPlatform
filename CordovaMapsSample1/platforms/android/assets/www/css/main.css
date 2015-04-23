@@ -77,10 +77,10 @@ and open the template in the editor.
 .ui-btn-text{
    font-family:  lhandw, Arial;
 }
-.ui-footer  .ui-btn-text{
+.custom-footer .ui-btn-text{
    font-size: 10px;
 }
-.ui-header .ui-title, .ui-footer .ui-title{
+.ui-header .ui-title, .custom-footer  .ui-title{
      font-family:  motter, Arial;
      font-size: 20px;
      font-weight: normal;
@@ -106,10 +106,10 @@ and open the template in the editor.
 .ui-header  .ui-btn-inner{
     height: 25px;
 }
-.ui-footer .ui-btn-icon-left .ui-icon, .ui-btn-icon-right .ui-icon {
+.custom-footer .ui-btn-icon-left .ui-icon, .ui-btn-icon-right .ui-icon {
     margin-top: -12px;
 }
-.ui-header .ui-btn-icon-left .ui-icon, .ui-footer .ui-btn-icon-left .ui-icon, .ui-bar .ui-btn-icon-left .ui-icon {
+.ui-header .ui-btn-icon-left .ui-icon, .custom-footer .ui-btn-icon-left .ui-icon, .ui-bar .ui-btn-icon-left .ui-icon {
     left: 0;
 }
 .ui-icon-arrow-r {
@@ -151,17 +151,19 @@ and open the template in the editor.
     color:#bfaf80;
 }
 
-.ui-header .ui-btn-icon-left .ui-btn-inner, .ui-footer .ui-btn-icon-left .ui-btn-inner, .ui-bar .ui-btn-icon-left .ui-btn-inner {
+.ui-header .ui-btn-icon-left .ui-btn-inner, .custom-footer .ui-btn-icon-left .ui-btn-inner, .ui-bar .ui-btn-icon-left .ui-btn-inner {
     padding-left: 20px;
 }
-.ui-header .ui-btn, .ui-footer .ui-btn {
+
+.ui-header .ui-btn, .custom-footer  .ui-btn {
     background: none;
     text-shadow: none;
     color:#bfaf80;
     text-transform: uppercase;
     border:none;
+     box-shadow: none;
 }
-.ui-footer .ui-btn {
+.custom-footer .ui-btn {
     width:44%;
 }
 /*List Page*/
@@ -248,7 +250,7 @@ h1.details-headline{
     height:100%;
     text-align: center;
 }
-.btn-edit-story {
+.btn-edit-story, .btn-edit-story-view {
       background: url("images/icons-18-yellow.png") no-repeat scroll -880px 20% rgba(0, 0, 0, 0);
     float: left;
     height: 25px;
@@ -256,7 +258,7 @@ h1.details-headline{
     width: 30px;
 
 }
-.btn-delete-story {
+.btn-delete-story , .btn-delete-story-view {
      background: url("images/icons-18-yellow.png") no-repeat scroll -910px 20% rgba(0, 0, 0, 0);
     float: right;
     height: 25px;
@@ -516,3 +518,21 @@ input.ui-input-text, textarea.ui-input-text {
     font-size:10px;
 }
 
+
+
+/*[data-role=footer]{bottom:0;right:0;top:auto! important ;position:absolute !important; } 
+[data-role=header]{top:0; position:absolute !important; bottom: auto !important;}
+*/
+
+.custom-footer {
+    background:#59323c;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+}
+.custom-footer .ui-btn-inner{
+    padding-top:5px;
+    padding-bottom: 5px;
+}
