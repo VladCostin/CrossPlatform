@@ -88,5 +88,11 @@
             "url": "https://git-wip-us.apache.org/repos/asf/cordova-plugin-camera.git",
             "subdir": "."
         }
+    },
+    "org.apache.cordova.file": {
+        "source": {
+            "type": "registry",
+            "id": "org.apache.cordova.file"
+        }
     }
 }

@@ -426,7 +426,9 @@ input.ui-input-text, textarea.ui-input-text {
     width: 22px;
 }
 
-
+.ui-content{
+    margin-bottom:50px;
+}
 .ui-body-c .ui-link {
     color: #2b0629;
 }
@@ -438,6 +440,7 @@ input.ui-input-text, textarea.ui-input-text {
 }
 .ui-collapsible-heading a {
     border-radius: 10px;
+    border:none;
 }
 
 .ui-collapsible-set .ui-btn-hover-c{
