@@ -34,12 +34,13 @@
         <script src="js/libs/modernizr.js"></script>
         <script src="js/pikaday.js"></script>
         <script src="js/pikaday.jquery.js"></script>
-         <script src="js/rating_simple.js"></script>
-        
+        <script src="js/rating_simple.js"></script>
+        <script src="js/database/dmlTripStatements.js"></script>
+        <script src="js/database/ddlStatement.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
 
     </head> 
-    <body> 
+    <body onload="createDatabase()"> 
         <div data-dom-cache="false" data-role="page" id="index" >
             <div data-role="header" >
                 <h1>Travel Stories</h1>
@@ -251,7 +252,7 @@
             <div data-role="content" style="padding:0;">
                 <div class="edit-area">
                     <input name="trip-title" id="trip-title" placeholder="Trip Title..." value="" type="text">
-                    <textarea name="desc-trip" placeholder="Description..." rows="10" cols="10"></textarea>
+                    <textarea id="trip_description" name="desc-trip" placeholder="Description..." rows="10" cols="10"></textarea>
                     <div id="add-story-link"><a href="#story" >Add Story</a></div>
                     <div class="new-stories" >
                         <div class="day-story"  id="set" data-role="collapsible-set">
@@ -283,7 +284,7 @@
                 <div class="vline"></div>
 
                 <a data-role="button" data-rel="external" href="#index" id="save" style="margin: 0.5em; float: right" data-cache="false" data-icon="save"
-                   data-iconpos="left" class="ui-btn-right">
+                   data-iconpos="left" class="ui-btn-right" onclick="createTrip()">
                     Done
                 </a>
             </div>
