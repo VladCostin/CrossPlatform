@@ -18,25 +18,46 @@ function insertDBTrip(tx)
    alert("isnertDBTrip valorile sunt ---" + title + "---" + description + "----");
     
    var sql = 'INSERT INTO TRIP (title,description) VALUES (?,?)';
- //  tx.executeSql(sql,[title,description],  selectQueryDB, errorCB);
+   tx.executeSql(sql,[title,description],  selectQueryDBTrip, errorCB);
    
-   tx.executeSql(sql,[title,description], successInsertionTrip, errorCB);
+ //  tx.executeSql(sql,[title,description], successInsertionTrip, errorCB);
 }
 
-function successInsertionTrip(tx)
+function deleteTrip(tx)
 {
-    alert("am inserat ceva");
-    tx.executeSql('SELECT * FROM TRIP', [], renderListTrip,errorCBSelect);
+  //  tx.executeSql('DELETE FROM TRIP WHERE id = ?', [comboid], successDelete, errorCB);
 }
 
 
-function selectQueryDB(tx)
+
+function selectQueryDBTrip(tx)
 {
     alert("am inserat ceva");
     
     tx.executeSql('SELECT * FROM TRIP', [],renderListTrip,errorCBSelect);
     
 }
+
+/*
+ * popualtes the list of stories associated with an indexTrip
+ */
+function selectQueryDBTripTitle(indexTrip)
+{
+    alert("selectQueryDBTripTitle CACAT  : " + indexTrip);
+  //  tx.executeSql('SELECT * FROM Story', [], renderListStories,errorCBSelect);
+  
+    dbShell.transaction(
+        function(tx)
+        {
+              tx.executeSql('SELECT * FROM TRIP where id =?', [indexTrip],
+              renderTripDetail,errorCBSelect);
+        },
+        errorCB
+    );
+  
+}
+
+
 
 function errorCB(tx)
 {
@@ -48,8 +69,15 @@ function errorCBSelect(tx)
     alert("Error processing DB Select: " + tx.code);
 }
 
+function renderTripDetail(tx,result)
+{
+    alert("renderTripDetail : " );
+    populateTripDetailsPage(result);
+}
+
+
 function renderListTrip(tx, result)
-{   
+{      alert("renderListTrip : " );
    /* 
     var htmlString = '';
     for(var i = 0; i < result.rows.length; i++)
