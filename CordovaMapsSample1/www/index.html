@@ -39,40 +39,29 @@
         <script src="js/database/dmlStoryStatements.js"></script>
         <script src="js/database/ddlStatement.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
+        
+        <script src="js/dynamicPopulate/populateLists.js"></script>
 
     </head> 
-    <body onload="createDatabase()"> 
+    <body onload="createDatabase()">  
         <div data-dom-cache="false" data-role="page" id="index" >
             <div data-role="header" >
                 <h1>Travel Stories</h1>
             </div>
             <div data-role="content" >
-                <ul data-role="listview"  data-inset="true">
+                <ul data-role="listview"  data-inset="true" id="listTripTitles" >
                     <li>
-                         <a href="#new" rel="external" id="new">
+                        <a href="#new" rel="external" id="new">
                             <!--img src="img/1.jpg" alt="Create New"/-->
                             Create New
                         </a>
+                        
                     </li>
-                     <li >
+                    <li >
                        
                         <a href="#list">
                             <!--img src="img/4.jpg" alt="Rome"/-->
                             Rome
-                        </a>
-                    </li>
-                    <li >
-                         
-                        <a href="#list" rel="external">
-                            <!--img src="img/5.jpg" alt="Moscow"/-->
-                            Moscow
-                        </a>
-                    </li>
-                    <li >
-                         
-                        <a href="#list">
-                            <!--img src="img/3.jpg" alt="London"/-->
-                            London
                         </a>
                     </li>
                 </ul>
