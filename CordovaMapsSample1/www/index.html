@@ -36,6 +36,7 @@
         <script src="js/pikaday.jquery.js"></script>
         <script src="js/rating_simple.js"></script>
         <script src="js/database/dmlTripStatements.js"></script>
+        <script src="js/database/dmlStoryStatements.js"></script>
         <script src="js/database/ddlStatement.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
 
@@ -74,36 +75,6 @@
                             London
                         </a>
                     </li>
-                     <!--li >
-                        <a href="#directions">
-                            Directions
-                        </a>
-                    </li>
-                      <li >
-                        <a href="#contacts">
-                            Contacts
-                        </a>
-                    </li>
-                    <li >
-                        <a href="#addresses">
-                            Addresses
-                        </a>
-                    </li>
-                    <li >
-                        <a href="#compass">
-                            Compass
-                        </a>
-                    </li>
-                    <li >
-                        <a href="#photos">
-                            Photos Nearby
-                        </a>
-                    </li>
-                    <li >
-                        <a href="#about">
-                            About
-                        </a>
-                    </li-->
                 </ul>
 
 
@@ -301,8 +272,8 @@
             <div data-role="content" style="padding:0; text-align: center;">
                 <div class="edit-area">
                     <input type="date" name="date" id="story-date" value=""/>
-                    <input name="story-title" id="story-title" placeholder="Story Title..." value="" type="text">
-                    <textarea name="desc-story" id="desc-story" placeholder="Description..." rows="10" cols="10"></textarea>
+                    <input name="story-title" id="story_title" placeholder="Story Title..." value="" type="text">
+                    <textarea name="desc-story" id="story_desc" placeholder="Description..." rows="10" cols="10"></textarea>
                 </div>
             
                 <div class="big-buttons">
@@ -318,7 +289,7 @@
                 </div>
                 Rate
                 <div class="rating">
-                    <input name="rating" value="0" id="rating_simple" type="hidden"> 
+                    <input name="rating" value="0" id="rating_simple" > 
                     
                 </div>
             </div>
@@ -329,7 +300,7 @@
                 </a>
                 <div class="vline"></div>
                 <a data-role="button" data-rel="external" href="#" id="addStory" style="margin: 0.5em; float: right" data-cache="false" data-icon="plus"
-                   data-iconpos="left" class="ui-btn-right">
+                   data-iconpos="left" class="ui-btn-right" onclick="createStory()">
                     Add
                 </a>
             </div>

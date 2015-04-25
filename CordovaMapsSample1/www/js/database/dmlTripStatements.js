@@ -12,30 +12,28 @@ function createTrip()
 
 function insertDB(tx)
 {
-    var title=document.getElementById("trip-title").value;
-    var description = document.getElementById("trip_description").value; 
+   var title=document.getElementById("trip-title").value;
+   var description = document.getElementById("trip_description").value; 
     
    alert("valorile sunt ---" + title + "---" + description + "----");
     
-      var sql = 'INSERT INTO DEMO (title,description) VALUES (?,?)';
-       tx.executeSql(sql,[title,description], successInsertion, errorCB);
-   //   tx.executeSql(sql,["hamster","hamster_description"], successInsertion, errorCB);
-   //   tx.executeSql(sql,["Elena","beautiful_description"], successInsertion, errorCB);
-  //  tx.executeSql(sql,["hamsterTitle","hamsterPicture","hasmterDescription"], selectQueryDB, errorCB);
+   var sql = 'INSERT INTO TRIP (title,description) VALUES (?,?)';
+   tx.executeSql(sql,[title,description], successInsertion, errorCB);
+   
    
 }
 
 function successInsertion(tx)
 {
     alert("am inserat ceva");
-    tx.executeSql('SELECT * FROM DEMO', [], renderList,errorCBSelect);
+    tx.executeSql('SELECT * FROM TRIP', [], renderList,errorCBSelect);
 }
 
 
 function selectQueryDB(tx)
 {
     alert("am inserat ceva");
-    tx.executeSql('SELECT * FROM DEMO', [], renderList,errorCBSelect);
+    tx.executeSql('SELECT * FROM TRIP', [], renderList,errorCBSelect);
 }
 
 function errorCB(tx)
