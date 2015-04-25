@@ -35,20 +35,31 @@ function insertDBStory(tx)
   
     
     var sql = 'INSERT INTO STORY (title,description, date, rate) VALUES (?,?,?,?)';
-    tx.executeSql(sql,[story_title,story_desc,story_date,rating], successInsertion, errorCB);
+    tx.executeSql(sql,[story_title,story_desc,story_date,rating], successInsertionStory, errorCB);
 }
 
-function successInsertion(tx)
+function successInsertionStory(tx)
 {
     alert("am inserat ceva");
-    tx.executeSql('SELECT * FROM Story', [], renderListStories,errorCBSelect);
+    tx.executeSql('SELECT * FROM Story', [], renderListStoriesDemo,errorCBSelect);
 }
 
-
-function selectQueryDB(tx)
+/*
+ * popualtes the list of stories associated with an indexTrip
+ */
+function selectQueryDBStory(indexTrip)
 {
-    alert("am inserat ceva");
-    tx.executeSql('SELECT * FROM Story', [], renderListStories,errorCBSelect);
+    alert("selectQueryDBStory");
+  //  tx.executeSql('SELECT * FROM Story', [], renderListStories,errorCBSelect);
+  
+    dbShell.transaction(
+        function(tx)
+        {
+              tx.executeSql('SELECT * FROM Story', [], renderListStories,errorCBSelect);
+        },
+        errorCB
+    );
+  
 }
 
 function errorCB(tx)
@@ -61,6 +72,19 @@ function errorCBSelect(tx)
     alert("Error processing DB Select: " + tx.code);
 }
 
+function renderListStoriesDemo(tx, result)
+{   
+    var htmlString = '';
+    for(var i = 0; i < result.rows.length; i++)
+    {
+        htmlString += result.rows.item(i).id + " " + result.rows.item(i).title+ " " + result.rows.item(i).description + " " + result.rows.item(i).date + " " + result.rows.item(i).rate;
+    }
+    alert("renderListSroriesDemo" + htmlString);
+  //    document.getElementById("idP").innerHTML = htmlString;
+  //  $('listview').html(htmlString);
+  //  $('listview').listview('refresh');
+}
+
 function renderListStories(tx, result)
 {   
     var htmlString = '';
@@ -69,6 +93,7 @@ function renderListStories(tx, result)
         htmlString += result.rows.item(i).id + " " + result.rows.item(i).title+ " " + result.rows.item(i).description + " " + result.rows.item(i).date + " " + result.rows.item(i).rate;
     }
     alert("renderListSrories" + htmlString);
+    populateListStories(htmlString);
   //    document.getElementById("idP").innerHTML = htmlString;
   //  $('listview').html(htmlString);
   //  $('listview').listview('refresh');
