@@ -7,33 +7,35 @@
 function createTrip()
 {
     alert("the button for creating a trip has been pushed");
-   dbShell.transaction(insertDB, errorCB);
+   dbShell.transaction(insertDBTrip, errorCB);
 }
 
-function insertDB(tx)
+function insertDBTrip(tx)
 {
    var title=document.getElementById("trip-title").value;
    var description = document.getElementById("trip_description").value; 
     
-   alert("valorile sunt ---" + title + "---" + description + "----");
+   alert("isnertDBTrip valorile sunt ---" + title + "---" + description + "----");
     
    var sql = 'INSERT INTO TRIP (title,description) VALUES (?,?)';
-   tx.executeSql(sql,[title,description], successInsertion, errorCB);
+ //  tx.executeSql(sql,[title,description],  selectQueryDB, errorCB);
    
-   
+   tx.executeSql(sql,[title,description], successInsertionTrip, errorCB);
 }
 
-function successInsertion(tx)
+function successInsertionTrip(tx)
 {
     alert("am inserat ceva");
-    tx.executeSql('SELECT * FROM TRIP', [], renderList,errorCBSelect);
+    tx.executeSql('SELECT * FROM TRIP', [], renderListTrip,errorCBSelect);
 }
 
 
 function selectQueryDB(tx)
 {
     alert("am inserat ceva");
-    tx.executeSql('SELECT * FROM TRIP', [], renderList,errorCBSelect);
+    
+    tx.executeSql('SELECT * FROM TRIP', [],renderListTrip,errorCBSelect);
+    
 }
 
 function errorCB(tx)
@@ -46,15 +48,18 @@ function errorCBSelect(tx)
     alert("Error processing DB Select: " + tx.code);
 }
 
-function renderList(tx, result)
+function renderListTrip(tx, result)
 {   
+   /* 
     var htmlString = '';
     for(var i = 0; i < result.rows.length; i++)
     {
         htmlString += result.rows.item(i).id + " " + result.rows.item(i).title;
     }
-    alert(htmlString);
-  //    document.getElementById("idP").innerHTML = htmlString;
-  //  $('listview').html(htmlString);
-  //  $('listview').listview('refresh');
+    alert("renderList : " +  htmlString);
+    
+   
+   //alert("  renderList   ");
+   */
+    populateListMainPage(result);
 }

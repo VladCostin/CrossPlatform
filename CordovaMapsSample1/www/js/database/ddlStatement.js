@@ -14,7 +14,7 @@ function createDatabase()
     ("Database Sample", "1.0", "Cordova Sample", 2 * 1024 * 1024);
     dbShell.transaction(createDB, errorCB, successDB);
     
-    
+  //    loadMainPage();
 }
 function createDB(tx)
 {

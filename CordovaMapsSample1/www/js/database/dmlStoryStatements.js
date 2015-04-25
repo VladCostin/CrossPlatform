@@ -41,14 +41,14 @@ function insertDBStory(tx)
 function successInsertion(tx)
 {
     alert("am inserat ceva");
-    tx.executeSql('SELECT * FROM Story', [], renderList,errorCBSelect);
+    tx.executeSql('SELECT * FROM Story', [], renderListStories,errorCBSelect);
 }
 
 
 function selectQueryDB(tx)
 {
     alert("am inserat ceva");
-    tx.executeSql('SELECT * FROM Story', [], renderList,errorCBSelect);
+    tx.executeSql('SELECT * FROM Story', [], renderListStories,errorCBSelect);
 }
 
 function errorCB(tx)
@@ -61,14 +61,14 @@ function errorCBSelect(tx)
     alert("Error processing DB Select: " + tx.code);
 }
 
-function renderList(tx, result)
+function renderListStories(tx, result)
 {   
     var htmlString = '';
     for(var i = 0; i < result.rows.length; i++)
     {
         htmlString += result.rows.item(i).id + " " + result.rows.item(i).title+ " " + result.rows.item(i).description + " " + result.rows.item(i).date + " " + result.rows.item(i).rate;
     }
-    alert(htmlString);
+    alert("renderListSrories" + htmlString);
   //    document.getElementById("idP").innerHTML = htmlString;
   //  $('listview').html(htmlString);
   //  $('listview').listview('refresh');
