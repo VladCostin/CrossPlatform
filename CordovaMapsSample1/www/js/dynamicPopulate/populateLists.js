@@ -20,8 +20,6 @@ function populateListMainPage(result)
         linkTitle.id = result.rows.item(i).id;
         linkTitle.onclick = function(){ selectQueryDBTripTitle( linkTitle.id),
                     selectQueryDBStory( linkTitle.id); return false};
-        //linkTitle.onclick = populateListStories(linkTitle.id);
-       // listItemTitle.onclick = populateListStories; // populateListStories(linkTitle.id);
         
         listItemTitle.appendChild(linkTitle);
         ul.appendChild(listItemTitle);
@@ -48,5 +46,18 @@ function populateTripDetailsPage(result)
 
 function populateListStories(result)
 {
-    alert("populateListStories : " + result);
+    alert("populateListStories : ");
+    var ul = document.getElementById("listDays");
+    for(var i = 0; i < result.rows.length; i++)
+    {
+        var listItemTitle = document.createElement("li");
+        var linkTitle = document.createElement("a");
+        linkTitle.href = "#details";
+        linkTitle.innerHTML = result.rows.item(i).date;
+        linkTitle.rel="external";
+        
+        listItemTitle.appendChild(linkTitle);
+        ul.appendChild(listItemTitle);
+    }
+
 }

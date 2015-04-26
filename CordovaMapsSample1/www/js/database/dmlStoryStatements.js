@@ -55,7 +55,7 @@ function selectQueryDBStory(indexTrip)
     dbShell.transaction(
         function(tx)
         {
-              tx.executeSql('SELECT * FROM Story', [], renderListStories,errorCBSelect);
+              tx.executeSql('SELECT date FROM Story ORDER BY date', [], renderListStories,errorCBSelect);
         },
         errorCB
     );
@@ -86,14 +86,15 @@ function renderListStoriesDemo(tx, result)
 }
 
 function renderListStories(tx, result)
-{   
+{  /*  
     var htmlString = '';
     for(var i = 0; i < result.rows.length; i++)
     {
         htmlString += result.rows.item(i).id + " " + result.rows.item(i).title+ " " + result.rows.item(i).description + " " + result.rows.item(i).date + " " + result.rows.item(i).rate;
     }
     alert("renderListSrories" + htmlString);
-    populateListStories(htmlString);
+    */
+    populateListStories(result);
   //    document.getElementById("idP").innerHTML = htmlString;
   //  $('listview').html(htmlString);
   //  $('listview').listview('refresh');
