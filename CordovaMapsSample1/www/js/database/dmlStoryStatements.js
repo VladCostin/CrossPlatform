@@ -32,10 +32,10 @@ function insertDBStory(tx)
     var story_title = document.getElementById("story_title").value;
     var story_desc = document.getElementById("story_desc").value;
     var rating =  window.localStorage.getItem("rating", rating);
-  
+    var idTrip =  window.localStorage.getItem("id_trip_shown"); 
     
-    var sql = 'INSERT INTO STORY (title,description, date, rate) VALUES (?,?,?,?)';
-    tx.executeSql(sql,[story_title,story_desc,story_date,rating], successInsertionStory, errorCB);
+    var sql = 'INSERT INTO STORY (title,description, date, rate, idTrip) VALUES (?,?,?,?,?)';
+    tx.executeSql(sql,[story_title,story_desc,story_date,rating, idTrip], successInsertionStory, errorCB);
 }
 
 function successInsertionStory(tx)
@@ -47,7 +47,7 @@ function successInsertionStory(tx)
 /*
  * popualtes the list of stories associated with an indexTrip
  */
-function selectQueryDBStory(indexTrip)
+function selectQueryDateStory(indexTrip)
 {
    //  alert("selectQueryDBStory");
      alert("intra in selectQueryDBStory : " + indexTrip);
@@ -57,7 +57,9 @@ function selectQueryDBStory(indexTrip)
     dbShell.transaction(
         function(tx)
         {
-            tx.executeSql("SELECT distinct(date) as a FROM Story ORDER BY date", [], renderListStories,errorCBSelect);
+            tx.executeSql("SELECT distinct(date) as a FROM Story \n\
+            where idTrip = ? \n\
+            ORDER BY date", [indexTrip], renderListStories,errorCBSelect);
             //  tx.executeSql("SELECT distinct(strftime('%d.%m.%Y', date)) as a FROM Story ORDER BY date", [], renderListStories,errorCBSelect);
         },
         errorCB
@@ -71,12 +73,10 @@ function selectQueryDBStory(indexTrip)
 function deleteDay()
 {
     var date = window.localStorage.getItem("day_current_shown");
-   
     alert("the day to be deleted is : " + date);
-    
     deleteStories('date',date);
-
 }
+
 
 /*
  * deletes all the stories that fulfill the condition : key = value
@@ -85,13 +85,17 @@ function deleteDay()
 function deleteStories(key,val)
 {
     var state = 'DELETE FROM STORY WHERE ' + key + ' = ? ';
-     var indexTrip = window.localStorage.getItem("id_trip_shown");
+    var indexTrip = window.localStorage.getItem("id_trip_shown");
     
     dbShell.transaction(
         function(tx)
         {
             tx.executeSql( state, [val],
-            selectQueryDBStory(indexTrip), errorCB);
+            function()
+            {
+                if(key !== 'idTrip')
+                    selectQueryDateStory(indexTrip);
+            }, errorCB);
             
         },
         errorCB

@@ -32,6 +32,8 @@ function deleteTrip()
     var indexTrip = window.localStorage.getItem("id_trip_shown");
     // alert("the trip index is ----" + indexTrip+ "---");
      
+    deleteStories("idTrip",indexTrip);
+     
     dbShell.transaction(
         function(tx)
         {
@@ -40,10 +42,11 @@ function deleteTrip()
         },
         errorCB
     );
-    /*
-     * I still have to delete the stories associated with a trip
-     */
     
+  //  I still have to delete the stories associated with a trip
+
+
+
 }
 
 /*
