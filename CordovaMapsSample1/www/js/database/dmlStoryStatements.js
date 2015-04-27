@@ -28,7 +28,7 @@ function insertDBStory(tx)
    //   alert("insertDBStory : " + window.localStorage.getItem("rating"));
   //  alert(rating);
     
-     var story_date = document.getElementById("story-date").value;
+    var story_date = document.getElementById("story-date").value;
     var story_title = document.getElementById("story_title").value;
     var story_desc = document.getElementById("story_desc").value;
     var rating =  window.localStorage.getItem("rating", rating);
@@ -49,13 +49,13 @@ function successInsertionStory(tx)
  */
 function selectQueryDBStory(indexTrip)
 {
-    alert("selectQueryDBStory");
+  //  alert("selectQueryDBStory");
   //  tx.executeSql('SELECT * FROM Story', [], renderListStories,errorCBSelect);
   
     dbShell.transaction(
         function(tx)
         {
-              tx.executeSql('SELECT date FROM Story ORDER BY date', [], renderListStories,errorCBSelect);
+              tx.executeSql("SELECT strftime('%d.%m.%Y', date) as a FROM Story ORDER BY date", [], renderListStories,errorCBSelect);
         },
         errorCB
     );
@@ -79,23 +79,14 @@ function renderListStoriesDemo(tx, result)
     {
         htmlString += result.rows.item(i).id + " " + result.rows.item(i).title+ " " + result.rows.item(i).description + " " + result.rows.item(i).date + " " + result.rows.item(i).rate;
     }
-    alert("renderListSroriesDemo" + htmlString);
+  //  alert("renderListSroriesDemo" + htmlString);
   //    document.getElementById("idP").innerHTML = htmlString;
   //  $('listview').html(htmlString);
   //  $('listview').listview('refresh');
 }
 
 function renderListStories(tx, result)
-{  /*  
-    var htmlString = '';
-    for(var i = 0; i < result.rows.length; i++)
-    {
-        htmlString += result.rows.item(i).id + " " + result.rows.item(i).title+ " " + result.rows.item(i).description + " " + result.rows.item(i).date + " " + result.rows.item(i).rate;
-    }
-    alert("renderListSrories" + htmlString);
-    */
+{ 
     populateListStories(result);
-  //    document.getElementById("idP").innerHTML = htmlString;
-  //  $('listview').html(htmlString);
-  //  $('listview').listview('refresh');
+
 }
