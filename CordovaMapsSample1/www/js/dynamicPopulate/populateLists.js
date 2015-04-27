@@ -12,8 +12,6 @@ function populateListMainPage(result)
     //  alert("sunt in popualte List : " + result);
     var ul = document.getElementById("listTripTitles");
     var i = 0;
-
-
     /*
      * deletes ll the children so there will be no duplicates
      * in future: create another method and check in Ul children the node 
@@ -120,9 +118,8 @@ function setClickEventDataStory(date)
  */
 function setClickEventToTrip(li)
 {
-    
     li.addEventListener('click', function () {
         selectQueryDBTripTitle(li.id);
-        selectQueryDBStory(li.id);
+        selectQueryDateStory(li.id);
     }, false);
 }
