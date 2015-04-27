@@ -15,7 +15,7 @@ function insertDBTrip(tx)
    var title=document.getElementById("trip-title").value;
    var description = document.getElementById("trip_description").value; 
     
-   alert("isnertDBTrip valorile sunt ---" + title + "---" + description + "----");
+   //  alert("isnertDBTrip valorile sunt ---" + title + "---" + description + "----");
     
    var sql = 'INSERT INTO TRIP (title,description) VALUES (?,?)';
    tx.executeSql(sql,[title,description],  selectQueryDBTrip, errorCB);
@@ -23,18 +23,49 @@ function insertDBTrip(tx)
  //  tx.executeSql(sql,[title,description], successInsertionTrip, errorCB);
 }
 
-function deleteTrip(tx)
+/*
+ * function called when the user presses delete trip, after accesing a trip
+ */
+function deleteTrip()
 {
   //  tx.executeSql('DELETE FROM TRIP WHERE id = ?', [comboid], successDelete, errorCB);
+  
+    var indexTrip = window.localStorage.getItem("id_trip_shown");
+    alert("the trip index is ----" + indexTrip+ "---");
+  
+    
+    dbShell.transaction(
+        function(tx)
+        {
+            tx.executeSql('DELETE FROM TRIP WHERE id = ?', [indexTrip], selectQueryDBAllTrips, errorCB);
+            
+        },
+        errorCB
+    );
+    
 }
 
+/*
+ * selects all the trips from database when the page is being loaded for the first time
+ * @returns {undefined}
+ */
+function selectQueryDBAllTrips()
+{
+    dbShell.transaction(
+        function(tx)
+        {
+              tx.executeSql('SELECT * FROM TRIP order by id desc', [],
+              renderListTrip,errorCBSelect);
+        },
+        errorCB
+    );
+}
 
 
 function selectQueryDBTrip(tx)
 {
-    alert("am inserat ceva");
-    
-    tx.executeSql('SELECT * FROM TRIP', [],renderListTrip,errorCBSelect);
+  //  alert("am inserat ceva");
+    tx.executeSql('SELECT * FROM TRIP order by id desc', [],renderListTrip,errorCBSelect);
     
 }
 
@@ -44,7 +75,6 @@ function selectQueryDBTrip(tx)
 function selectQueryDBTripTitle(indexTrip)
 {
     alert("selectQueryDBTripTitle CACAT  : " + indexTrip);
-  //  tx.executeSql('SELECT * FROM Story', [], renderListStories,errorCBSelect);
   
     dbShell.transaction(
         function(tx)
@@ -54,10 +84,8 @@ function selectQueryDBTripTitle(indexTrip)
         },
         errorCB
     );
-  
+
 }
-
-
 
 function errorCB(tx)
 {
@@ -71,23 +99,13 @@ function errorCBSelect(tx)
 
 function renderTripDetail(tx,result)
 {
-    alert("renderTripDetail : " );
+   // alert("renderTripDetail : " );
     populateTripDetailsPage(result);
 }
 
 
 function renderListTrip(tx, result)
-{      alert("renderListTrip : " );
-   /* 
-    var htmlString = '';
-    for(var i = 0; i < result.rows.length; i++)
-    {
-        htmlString += result.rows.item(i).id + " " + result.rows.item(i).title;
-    }
-    alert("renderList : " +  htmlString);
-    
-   
-   //alert("  renderList   ");
-   */
+{      
+   // alert("renderListTrip : " );
     populateListMainPage(result);
 }
