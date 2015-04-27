@@ -40,7 +40,7 @@ function insertDBStory(tx)
 
 function successInsertionStory(tx)
 {
-    alert("am inserat ceva");
+   // alert("am inserat ceva");
     tx.executeSql('SELECT * FROM Story', [], renderListStoriesDemo,errorCBSelect);
 }
 
@@ -49,18 +49,55 @@ function successInsertionStory(tx)
  */
 function selectQueryDBStory(indexTrip)
 {
-  //  alert("selectQueryDBStory");
-  //  tx.executeSql('SELECT * FROM Story', [], renderListStories,errorCBSelect);
+   //  alert("selectQueryDBStory");
+     alert("intra in selectQueryDBStory : " + indexTrip);
+  
+  
   
     dbShell.transaction(
         function(tx)
         {
-              tx.executeSql("SELECT strftime('%d.%m.%Y', date) as a FROM Story ORDER BY date", [], renderListStories,errorCBSelect);
+            tx.executeSql("SELECT distinct(date) as a FROM Story ORDER BY date", [], renderListStories,errorCBSelect);
+            //  tx.executeSql("SELECT distinct(strftime('%d.%m.%Y', date)) as a FROM Story ORDER BY date", [], renderListStories,errorCBSelect);
         },
         errorCB
     );
-  
+    
 }
+
+/*
+ * deletes the stories associated to one day 
+ */
+function deleteDay()
+{
+    var date = window.localStorage.getItem("day_current_shown");
+   
+    alert("the day to be deleted is : " + date);
+    
+    deleteStories('date',date);
+
+}
+
+/*
+ * deletes all the stories that fulfill the condition : key = value
+ * for example : id = 3, or date = 2005-12-03
+ */
+function deleteStories(key,val)
+{
+    var state = 'DELETE FROM STORY WHERE ' + key + ' = ? ';
+     var indexTrip = window.localStorage.getItem("id_trip_shown");
+    
+    dbShell.transaction(
+        function(tx)
+        {
+            tx.executeSql( state, [val],
+            selectQueryDBStory(indexTrip), errorCB);
+            
+        },
+        errorCB
+    );
+}
+
 
 function errorCB(tx)
 {
@@ -79,14 +116,11 @@ function renderListStoriesDemo(tx, result)
     {
         htmlString += result.rows.item(i).id + " " + result.rows.item(i).title+ " " + result.rows.item(i).description + " " + result.rows.item(i).date + " " + result.rows.item(i).rate;
     }
-  //  alert("renderListSroriesDemo" + htmlString);
-  //    document.getElementById("idP").innerHTML = htmlString;
-  //  $('listview').html(htmlString);
-  //  $('listview').listview('refresh');
 }
 
 function renderListStories(tx, result)
 { 
-    populateListStories(result);
+    //  alert("intra in renderListStories");
+    populateListStoriesData(result);
 
 }

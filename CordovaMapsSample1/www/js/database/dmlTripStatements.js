@@ -28,12 +28,10 @@ function insertDBTrip(tx)
  */
 function deleteTrip()
 {
-  //  tx.executeSql('DELETE FROM TRIP WHERE id = ?', [comboid], successDelete, errorCB);
   
     var indexTrip = window.localStorage.getItem("id_trip_shown");
-    alert("the trip index is ----" + indexTrip+ "---");
-  
-    
+    // alert("the trip index is ----" + indexTrip+ "---");
+     
     dbShell.transaction(
         function(tx)
         {
@@ -42,6 +40,9 @@ function deleteTrip()
         },
         errorCB
     );
+    /*
+     * I still have to delete the stories associated with a trip
+     */
     
 }
 
@@ -74,7 +75,7 @@ function selectQueryDBTrip(tx)
  */
 function selectQueryDBTripTitle(indexTrip)
 {
-    alert("selectQueryDBTripTitle CACAT  : " + indexTrip);
+    // alert("selectQueryDBTripTitle CACAT  : " + indexTrip);
   
     dbShell.transaction(
         function(tx)
