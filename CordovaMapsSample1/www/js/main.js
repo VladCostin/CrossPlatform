@@ -15,7 +15,7 @@ $(document).ready(function() {
      //  onDeviceReady();
   
     //call datepicker if browser is used
-    if (!Modernizr.touch || !Modernizr.inputtypes.date) {
+    /*if (!Modernizr.touch || !Modernizr.inputtypes.date) {
             var $datepicker = $('#story-date').pikaday({
             firstDay: 1,
             minDate: new Date('2000-01-01'),
@@ -23,8 +23,12 @@ $(document).ready(function() {
             yearRange: [2000,2020],
             theme: 'dark-theme'
         });
-    } 
-    //collabsable
+    } */
+    //init date
+    var d = new Date();
+    var strDate = (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
+    $("#story-date").val(strDate);
+   
    
     //rating toggle btn
     $("#rating_simple").webwidget_rating_simple({
@@ -35,12 +39,8 @@ $(document).ready(function() {
     });
    
   
-   //init date
-   var d = new Date();
-   var strDate = (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
-   $("#story-date").val(strDate);
-   
-   //delete story
+  
+   //delete story from the page but not from DB
    $(".btn-delete-story-view").live( "click", function(){
        $(this).parent().parent().remove();
    });
@@ -61,12 +61,7 @@ $(document).ready(function() {
         $(".story-photos").children().remove();
    });
 });
-function story(number, date, title, desc, imgs)
-{
-    this.number=number;
-    this.date = date;
-    
-}
+
 function onDeviceReady() {
 
     console.log("Ready");

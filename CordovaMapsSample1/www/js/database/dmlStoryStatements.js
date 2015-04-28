@@ -104,7 +104,7 @@ function insertDBStory(tx)
 
 function successInsertionStory(tx)
 {
-   // alert("am inserat ceva");
+    alert("Success inserted");
     tx.executeSql('SELECT * FROM Story', [], renderListStoriesDemo,errorCBSelect);
 }
 
