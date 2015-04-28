@@ -9,7 +9,8 @@ var dbShell;
 
 function createDatabase()
 {
-    
+    window.__webSqlDebugModeOn = true;
+
     dbShell = window.openDatabase
     ("Database Sample", "1.0", "Cordova Sample", 2 * 1024 * 1024);
     dbShell.transaction(createDB, errorCB, successDB);
@@ -41,5 +42,5 @@ function errorCB(tx)
 
 function successDB(tx)
 {
-    alert("YEAAAH");
+    //alert("YEAAAH");
 }

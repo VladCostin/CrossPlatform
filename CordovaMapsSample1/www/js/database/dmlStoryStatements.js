@@ -114,20 +114,31 @@ function successInsertionStory(tx)
 function selectQueryDateStory(indexTrip)
 {
    //  alert("selectQueryDBStory");
-     alert("intra in selectQueryDBStory : " + indexTrip);
+    // alert("intra in selectQueryDBStory : " + indexTrip);
   
-  
+   console.log(indexTrip);
   
     dbShell.transaction(
         function(tx)
         {
             tx.executeSql("SELECT distinct(date) as a FROM Story \n\
             where idTrip = ? \n\
-            ORDER BY date", [indexTrip], renderListStories,errorCBSelect);
+            ORDER BY date", [indexTrip],
+             function(tx, result){
+                console.log(result);
+                if(result != "undefined"){
+                   renderListStories(tx);
+               }
+            }
+            
+            
+            ,errorCBSelect);
             //  tx.executeSql("SELECT distinct(strftime('%d.%m.%Y', date)) as a FROM Story ORDER BY date", [], renderListStories,errorCBSelect);
         },
         errorCB
     );
+    
+    
     
 }
 
@@ -187,7 +198,7 @@ function renderListStoriesDemo(tx, result)
 }
 
 function renderListStories(tx, result)
-{ 
+{   console.log(result);
     //  alert("intra in renderListStories");
     populateListStoriesData(result);
 

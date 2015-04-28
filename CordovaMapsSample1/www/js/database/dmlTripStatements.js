@@ -6,19 +6,10 @@
 
 function createTrip()
 {
-   //alert("the button for creating a trip has been pushed");
     dbShell.transaction(insertDBTrip, errorCB);
 
-    //clean fields
-    clear();
 }
-function clear(){
-    $("#trip-title").val("");
-    $("#trip_description").val("");
-    //remove stories
-    $(".day-story").children().remove();
 
-}
 function insertAllStories(tx, idTrip){
     $( ".day-story .ui-collapsible" ).each(function( index ) {
           //console.log( index + ": " + $( this ).text() );
@@ -46,25 +37,27 @@ function insertDBTrip(tx)
     trip_desc= $("#trip_description").val(); 
     
     
-   var sql = 'INSERT INTO TRIP (title,description) VALUES (?,?)';
-   console.log($("#trip-title").val()+" "+$("#trip_description").val());
-   //tx.executeSql(sql,[title,description],  selectQueryDBTrip, errorCB);
+    var sql = 'INSERT INTO TRIP (title,description) VALUES (?,?)';
     tx.executeSql(
             sql,[trip_title,trip_desc],
             function(tx, result){
-                console.log('Returned ID: ' + result.insertId);
                 insertAllStories(tx, result.insertId);
                 selectQueryDBTrip(tx);
             },
             errorCB
         );
    
- //  tx.executeSql(sql,[title,description], successInsertionTrip, errorCB);
- 
-    //insertStories
     
+    //clean fields from New Trip Page
+    clear(); 
 }
+function clear(){
+    $("#trip-title").val("");
+    $("#trip_description").val("");
+    //remove stories
+    $(".day-story").children().remove();
 
+}
 /*
  * function called when the user presses delete trip, after accesing a trip
  */
