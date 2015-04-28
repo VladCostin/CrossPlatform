@@ -6,21 +6,63 @@
 
 function createTrip()
 {
-    alert("the button for creating a trip has been pushed");
-   dbShell.transaction(insertDBTrip, errorCB);
-}
+   //alert("the button for creating a trip has been pushed");
+    dbShell.transaction(insertDBTrip, errorCB);
 
+    //clean fields
+    clear();
+}
+function clear(){
+    $("#trip-title").val("");
+    $("#trip_description").val("");
+    //remove stories
+    $(".day-story").children().remove();
+
+}
+function insertAllStories(tx, idTrip){
+    $( ".day-story .ui-collapsible" ).each(function( index ) {
+          //console.log( index + ": " + $( this ).text() );
+        story_title = $(this).find(".story_title").text();
+        story_desc = $(this).find(".story_desc").text();
+        story_date = $(this).find(".story_date").text();
+        rating = $(this).find(".story_rating").text();
+        
+        var sql = 'INSERT INTO STORY (title,description, date, rate, idTrip) VALUES (?,?,?,?,?)';
+        tx.executeSql(sql,[story_title,story_desc,story_date,rating, idTrip], successInsertionStory, errorCB);
+        
+        $(this).find("img").each(function() {
+            img_path = $(this).attr("src");
+            insertImagesToStory(img_path,storyId);
+        });
+
+   });
+}
+function insertImagesToStory(img_path,storyId){
+    console.log("storyId="+storyId+" img_src="+img_path);
+}
 function insertDBTrip(tx)
 {
-   var title=document.getElementById("trip-title").value;
-   var description = document.getElementById("trip_description").value; 
+    trip_title=$("#trip-title").val();
+    trip_desc= $("#trip_description").val(); 
     
-   //  alert("isnertDBTrip valorile sunt ---" + title + "---" + description + "----");
     
    var sql = 'INSERT INTO TRIP (title,description) VALUES (?,?)';
-   tx.executeSql(sql,[title,description],  selectQueryDBTrip, errorCB);
+   console.log($("#trip-title").val()+" "+$("#trip_description").val());
+   //tx.executeSql(sql,[title,description],  selectQueryDBTrip, errorCB);
+    tx.executeSql(
+            sql,[trip_title,trip_desc],
+            function(tx, result){
+                console.log('Returned ID: ' + result.insertId);
+                insertAllStories(tx, result.insertId);
+                selectQueryDBTrip(tx);
+            },
+            errorCB
+        );
    
  //  tx.executeSql(sql,[title,description], successInsertionTrip, errorCB);
+ 
+    //insertStories
+    
 }
 
 /*
@@ -43,9 +85,6 @@ function deleteTrip()
         errorCB
     );
     
-  //  I still have to delete the stories associated with a trip
-
-
 
 }
 
@@ -93,7 +132,7 @@ function selectQueryDBTripTitle(indexTrip)
 
 function errorCB(tx)
 {
-    alert("Error processing DB : " + tx.code);
+  console.log("Error processing DB : " + tx.code);
 }
 
 function errorCBSelect(tx)

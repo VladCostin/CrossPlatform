@@ -17,6 +17,7 @@ function populateListMainPage(result)
      * in future: create another method and check in Ul children the node 
      * that has the value to be deleted
      */
+    
     while (ul.childNodes.length > 2) {
         ul.removeChild(ul.lastChild);
     }
@@ -36,6 +37,9 @@ function populateListMainPage(result)
         listItemTitle.appendChild(linkTitle[i]);
         ul.appendChild(listItemTitle);
     }
+    
+    //update listview
+    $( "#listTripTitles" ).listview( "refresh" );
 
 }
 

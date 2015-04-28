@@ -60,53 +60,6 @@ $(document).ready(function() {
         $("#rating_simple").val('0'); 
         $(".story-photos").children().remove();
    });
-   //add story
-    $("#addStory").on( "click", function(){
-       
-        //data
-        title = $("#story-title").val();
-        if(title != ''){
-            date = $("#story-date").val();
-            desc  = $("#desc-story").val();
-            
-            //get images
-            images= '';
-            $(".story-photos  img").each(function() {
-                images += $(this).prop('outerHTML');
-            });
-            images = (images != null) ? images : '';
-            //loc = {lat,lng};
-            //rating
-            rating = '';
-            rateNum = $("#rating_simple").val();
-            for (i=1; i<=rateNum; i++){
-                rating += '<span class="heart"></span>';
-            }
-            //adding story to day
-            //adding html
-            nextId++;
-            var str =    ' <div class="story-btn">'+
-                               '     <a  href="#" class="btn-delete-story" ></a>'+
-                               '     <a  href="#" class="btn-edit-story" ></a>'+
-                               ' </div>'+
-                               ' <div data-role="collapsible" id="set'+nextId+'" data-collapsed="true">'+
-                               '    <h3>'+title+'</h3>'+
-                               '     <p>'+date+'</p>'+
-                               '     <p>'+desc+'</p>'+ images  +      
-                               '     <div class="rating">'+   rating        +                   
-                               '     </div>'+
-                               ' </div>';
-            $("#set").append( str ).trigger('create');
-
-            //clear fields
-            $("#story-title").val('');
-            $("#desc-story").val('');
-            $("#rating_simple").val('0'); 
-            $(".story-photos").children().remove();
-        } else {
-            alert('Please fill title!');
-        }
-    });
 });
 function story(number, date, title, desc, imgs)
 {

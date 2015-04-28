@@ -34,75 +34,34 @@
         <script src="js/libs/modernizr.js"></script>
         <script src="js/pikaday.js"></script>
         <script src="js/pikaday.jquery.js"></script>
-         <script src="js/rating_simple.js"></script>
-        
+        <script src="js/rating_simple.js"></script>
+        <script src="js/database/dmlTripStatements.js"></script>
+        <script src="js/database/dmlStoryStatements.js"></script>
+        <script src="js/database/ddlStatement.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
+        
+        <script src="js/dynamicPopulate/populateLists.js"></script>
 
     </head> 
-    <body> 
+    <body onload="createDatabase()">  
         <div data-dom-cache="false" data-role="page" id="index" >
             <div data-role="header" >
                 <h1>Travel Stories</h1>
             </div>
             <div data-role="content" >
-                <ul data-role="listview"  data-inset="true">
+                <ul data-role="listview"  data-inset="true" id="listTripTitles" >
                     <li>
-                         <a href="#new" rel="external" id="new">
+                        <a href="#new" rel="external" id="new">
                             <!--img src="img/1.jpg" alt="Create New"/-->
                             Create New
                         </a>
+                        
                     </li>
-                     <li >
-                       
+                    <li>
                         <a href="#list">
-                            <!--img src="img/4.jpg" alt="Rome"/-->
                             Rome
                         </a>
                     </li>
-                    <li >
-                         
-                        <a href="#list" rel="external">
-                            <!--img src="img/5.jpg" alt="Moscow"/-->
-                            Moscow
-                        </a>
-                    </li>
-                    <li >
-                         
-                        <a href="#list">
-                            <!--img src="img/3.jpg" alt="London"/-->
-                            London
-                        </a>
-                    </li>
-                     <!--li >
-                        <a href="#directions">
-                            Directions
-                        </a>
-                    </li>
-                      <li >
-                        <a href="#contacts">
-                            Contacts
-                        </a>
-                    </li>
-                    <li >
-                        <a href="#addresses">
-                            Addresses
-                        </a>
-                    </li>
-                    <li >
-                        <a href="#compass">
-                            Compass
-                        </a>
-                    </li>
-                    <li >
-                        <a href="#photos">
-                            Photos Nearby
-                        </a>
-                    </li>
-                    <li >
-                        <a href="#about">
-                            About
-                        </a>
-                    </li-->
                 </ul>
 
 
@@ -112,6 +71,8 @@
             </div-->
         </div>
 
+        
+        
         <!-- List page -->
         <div data-dom-cache="false" data-role="page" id="list">
             <div data-role="header" >
@@ -121,7 +82,7 @@
                 <a data-role="button" data-rel="back" href="#page1" data-icon="back"
                    data-iconpos="left" class="ui-btn-left">
                 </a>
-                <h1 id="header">Rome</h1>
+                <h1 id="header">Title trip here</h1>
             </div>
             <div data-role="content" style="padding:0;">
                 
@@ -129,7 +90,7 @@
                   <img src="img/4.jpg" alt="Rome">
                   We enjoy it a lot!Great Trip!    
                 </div>
-                 <ul data-role="listview"  data-inset="true">
+                 <ul data-role="listview"  data-inset="true" id="listDays">
                     <li>
                          <a href="#details" rel="external" id="details">
                            Day 1 - 04.05.2015
@@ -159,15 +120,13 @@
                 </a>
                 <div class="vline"></div>
 
-                <a data-role="button" data-rel="external" href="#" id="deleteTrip" style="margin: 0.4em; float: right" data-cache="false" data-icon="delete"
-                   data-iconpos="left" class="ui-btn-right">
+                <a data-role="button" data-rel="external" href="#index" id="deleteTrip"  style="margin: 0.4em; float: right" data-cache="false" data-icon="delete"
+                   data-iconpos="left" class="ui-btn-right" onclick="deleteTrip()">
                     Delete Trip
                 </a>
                 <!--h4></h4-->
             </div>
         </div>
-        
-        
         
         <!-- Details -->
         <div data-dom-cache="false" data-role="page" id="details">
@@ -233,8 +192,8 @@
                 </a>
                 <div class="vline"></div>
 
-                <a data-role="button" data-rel="external" href="#" id="deleteTrip" style="margin: 0.4em; float: right" data-cache="false" data-icon="delete"
-                   data-iconpos="left" class="ui-btn-right">
+                <a data-role="button" data-rel="external" href="#list" id="deleteTrip" style="margin: 0.4em; float: right" data-cache="false" data-icon="delete"
+                   data-iconpos="left" class="ui-btn-right" onclick="deleteDay()">
                     Delete Day
                 </a>
             </div>
@@ -251,7 +210,7 @@
             <div data-role="content" style="padding:0;">
                 <div class="edit-area">
                     <input name="trip-title" id="trip-title" placeholder="Trip Title..." value="" type="text">
-                    <textarea name="desc-trip" placeholder="Description..." rows="10" cols="10"></textarea>
+                    <textarea id="trip_description" name="desc-trip" placeholder="Description..." rows="10" cols="10"></textarea>
                     <div id="add-story-link"><a href="#story" >Add Story</a></div>
                     <div class="new-stories" >
                         <div class="day-story"  id="set" data-role="collapsible-set">
@@ -283,11 +242,15 @@
                 <div class="vline"></div>
 
                 <a data-role="button" data-rel="external" href="#index" id="save" style="margin: 0.5em; float: right" data-cache="false" data-icon="save"
-                   data-iconpos="left" class="ui-btn-right">
+                   data-iconpos="left" class="ui-btn-right" onclick="createTrip()">
                     Done
                 </a>
             </div>
         </div>
+        
+        
+        
+        
         <!--New Story-->
         <div data-dom-cache="false" data-role="page" id="story">
             <input type="hidden" name="selectedDay" id="selectedDay" value="">
@@ -300,8 +263,8 @@
             <div data-role="content" style="padding:0; text-align: center;">
                 <div class="edit-area">
                     <input type="date" name="date" id="story-date" value=""/>
-                    <input name="story-title" id="story-title" placeholder="Story Title..." value="" type="text">
-                    <textarea name="desc-story" id="desc-story" placeholder="Description..." rows="10" cols="10"></textarea>
+                    <input name="story-title" id="story_title" placeholder="Story Title..." value="" type="text">
+                    <textarea name="desc-story" id="story_desc" placeholder="Description..." rows="10" cols="10"></textarea>
                 </div>
             
                 <div class="big-buttons">
@@ -317,7 +280,7 @@
                 </div>
                 Rate
                 <div class="rating">
-                    <input name="rating" value="0" id="rating_simple" type="hidden"> 
+                    <input name="rating" value="0" id="rating_simple" > 
                     
                 </div>
             </div>
@@ -328,7 +291,7 @@
                 </a>
                 <div class="vline"></div>
                 <a data-role="button" data-rel="external" href="#" id="addStory" style="margin: 0.5em; float: right" data-cache="false" data-icon="plus"
-                   data-iconpos="left" class="ui-btn-right">
+                   data-iconpos="left" class="ui-btn-right" onclick="createStory()">
                     Add
                 </a>
             </div>
