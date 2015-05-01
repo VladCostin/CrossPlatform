@@ -127,14 +127,36 @@ function clearStoryFields(){
 function insertDBStory(tx)
 {
     
+    // alert("sa ma cac in el de proiect");
+    
     var story_date = document.getElementById("story-date").value;
     var story_title = document.getElementById("story_title").value;
     if(story_title != '' ){
         var story_desc = document.getElementById("story_desc").value;
         var rating =  window.localStorage.getItem("rating", rating);
         var idTrip =  window.localStorage.getItem("id_trip_shown"); 
+        
+        var loadMap = document.getElementById('mapsDiv').innerHTML;
+        // alert("loadMap : " + loadMap);
+        var sql;
+        if(loadMap !==  '')
+        {
+          //  alert("a selectat o locatie ----" + loadMap + "----");
+            var lat = mymarker.getPosition().lat();
+            var lng = mymarker.getPosition().lng();
+            
+            alert("Position : " + lat + " " + lng);
+            
+            sql = 'INSERT INTO STORY (title,description, date,LAT,LNG, Rate, idTrip) VALUES \n\
+                    ("'+story_title+'","'+story_desc+'","'+story_date+'",'+ lat + ',' + lng + ',' +rating+','+idTrip+')';
+        }
+        else
+        {
+             alert("nu a selectat nicio locatie");
+             sql = 'INSERT INTO STORY (title,description, date, Rate, idTrip) VALUES \n\
+                    ("'+story_title+'","'+story_desc+'","'+story_date+'",'+rating+','+idTrip+')';
+        }
 
-        var sql = 'INSERT INTO STORY (title,description, date, Rate, idTrip) VALUES ("'+story_title+'","'+story_desc+'","'+story_date+'",'+rating+','+idTrip+')';
         tx.executeSql(
             sql,[], 
             function(tx, result){
@@ -147,7 +169,7 @@ function insertDBStory(tx)
             }, 
             errorCB
         );
-   
+        
        
     } else{
         alert('Please fill title!');
