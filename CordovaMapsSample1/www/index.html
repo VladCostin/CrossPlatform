@@ -38,8 +38,10 @@
         <script src="js/database/dmlTripStatements.js"></script>
         <script src="js/database/dmlStoryStatements.js"></script>
         <script src="js/database/ddlStatement.js"></script>
+        <script type="text/javascript" src="js/locationMap/location.js"></script>
+        <script type="text/javascript" src="js/locationMap/map.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
-        
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?libraries=places&sensor=false"></script>
         <script src="js/dynamicPopulate/populateLists.js"></script>
 
     </head> 
@@ -271,7 +273,7 @@
                 <div class="big-buttons">
                     <a href="#" data-role="button"   class="call-camera-btn" ><div class="btn camera-btn">Take a picture</div> </a>
                     <a href="#" data-role="button"   class="select-pic-btn"><div class="btn pic-btn">Select a picture </div> </a>
-                    <a href="#" data-role="button"   class="tag-location-btn"><div class="btn location-btn">Save location </div></a>
+                    <a href="#" data-role="button"   class="tag-location-btn" onclick="addMap()"><div class="btn location-btn">Save location </div></a>
                 
                </div>
                 <div class="story-photos">
@@ -279,6 +281,8 @@
                     <div class="image-wrap"><div class="deleteImg"></div><img src="img/2.jpg"></div>
 
                 </div>
+                <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+                <div id="mapsDiv"></div>
                 Rate
                 <div class="rating">
                     <input name="rating" value="0" id="rating_simple" > 
