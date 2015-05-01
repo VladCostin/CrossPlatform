@@ -119,6 +119,8 @@ function clearStoryFields(){
     $("#story_title").val('');
     $("#story_desc").val('');
     $("#rating_simple").val('0'); 
+    $("#mapsDiv").val('');
+    $("#mapsDiv").css("display","none");
     $(".story-photos").children().remove();
 }
 /*
@@ -165,6 +167,7 @@ function insertDBStory(tx)
                     insertImagesToStory(tx,img_path,result.insertId);
                 });
                alert("A Story is successfully added!");
+               clearStoryFields();
 
             }, 
             errorCB

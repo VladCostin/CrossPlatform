@@ -211,3 +211,29 @@ function populateStoryData(result){
     $("#story-photos").append( img ).trigger('create');
 
 }
+
+/*
+ * adds a map when selecting the option to specify the location
+ */
+function addMap()
+{
+      if(window.localStorage.getItem("initMap") == "null")
+      {
+            
+            window.localStorage.setItem("initMap", "true");
+            alert("este prima oara");
+            locationMap.initMap();
+            locationManager.curr_loc();
+      }
+      else
+      {
+          alert("nu este prima oara : " + window.localStorage.getItem("initMap"));
+      }
+      //      alert("valaorea initMap este : " + window.localStorage.getItem("initMap"));
+    
+      //window.localStorage.setItem("initMap", "true");
+
+        document.getElementById('mapsDiv').style.display = 'block';
+        document.getElementById("pac-input").style.visibility = "visible";
+
+}
