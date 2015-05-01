@@ -75,7 +75,6 @@ function populateTripDetailsPage(result)
 function populateListStoriesData(result)
 {
      //alert("populateListStories : ---");
-    console.log("here: populateListStoriesData");
        
     var ul = document.getElementById("listDays");
     /*
@@ -88,7 +87,7 @@ function populateListStoriesData(result)
     }
 
     for (var i = 0; i < result.rows.length; i++)
-    {            console.log(result.rows.item(i));
+    {           
 
         var listItemTitle = document.createElement("li");
         var linkStoriesFromDate = document.createElement("a");
@@ -119,9 +118,7 @@ function getStoriesFromOneDay(date,indexTrip)
 }
 //TODO IMAGES, RATING
 function populateStoriesDetails(result){
-    console.log("populateStoriesDetails");
-    console.log(result);
-console.log(result[0]);
+
     if(result.length>0){
         //delete first
         $("#stories_details_day").children().remove();
@@ -132,7 +129,6 @@ console.log(result[0]);
         $("#story-details-header").text("Day "+day_num);
         for (var i = 0; i < result.length; i++)
         {   
-            console.log(result[i]);
 
             images='';
             img = result[i].img;
@@ -150,7 +146,7 @@ console.log(result[0]);
             }
             var story = '  <div class="story">'+
                     '    <div class="edit-story" data-id="'+result[i].id+'">'+
-                    '         <a  href="#" class="btn-edit-story-view" > '+
+                    '         <a  href="#story" class="btn-edit-story-view" > '+
                     '         </a>'+
                     '         <a  href="#" class="btn-delete-story-view" >'+
                     '         </a>'+
@@ -193,5 +189,25 @@ function setClickEventToTrip(li)
 function updateStoryList(){
     idTrip =  window.localStorage.getItem("id_trip_shown"); 
     selectQueryDateStory(idTrip);
+
+}
+function populateStoryData(result){
+    console.log(result.rows.item(0));
+    date = result.rows.item(0).date;
+    title = result.rows.item(0).title;
+    desc = result.rows.item(0).description;
+    rate = result.rows.item(0).Rate;
+    
+    
+    $("#story-date").val(date);
+    $("#story_title").val(title);
+    $("#story_desc").val(desc);
+    $("#rating_simple").val(rate);
+    
+    img = '';
+    for(i=0; i < result.rows.length; i++){
+        img += "<div class='image-wrap'><div class='deleteImg'></div><img src='"+result.rows.item(i).img_path+"' alt=''></div>";
+    }
+    $("#story-photos").append( img ).trigger('create');
 
 }

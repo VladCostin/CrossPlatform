@@ -26,6 +26,10 @@ $(document).ready(function() {
     } */
     $("#story").live('pagebeforeshow', function(event, data) {
         prevPage = data.prevPage.attr('id');
+        console.log(prevPage);
+        if(prevPage =="details"){
+            selectStoryById();
+        }
     });
       $("#list").live('pagebeforeshow', function(event, data) {
         prevPage = data.prevPage.attr('id');
@@ -46,7 +50,10 @@ $(document).ready(function() {
     });
    
   
-  
+   //edit story btn
+   $(".btn-edit-story-view").live( "click", function(){
+        window.localStorage.setItem("selected_story", $(this).parent().attr("data-id"));
+   });
    //delete story from the page but not from DB
    $(".btn-delete-story-view").live( "click", function(){
         deleteStories("id",$(this).parent().attr("data-id"));

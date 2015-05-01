@@ -13,7 +13,7 @@ function createTrip()
 function insertAllStories(tx, idTrip){
 
     $( ".day-story .story_data" ).each(function( index ) {
-          //console.log( index + ": " + $( this ).text() );
+
         var $story = $(this);
         story_title = $story.find(".story_title").text();
         story_desc = $story.find(".story_desc").text();
@@ -25,7 +25,6 @@ function insertAllStories(tx, idTrip){
         var sql = 'INSERT INTO STORY (title,description, date, Rate, idTrip) VALUES ("'+story_title+'","'+story_desc+'","'+story_date+'",'+rating+','+idTrip+')';
         //var sql = 'INSERT INTO STORY (title,description, date, rate, idTrip) VALUES (?,?,?,?,?)';
         
-        console.log(sql);
 
         tx.executeSql(sql,[], 
             function(tx, result){
@@ -52,7 +51,6 @@ function successInsertionImages(tx)
 }
 function insertImagesToStory(tx, img_path,storyId){
     sql = 'INSERT INTO Images (img_path, idStory) VALUES ("'+img_path+'",'+storyId+')';
-    console.log("insertImagesToStory: "+sql);
 
     tx.executeSql(sql, [], successInsertionImages,errorCB);
 
@@ -150,7 +148,7 @@ function selectQueryDBTripTitle(indexTrip)
 
 function errorCB(tx)
 {
-  console.log("Error processing DB : " + tx.code);
+  alert("Error processing DB : " + tx.code);
 }
 
 function errorCBSelect(tx)

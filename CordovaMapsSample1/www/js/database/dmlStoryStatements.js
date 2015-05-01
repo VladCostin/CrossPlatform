@@ -23,7 +23,50 @@ function createStory()
     } //if trip wasnt created
     else if(prevPage == "new"){
         addStoryInTrip();
+    } else if(prevPage == "details"){
+           dbShell.transaction(updateStory, errorCB);  
     }
+}
+function updateStory(tx){
+    date = $("#story-date").val();
+    title = $("#story_title").val();
+    if(title != '' ){
+        desc = $("#story_desc").val();
+        rating =  $("#rating_simple").val();
+        storyId = window.localStorage.getItem("selected_story");
+        
+        //remove images and add again
+        sql = "DELETE FROM images WHERE idStory="+storyId;
+        tx.executeSql(sql,[], successDeleted ,  errorCB );
+        
+        $(".story-photos img").each(function(){
+            src = $(this).attr("src");
+            console.log(src);
+            sql = "INSERT INTO Images (img_path,idStory) VALUES('"+src+"',"+idStory+")";
+            tx.executeSql(sql,[], successUpdated ,  errorCB );
+        });
+        
+        sql = "UPDATE story \n\
+               SET  title='"+title+"',\n\
+                    description='"+desc+"',\n\
+                    date='"+date+"'\n\
+               WHERE id="+storyId;
+        tx.executeSql(sql,[], 
+        function(tx, result){
+            alert("Successfully Updated!");
+            tripShown =  window.localStorage.getItem("id_trip_shown");
+            selectStoriesByDate(date, tripShown);
+            $.mobile.changePage("#details");
+            
+        },  errorCB );
+        
+    }
+}
+function successUpdated(){
+    console.log("Successfully updated!");
+}
+function successDeleted(){
+    console.log("Successfully deleted!");
 }
 //Adding a story on the page"Create Trip" but not on the db
 function addStoryInTrip(){
@@ -53,8 +96,8 @@ function addStoryInTrip(){
             //adding html
             nextId++;
             var str =    ' <div class="story-btn">'+
-                               '     <a  href="#" class="btn-delete-story" ></a>'+
-                               '     <a  href="#" class="btn-edit-story" ></a>'+
+                               '     <a  href="#story" class="btn-delete-story" ></a>'+
+                              // '     <a  href="#" class="btn-edit-story" ></a>'+
                                ' </div>'+
                                ' <div data-role="collapsible" class="story_data" id="set'+nextId+'" data-collapsed="true">'+
                                '    <h3 class="story_title">'+title+'</h3>'+
@@ -153,7 +196,6 @@ function selectStoriesByDate(date, indexTrip){
                 tx.executeSql( sql2, [],
                 function(tx, result2)
                 {   var result =[];
-                    console.log(result1.rows.length);
 
                     for (i=0; i< result1.rows.length ; i++){
                         var images = [];
@@ -188,6 +230,23 @@ function selectStoriesByDate(date, indexTrip){
         errorCB
     );
 }
+function selectStoryById(){
+    idStory =   window.localStorage.getItem("selected_story"); 
+     sql =  "SELECT s.*,i.img_path            \n\
+            FROM STORY  s                     \n\
+            INNER JOIN images  i              \n\
+            ON i.idStory = s.id               \n\
+            WHERE s.id = " + idStory;
+
+    dbShell.transaction(
+        function(tx)
+        {   
+            tx.executeSql(sql, [], renderEditStory, errorCBSelect);
+        },
+        errorCB
+    );
+}
+
 /*
  * deletes the stories associated to one day 
  */
@@ -248,4 +307,8 @@ function renderListStories(tx, result)
 }
 function renderStoriesDetails(tx, result){
     populateStoriesDetails(result);
+}
+
+function renderEditStory(tx, result){
+    populateStoryData(result);
 }
