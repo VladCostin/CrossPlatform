@@ -21,17 +21,21 @@ $(document).ready(function() {
             minDate: new Date('2000-01-01'),
             maxDate: new Date('2020-12-31'),
             yearRange: [2000,2020],
-            theme: 'dark-theme'
+            theme: 'dark-theme'^¨^¸
         });
     } */
     $("#story").live('pagebeforeshow', function(event, data) {
         prevPage = data.prevPage.attr('id');
     });
+      $("#list").live('pagebeforeshow', function(event, data) {
+        prevPage = data.prevPage.attr('id');
+        if(prevPage =="story"){
+            updateStoryList();
+        }
+    });
     //init date
-    var d = new Date();
-    var strDate = (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
-    $("#story-date").val(strDate);
-   
+    initDate();
+  
    
     //rating toggle btn
     $("#rating_simple").webwidget_rating_simple({
@@ -62,11 +66,22 @@ $(document).ready(function() {
         //clear fields
         $("#story-title").val('');
         $("#desc-story").val('');
-        $("#rating_simple").valchildren('0'); 
+        $("#rating_simple").val('0'); 
         $(".story-photos").children().remove();
    });
 });
+function initDate(){
+    var date = new Date();
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
 
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+
+    var today = year + "-" + month + "-" + day;       
+    $("#story-date").attr("value", today);
+}
 function onDeviceReady() {
 
     console.log("Ready");

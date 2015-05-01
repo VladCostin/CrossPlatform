@@ -240,7 +240,7 @@ h1.details-headline{
     font-size:12px;
     text-align: center;
     
-    min-height: 50px;
+    margin-bottom: 10px;
 }
 .story .story-details p{
     margin-top:0;

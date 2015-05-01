@@ -14,35 +14,48 @@ function insertAllStories(tx, idTrip){
 
     $( ".day-story .story_data" ).each(function( index ) {
           //console.log( index + ": " + $( this ).text() );
-        story_title = $(this).find(".story_title").text();
-        story_desc = $(this).find(".story_desc").text();
-        story_date = $(this).find(".story_date").text();
-        rating = $(this).find(".story_rating").text();
-       
-        console.log(rating);
-      
-        var sql = 'INSERT INTO STORY (title,description, date, rate, idTrip) VALUES (?,?,?,?,?)';
-        tx.executeSql(sql,[story_title,story_desc,story_date,rating, idTrip], successInsertionStory2, errorCB);
+        var $story = $(this);
+        story_title = $story.find(".story_title").text();
+        story_desc = $story.find(".story_desc").text();
+        story_date = $story.find(".story_date").text();
+        rating = $story.find("input.story_rating").val();
+        rating = (rating=='')? 0 : rating;
         
-        $(this).find("img").each(function() {
-            img_path = $(this).attr("src");
-            insertImagesToStory(img_path,storyId);
-        });
-        
-        
-        //clean fields from New Trip Page
-        clear();
 
+        var sql = 'INSERT INTO STORY (title,description, date, Rate, idTrip) VALUES ("'+story_title+'","'+story_desc+'","'+story_date+'",'+rating+','+idTrip+')';
+        //var sql = 'INSERT INTO STORY (title,description, date, rate, idTrip) VALUES (?,?,?,?,?)';
+        
+        console.log(sql);
+
+        tx.executeSql(sql,[], 
+            function(tx, result){
+                $story.find("img").each(function() {
+                    img_path = $(this).attr("src");
+                    insertImagesToStory(tx,img_path,result.insertId);
+                });
+                tx.executeSql('SELECT * FROM Story', [], renderListStoriesDemo,errorCBSelect);
+       
+            }
+        , errorCB);
    });
+    //clean fields from New Trip Page
+    clear();
 }
 
 function successInsertionStory2(tx)
 {
     tx.executeSql('SELECT * FROM Story', [], renderListStoriesDemo,errorCBSelect);
 }
+function successInsertionImages(tx)
+{
+    console.log("Successfully inserted images!");
+}
+function insertImagesToStory(tx, img_path,storyId){
+    sql = 'INSERT INTO Images (img_path, idStory) VALUES ("'+img_path+'",'+storyId+')';
+    console.log("insertImagesToStory: "+sql);
 
-function insertImagesToStory(img_path,storyId){
-    console.log("storyId="+storyId+" img_src="+img_path);
+    tx.executeSql(sql, [], successInsertionImages,errorCB);
+
 }
 function insertDBTrip(tx)
 {

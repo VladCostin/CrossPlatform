@@ -75,8 +75,7 @@ function populateTripDetailsPage(result)
 function populateListStoriesData(result)
 {
      //alert("populateListStories : ---");
-     console.log("here");
-   console.log(result);
+    console.log("here: populateListStoriesData");
        
     var ul = document.getElementById("listDays");
     /*
@@ -89,7 +88,8 @@ function populateListStoriesData(result)
     }
 
     for (var i = 0; i < result.rows.length; i++)
-    {        
+    {            console.log(result.rows.item(i));
+
         var listItemTitle = document.createElement("li");
         var linkStoriesFromDate = document.createElement("a");
         linkStoriesFromDate.href = "#details";
@@ -119,36 +119,52 @@ function getStoriesFromOneDay(date,indexTrip)
 }
 //TODO IMAGES, RATING
 function populateStoriesDetails(result){
-    //delete first
-    $("#stories_details_day").children().remove();
-     
-    $(".details-headline").text(result.rows.item(0).date);
-    day_num = parseInt(window.localStorage.getItem("day_num_selected"))+1;
-   
-    $("#story-details-header").text("Day "+day_num);
-    
+    console.log("populateStoriesDetails");
     console.log(result);
-    for (var i = 0; i < result.rows.length; i++)
-    {   images='';
-        rating='';
-            console.log(result.rows.item(i));
+console.log(result[0]);
+    if(result.length>0){
+        //delete first
+        $("#stories_details_day").children().remove();
 
-        var story = '  <div class="story">'+
-                '    <div class="edit-story" data-id="'+result.rows.item(i).id+'">'+
-                '         <a  href="#" class="btn-edit-story-view" > '+
-                '         </a>'+
-                '         <a  href="#" class="btn-delete-story-view" >'+
-                '         </a>'+
-                '        <div class="seperator"></div>'+
-                '    </div>'+
-                '    <div class="story-title"><h2>'+result.rows.item(i).title+'</h2></div>'+
-                '    <div class="story-details"><p>'+result.rows.item(i).description+'</p>'+images +                   
-                '        <div class="map"></div> '+
-                '        <div class="rating">'+rating+
-                '        </div>'+
-                '    </div>'+
-                '</div>';
-          $("#stories_details_day").append( story ).trigger('create');
+        $(".details-headline").text(result[0].date);
+        day_num = parseInt(window.localStorage.getItem("day_num_selected"))+1;
+
+        $("#story-details-header").text("Day "+day_num);
+        for (var i = 0; i < result.length; i++)
+        {   
+            console.log(result[i]);
+
+            images='';
+            img = result[i].img;
+            if(img.length>0 ){
+                for (j=0; j<img.length; j++){
+                    images += '<img src="'+img[j]+'" alt="">';
+                }
+            }
+            rateNum = result[i].Rate;
+            rating = '<input type="hidden" class="story_rating" value="'+rateNum+'">';
+            if(rateNum !=0  && rateNum !='' ){
+                for (j=1; j<= rateNum; j++){
+                    rating += '<span class="heart"></span>';
+                }
+            }
+            var story = '  <div class="story">'+
+                    '    <div class="edit-story" data-id="'+result[i].id+'">'+
+                    '         <a  href="#" class="btn-edit-story-view" > '+
+                    '         </a>'+
+                    '         <a  href="#" class="btn-delete-story-view" >'+
+                    '         </a>'+
+                    '        <div class="seperator"></div>'+
+                    '    </div>'+
+                    '    <div class="story-title"><h2>'+result[i].title+'</h2></div>'+
+                    '    <div class="story-details"><p>'+result[i].description+'</p>'+images +                   
+                    '        <div class="map"></div> '+
+                    '        <div class="rating">'+rating+
+                    '        </div>'+
+                    '    </div>'+
+                    '</div>';
+              $("#stories_details_day").append( story ).trigger('create');
+        }
     }
 }
 function setClickEventDataStory(date)
@@ -172,4 +188,10 @@ function setClickEventToTrip(li)
         selectQueryDBTripTitle(li.id);
         selectQueryDateStory(li.id);
     }, false);
+}
+
+function updateStoryList(){
+    idTrip =  window.localStorage.getItem("id_trip_shown"); 
+    selectQueryDateStory(idTrip);
+
 }

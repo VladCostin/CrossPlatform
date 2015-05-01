@@ -44,20 +44,11 @@ function addStoryInTrip(){
             //rating
             
             rateNum = $("#rating_simple").val();
-            rating = '<input type="hidden" class="story_rating" val="'+rateNum+'">';
+            rating = '<input type="hidden" class="story_rating" value="'+rateNum+'">';
             for (i=1; i<=rateNum; i++){
                 rating += '<span class="heart"></span>';
             }
-            
-            //hidden fields for db
-//            var hiddenFields = '<input type="hidden" name="story_title" val="'+title+'">'+
-//                    '<input type="hidden" name="story_desc" val="'+desc+'">'+
-//                    //'<input type="hidden" name="story_lat" val="'+lat+'">'+
-//                   // '<input type="hidden" name="story_lng" val="'+lng+'">'+
-//                    '<input type="hidden" name="story_date" val="'+date+'">'+
-//                    '<input type="hidden" name="story_rating" val="'+rating+'">'+
-//                    '<input type="hidden" name="story_title" val="'+title+'">'
-//                    ;
+
             //adding story to day
             //adding html
             nextId++;
@@ -92,17 +83,27 @@ function clearStoryFields(){
  */
 function insertDBStory(tx)
 {
-    //  alert("insertDBStory : " + window.localStorage.getItem("rating"));
     
     var story_date = document.getElementById("story-date").value;
     var story_title = document.getElementById("story_title").value;
-    if(story_title != ''){
+    if(story_title != '' ){
         var story_desc = document.getElementById("story_desc").value;
         var rating =  window.localStorage.getItem("rating", rating);
         var idTrip =  window.localStorage.getItem("id_trip_shown"); 
-        //console.log(story_title+" "+story_desc+" "+rating+" "+idTrip);
-        var sql = 'INSERT INTO STORY (title,description, date, rate, idTrip) VALUES (?,?,?,?,?)';
-        tx.executeSql(sql,[story_title,story_desc,story_date,rating, idTrip], successInsertionStory, errorCB);
+
+        var sql = 'INSERT INTO STORY (title,description, date, Rate, idTrip) VALUES ("'+story_title+'","'+story_desc+'","'+story_date+'",'+rating+','+idTrip+')';
+        tx.executeSql(
+            sql,[], 
+            function(tx, result){
+                $(".story-photos").find("img").each(function() {
+                    img_path = $(this).attr("src");
+                    insertImagesToStory(tx,img_path,result.insertId);
+                });
+               alert("A Story is successfully added!");
+
+            }, 
+            errorCB
+        );
    
        
     } else{
@@ -110,46 +111,79 @@ function insertDBStory(tx)
     }    
 }
 
-function successInsertionStory(tx)
-{
-    alert("A Story is successfully added!");
-    //tx.executeSql('SELECT * FROM Story', [], renderListStories,errorCBSelect);
-    clearStoryFields();
-}
 
 /*
  * popualtes the list of stories associated with an indexTrip
  */
 function selectQueryDateStory(indexTrip)
 {
-   //  alert("selectQueryDBStory");
-   alert("intra in selectQueryDBStory : " + indexTrip);
-   // sql1 = "SELECT * FROM TRIP WHERE id= "+indexTrip;
     sql =  "SELECT distinct(date)             \n\
             FROM STORY                           \n\
-            WHERE idTrip = "+indexTrip+"       \n\
+            WHERE idTrip = "+indexTrip+"     \n\
             ORDER BY date";
+
     dbShell.transaction(
         function(tx)
         {   
             tx.executeSql(sql, [],renderListStories,errorCBSelect);
-            //  tx.executeSql("SELECT distinct(strftime('%d.%m.%Y', date)) as a FROM Story ORDER BY date", [], renderListStories,errorCBSelect);
         },
         errorCB
     );
   
 }
 function selectStoriesByDate(date, indexTrip){
-    sql =  "SELECT *                            \n\
-            FROM STORY                          \n\
+    sql1 =  "SELECT *                          \n\
+            FROM STORY                           \n\
             WHERE idTrip = "+indexTrip+"        \n\
             AND date = '"+date+"'                ";
-    console.log(sql);
+    sql2 =  "SELECT i.*                          \n\
+            FROM STORY  s                       \n\
+            INNER JOIN Images   i               \n\
+            ON i.idStory = s.id                 \n\
+            WHERE idTrip = "+indexTrip+"        \n\
+            AND s.date = '"+date+"'                ";
     dbShell.transaction(
         function(tx)
-        {
-            tx.executeSql(sql, [], renderStoriesDetails ,errorCBSelect);
-            //  tx.executeSql("SELECT distinct(strftime('%d.%m.%Y', date)) as a FROM Story ORDER BY date", [], renderListStories,errorCBSelect);
+        {   
+            //renderStoriesDetails 
+            tx.executeSql(sql1, [], 
+            function(tx, result1)
+            {   
+                
+                tx.executeSql( sql2, [],
+                function(tx, result2)
+                {   var result =[];
+                    console.log(result1.rows.length);
+
+                    for (i=0; i< result1.rows.length ; i++){
+                        var images = [];
+                        obj = result1.rows.item(i);
+                       
+                        if(result2.rows.length > 0){
+                            for (j=0; j< result2.rows.length ; j++){
+                               if(result1.rows.item(i).id === result2.rows.item(j).idStory){
+                                   images.push( result2.rows.item(j).img_path);
+                               }
+                           }
+
+
+                            obj.img=images;
+                            result.push(obj);
+
+                        } else {
+                             obj.img=[];
+                             result.push(obj);
+                        }
+
+                    }
+                    renderStoriesDetails(tx, result);
+                   
+                
+                   
+                }, errorCB);
+
+            }   
+        ,errorCBSelect);
         },
         errorCB
     );
@@ -170,7 +204,7 @@ function deleteDay()
  * for example : id = 3, or date = 2005-12-03
  */
 function deleteStories(key,val)
-{
+{   
     var state = 'DELETE FROM STORY WHERE ' + key + ' = ? ';
     var indexTrip = window.localStorage.getItem("id_trip_shown");
     
@@ -210,8 +244,7 @@ function renderListStoriesDemo(tx, result)
 }
 
 function renderListStories(tx, result)
-{   
-    populateListStoriesData(result);
+{    populateListStoriesData(result);
 }
 function renderStoriesDetails(tx, result){
     populateStoriesDetails(result);
