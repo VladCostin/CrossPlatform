@@ -8,7 +8,7 @@ var previous_pos_marker = {};
 
 var stories=[];
 var nextId = 1;
-
+var prevPage ="";
 $(document).ready(function() {
     document.addEventListener("deviceready", onDeviceReady, false);
     //for testing in Chrome browser uncomment
@@ -24,6 +24,9 @@ $(document).ready(function() {
             theme: 'dark-theme'
         });
     } */
+    $("#story").live('pagebeforeshow', function(event, data) {
+        prevPage = data.prevPage.attr('id');
+    });
     //init date
     var d = new Date();
     var strDate = (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
@@ -42,6 +45,8 @@ $(document).ready(function() {
   
    //delete story from the page but not from DB
    $(".btn-delete-story-view").live( "click", function(){
+        deleteStories("id",$(this).parent().attr("data-id"));
+
        $(this).parent().parent().remove();
    });
    $(".btn-delete-story").live( "click", function(){
@@ -57,7 +62,7 @@ $(document).ready(function() {
         //clear fields
         $("#story-title").val('');
         $("#desc-story").val('');
-        $("#rating_simple").val('0'); 
+        $("#rating_simple").valchildren('0'); 
         $(".story-photos").children().remove();
    });
 });

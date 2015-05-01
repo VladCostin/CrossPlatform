@@ -11,23 +11,36 @@ function createTrip()
 }
 
 function insertAllStories(tx, idTrip){
-    $( ".day-story .ui-collapsible" ).each(function( index ) {
+
+    $( ".day-story .story_data" ).each(function( index ) {
           //console.log( index + ": " + $( this ).text() );
         story_title = $(this).find(".story_title").text();
         story_desc = $(this).find(".story_desc").text();
         story_date = $(this).find(".story_date").text();
         rating = $(this).find(".story_rating").text();
-        
+       
+        console.log(rating);
+      
         var sql = 'INSERT INTO STORY (title,description, date, rate, idTrip) VALUES (?,?,?,?,?)';
-        tx.executeSql(sql,[story_title,story_desc,story_date,rating, idTrip], successInsertionStory, errorCB);
+        tx.executeSql(sql,[story_title,story_desc,story_date,rating, idTrip], successInsertionStory2, errorCB);
         
         $(this).find("img").each(function() {
             img_path = $(this).attr("src");
             insertImagesToStory(img_path,storyId);
         });
+        
+        
+        //clean fields from New Trip Page
+        clear();
 
    });
 }
+
+function successInsertionStory2(tx)
+{
+    tx.executeSql('SELECT * FROM Story', [], renderListStoriesDemo,errorCBSelect);
+}
+
 function insertImagesToStory(img_path,storyId){
     console.log("storyId="+storyId+" img_src="+img_path);
 }
@@ -48,8 +61,7 @@ function insertDBTrip(tx)
         );
    
     
-    //clean fields from New Trip Page
-    clear(); 
+     
 }
 function clear(){
     $("#trip-title").val("");
@@ -65,7 +77,7 @@ function deleteTrip()
 {
   
     var indexTrip = window.localStorage.getItem("id_trip_shown");
-    // alert("the trip index is ----" + indexTrip+ "---");
+    alert("the trip index is ----" + indexTrip+ "---");
      
     deleteStories("idTrip",indexTrip);
      

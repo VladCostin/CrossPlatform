@@ -14,15 +14,16 @@ var rating;
 function createStory()
 {
    //if trip was created before
-   var idTrip =  window.localStorage.getItem("id_trip_shown"); 
-   if (idTrip === undefined  || idTrip === null || idTrip.length === 0){
+   
+    if (prevPage == "list"){
+        var idTrip =  window.localStorage.getItem("id_trip_shown"); 
         rating = $("#rating_simple").val();
         window.localStorage.setItem("rating", rating);
         dbShell.transaction(insertDBStory, errorCB);
-   } //if trip wasnt created
-   else {
-       addStoryInTrip();
-   }
+    } //if trip wasnt created
+    else if(prevPage == "new"){
+        addStoryInTrip();
+    }
 }
 //Adding a story on the page"Create Trip" but not on the db
 function addStoryInTrip(){
@@ -32,7 +33,6 @@ function addStoryInTrip(){
         if(title != ''){
             date = $("#story-date").val();
             desc  = $("#story_desc").val();
-            alert(title+" "+date+" "+desc);
 
             //get images
             images= '';
@@ -65,7 +65,7 @@ function addStoryInTrip(){
                                '     <a  href="#" class="btn-delete-story" ></a>'+
                                '     <a  href="#" class="btn-edit-story" ></a>'+
                                ' </div>'+
-                               ' <div data-role="collapsible" id="set'+nextId+'" data-collapsed="true">'+
+                               ' <div data-role="collapsible" class="story_data" id="set'+nextId+'" data-collapsed="true">'+
                                '    <h3 class="story_title">'+title+'</h3>'+
                                '     <p class="story_date">'+date+'</p>'+
                                '     <p class="story_desc">'+desc+'</p>'+ images  +      
@@ -75,37 +75,46 @@ function addStoryInTrip(){
             $("#set").append( str ).trigger('create');
 
             //clear fields
-            $("#story_title").val('');
-            $("#story_desc").val('');
-            $("#rating_simple").val('0'); 
-            $(".story-photos").children().remove();
+            clearStoryFields();
         } else {
             alert('Please fill title!');
         }
 
+}
+function clearStoryFields(){
+    $("#story_title").val('');
+    $("#story_desc").val('');
+    $("#rating_simple").val('0'); 
+    $(".story-photos").children().remove();
 }
 /*
  * gets the data from the fields and inserts it in database a new record
  */
 function insertDBStory(tx)
 {
-   //   alert("insertDBStory : " + window.localStorage.getItem("rating"));
-  //  alert(rating);
+    //  alert("insertDBStory : " + window.localStorage.getItem("rating"));
     
     var story_date = document.getElementById("story-date").value;
     var story_title = document.getElementById("story_title").value;
-    var story_desc = document.getElementById("story_desc").value;
-    var rating =  window.localStorage.getItem("rating", rating);
-    var idTrip =  window.localStorage.getItem("id_trip_shown"); 
-    
-    var sql = 'INSERT INTO STORY (title,description, date, rate, idTrip) VALUES (?,?,?,?,?)';
-    tx.executeSql(sql,[story_title,story_desc,story_date,rating, idTrip], successInsertionStory, errorCB);
+    if(story_title != ''){
+        var story_desc = document.getElementById("story_desc").value;
+        var rating =  window.localStorage.getItem("rating", rating);
+        var idTrip =  window.localStorage.getItem("id_trip_shown"); 
+        //console.log(story_title+" "+story_desc+" "+rating+" "+idTrip);
+        var sql = 'INSERT INTO STORY (title,description, date, rate, idTrip) VALUES (?,?,?,?,?)';
+        tx.executeSql(sql,[story_title,story_desc,story_date,rating, idTrip], successInsertionStory, errorCB);
+   
+       
+    } else{
+        alert('Please fill title!');
+    }    
 }
 
 function successInsertionStory(tx)
 {
-    alert("Success inserted");
-    tx.executeSql('SELECT * FROM Story', [], renderListStoriesDemo,errorCBSelect);
+    alert("A Story is successfully added!");
+    //tx.executeSql('SELECT * FROM Story', [], renderListStories,errorCBSelect);
+    clearStoryFields();
 }
 
 /*
@@ -114,34 +123,37 @@ function successInsertionStory(tx)
 function selectQueryDateStory(indexTrip)
 {
    //  alert("selectQueryDBStory");
-    // alert("intra in selectQueryDBStory : " + indexTrip);
-  
-   console.log(indexTrip);
-  
+   alert("intra in selectQueryDBStory : " + indexTrip);
+   // sql1 = "SELECT * FROM TRIP WHERE id= "+indexTrip;
+    sql =  "SELECT distinct(date)             \n\
+            FROM STORY                           \n\
+            WHERE idTrip = "+indexTrip+"       \n\
+            ORDER BY date";
     dbShell.transaction(
         function(tx)
-        {
-            tx.executeSql("SELECT distinct(date) as a FROM Story \n\
-            where idTrip = ? \n\
-            ORDER BY date", [indexTrip],
-             function(tx, result){
-                console.log(result);
-                if(result != "undefined"){
-                   renderListStories(tx);
-               }
-            }
-            
-            
-            ,errorCBSelect);
+        {   
+            tx.executeSql(sql, [],renderListStories,errorCBSelect);
             //  tx.executeSql("SELECT distinct(strftime('%d.%m.%Y', date)) as a FROM Story ORDER BY date", [], renderListStories,errorCBSelect);
         },
         errorCB
     );
-    
-    
-    
+  
 }
-
+function selectStoriesByDate(date, indexTrip){
+    sql =  "SELECT *                            \n\
+            FROM STORY                          \n\
+            WHERE idTrip = "+indexTrip+"        \n\
+            AND date = '"+date+"'                ";
+    console.log(sql);
+    dbShell.transaction(
+        function(tx)
+        {
+            tx.executeSql(sql, [], renderStoriesDetails ,errorCBSelect);
+            //  tx.executeSql("SELECT distinct(strftime('%d.%m.%Y', date)) as a FROM Story ORDER BY date", [], renderListStories,errorCBSelect);
+        },
+        errorCB
+    );
+}
 /*
  * deletes the stories associated to one day 
  */
@@ -167,7 +179,7 @@ function deleteStories(key,val)
         {
             tx.executeSql( state, [val],
             function()
-            {
+            { alert("Story Succesfully deleted!");
                 if(key !== 'idTrip')
                     selectQueryDateStory(indexTrip);
             }, errorCB);
@@ -198,8 +210,9 @@ function renderListStoriesDemo(tx, result)
 }
 
 function renderListStories(tx, result)
-{   console.log(result);
-    //  alert("intra in renderListStories");
+{   
     populateListStoriesData(result);
-
+}
+function renderStoriesDetails(tx, result){
+    populateStoriesDetails(result);
 }

@@ -178,7 +178,7 @@ and open the template in the editor.
 
 #general-text{
     text-align: center;
-    padding:0 20px 20px;
+    padding: 20px;
     border-bottom:2px solid #8c6954;
     
 }
@@ -224,7 +224,6 @@ h1.details-headline{
     background-size:101% 100%;
     padding-left:17%;
     padding-right:16%;
-    height: 45px;
     text-align: center;
     
 
@@ -239,8 +238,9 @@ h1.details-headline{
     padding-right:5%;
    
     font-size:12px;
-    text-align: justify;
+    text-align: center;
     
+    min-height: 50px;
 }
 .story .story-details p{
     margin-top:0;

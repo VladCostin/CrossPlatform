@@ -52,7 +52,9 @@ function populateListMainPage(result)
 function populateTripDetailsPage(result)
 {
     // var listItemTitle = document.createElement("li");
-    var header = document.getElementById("header");
+    $("h1#header").text(result.rows.item(0).title);
+    $("#general-text").text(result.rows.item(0).description);
+   /* var header = document.getElementById("header");
     if (result.rows.length > 1)
         header.innerHTML = "Error, multiple values have been returdned";
     else
@@ -60,7 +62,7 @@ function populateTripDetailsPage(result)
         header.innerHTML = "Error, no values returned";
     else
         header.innerHTML = result.rows.item(0).title;
-
+    */
     // alert("id-ul este : " + result.rows.item(0).id);
 
     window.localStorage.setItem("id_trip_shown", result.rows.item(0).id);
@@ -72,8 +74,9 @@ function populateTripDetailsPage(result)
  */
 function populateListStoriesData(result)
 {
-     alert("populateListStories : ---");
-
+     //alert("populateListStories : ---");
+     console.log("here");
+   console.log(result);
        
     var ul = document.getElementById("listDays");
     /*
@@ -84,33 +87,76 @@ function populateListStoriesData(result)
     while (ul.childNodes.length > 1) {
         ul.removeChild(ul.lastChild);
     }
-    
-    
+
     for (var i = 0; i < result.rows.length; i++)
-    {
+    {        
         var listItemTitle = document.createElement("li");
         var linkStoriesFromDate = document.createElement("a");
         linkStoriesFromDate.href = "#details";
-        linkStoriesFromDate.innerHTML = result.rows.item(i).a;
+        linkStoriesFromDate.innerHTML = "Day "+(i+1)+" "+result.rows.item(i).date;
         linkStoriesFromDate.rel = "external";
+        var att1 = document.createAttribute("data-date");       // Create a "class" attribute
+        att1.value = result.rows.item(i).date;                       
+        linkStoriesFromDate.setAttributeNode(att1); 
+        
+        var att3 = document.createAttribute("data-day_num");       // Create a "class" attribute
+        att3.value =  i ;                     
+        linkStoriesFromDate.setAttributeNode(att3); 
+        
         setClickEventDataStory(linkStoriesFromDate);
         listItemTitle.appendChild(linkStoriesFromDate);
         ul.appendChild(listItemTitle);
     }
-    
+     //update listview
+    $( "#listDays" ).listview( "refresh" );
+
 }   
 
-function populateStoriesFromOneDay(date)
-{
-    alert("Data aleasa este : " + date);
-    window.localStorage.setItem("day_current_shown", date);   
+function getStoriesFromOneDay(date,indexTrip)
+{   
+    selectStoriesByDate(date, indexTrip); 
+    
 }
+//TODO IMAGES, RATING
+function populateStoriesDetails(result){
+    //delete first
+    $("#stories_details_day").children().remove();
+     
+    $(".details-headline").text(result.rows.item(0).date);
+    day_num = parseInt(window.localStorage.getItem("day_num_selected"))+1;
+   
+    $("#story-details-header").text("Day "+day_num);
+    
+    console.log(result);
+    for (var i = 0; i < result.rows.length; i++)
+    {   images='';
+        rating='';
+            console.log(result.rows.item(i));
 
+        var story = '  <div class="story">'+
+                '    <div class="edit-story" data-id="'+result.rows.item(i).id+'">'+
+                '         <a  href="#" class="btn-edit-story-view" > '+
+                '         </a>'+
+                '         <a  href="#" class="btn-delete-story-view" >'+
+                '         </a>'+
+                '        <div class="seperator"></div>'+
+                '    </div>'+
+                '    <div class="story-title"><h2>'+result.rows.item(i).title+'</h2></div>'+
+                '    <div class="story-details"><p>'+result.rows.item(i).description+'</p>'+images +                   
+                '        <div class="map"></div> '+
+                '        <div class="rating">'+rating+
+                '        </div>'+
+                '    </div>'+
+                '</div>';
+          $("#stories_details_day").append( story ).trigger('create');
+    }
+}
 function setClickEventDataStory(date)
-{
-   // alert(date.innerHTML);
+{  
     date.addEventListener('click', function () {
-        populateStoriesFromOneDay(date.innerHTML)
+        tripShown =  window.localStorage.getItem("id_trip_shown");
+        getStoriesFromOneDay(date.getAttribute("data-date"),tripShown);
+        window.localStorage.setItem("day_num_selected", date.getAttribute("data-day_num") );
     }, false);
 }
 

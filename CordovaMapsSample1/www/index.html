@@ -87,11 +87,10 @@
             <div data-role="content" style="padding:0;">
                 
                 <div id="general-text">
-                  <img src="img/4.jpg" alt="Rome">
-                  We enjoy it a lot!Great Trip!    
+                  <!--img src="img/4.jpg" alt="Rome"-->    
                 </div>
                  <ul data-role="listview"  data-inset="true" id="listDays">
-                    <li>
+                    <!--li>
                          <a href="#details" rel="external" id="details">
                            Day 1 - 04.05.2015
                         </a>
@@ -110,7 +109,7 @@
                         <a href="#details" rel="external" id="details">
                            Day 4 - 04.08.2015
                         </a>
-                    </li>
+                    </li-->
                 </ul>
             </div>
             <div class="custom-footer">
@@ -137,10 +136,12 @@
                 <a data-role="button" data-rel="back" href="#page1" data-icon="back"
                    data-iconpos="left" class="ui-btn-left">
                 </a>
-                <h1>Day 1</h1></div>
+                <h1 id="story-details-header"></h1>
+            </div>
             <div data-role="content" style="padding:0.5em;" >
-                <h1 class="details-headline">Monday, Apr 1</h1>
-                <div class="story">
+                <h1 class="details-headline"></h1>
+                <div id="stories_details_day"></div>
+                <!--div class="story">
                     <div class="edit-story">
                          <a  href="#" class="btn-edit-story-view" > 
                          </a>
@@ -183,9 +184,9 @@
                             <span class="heart"></span>
                         </div>
                     </div>
-                </div>
+                </div-->
             </div>
-            <div class="custom-footer">
+            <!--div class="custom-footer">
                  <a data-role="button" data-rel="external" href="#" id="addDay" style="margin: 0.4em; float: left" data-cache="false" data-icon="add"
                    data-iconpos="left" class="ui-btn-left">
                     Add Story
@@ -196,7 +197,7 @@
                    data-iconpos="left" class="ui-btn-right" onclick="deleteDay()">
                     Delete Day
                 </a>
-            </div>
+            </div-->
         </div>
        
         <!--New Trip-->
