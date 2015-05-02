@@ -191,12 +191,19 @@ function updateStoryList(){
     selectQueryDateStory(idTrip);
 
 }
-function populateStoryData(result){
+function populateStoryData(result){ 
     console.log(result.rows.item(0));
     date = result.rows.item(0).date;
     title = result.rows.item(0).title;
     desc = result.rows.item(0).description;
     rate = result.rows.item(0).Rate;
+    lat  = result.rows.item(0).LAT;
+    lng  = result.rows.item(0).LNG;
+    
+    
+    alert("lat este: --" + lat+"--");
+    if(lat !== null)
+        setMapVisible();
     
     
     $("#story-date").val(date);
@@ -229,11 +236,18 @@ function addMap()
       {
           alert("nu este prima oara : " + window.localStorage.getItem("initMap"));
       }
-      //      alert("valaorea initMap este : " + window.localStorage.getItem("initMap"));
-    
-      //window.localStorage.setItem("initMap", "true");
 
-        document.getElementById('mapsDiv').style.display = 'block';
-        document.getElementById("pac-input").style.visibility = "visible";
+      setMapVisible();
 
+}
+
+/*
+ * shows the map again, in case :
+ * - the user wants to update a story that has a location associated
+ * - the user selected : save location
+ */
+function setMapVisible()
+{
+    document.getElementById('mapsDiv').style.display = 'block';
+    document.getElementById("pac-input").style.visibility = "visible";
 }

@@ -115,6 +115,12 @@ function addStoryInTrip(){
         }
 
 }
+
+/*
+ * clears the fields of the add story page and sets to none the div where the
+ * map is shown
+ * @returns {undefined}
+ */
 function clearStoryFields(){
     $("#story_title").val('');
     $("#story_desc").val('');
