@@ -28,16 +28,59 @@ function createStory()
     }
 }
 function updateStory(tx){
+    
+    alert("intra in updateStory");
+    
     date = $("#story-date").val();
     title = $("#story_title").val();
     if(title != '' ){
         desc = $("#story_desc").val();
         rating =  $("#rating_simple").val();
         storyId = window.localStorage.getItem("selected_story");
-        
-        //remove images and add again
         sql = "DELETE FROM images WHERE idStory="+storyId;
         tx.executeSql(sql,[], successDeleted ,  errorCB );
+        
+        
+        var loadMap = document.getElementById('mapsDiv').innerHTML;
+        // alert("loadMap : " + loadMap);
+      
+        if(loadMap !==  '')
+        {
+          //  alert("a selectat o locatie ----" + loadMap + "----");
+            var lat = mymarker.getPosition().lat();
+            var lng = mymarker.getPosition().lng();
+            
+            alert("Position : " + lat + " " + lng);
+            "UPDATE story \n\
+               SET  title='"+title+"',\n\
+                    description='"+desc+"',\n\
+                    date='"+date+',\n\
+                    lat =' + lat+', \n\
+                    lng =' + lng+' \n\
+                    WHERE id='+storyId;
+        }
+        else
+        {
+            sql = "UPDATE story \n\
+               SET  title='"+title+"',\n\
+                    description='"+desc+"',\n\
+                    date='"+date+"'\n\
+               WHERE id="+storyId;
+             alert("nu a selectat nicio locatie");
+
+        }
+        tx.executeSql(sql,[], 
+        function(tx, result){
+            alert("Successfully Updated!");
+            tripShown =  window.localStorage.getItem("id_trip_shown");
+            selectStoriesByDate(date, tripShown);
+            $.mobile.changePage("#details");
+            
+        },  errorCB );
+        
+        /*
+        //remove images and add again
+
         
         $(".story-photos img").each(function(){
             src = $(this).attr("src");
@@ -59,7 +102,7 @@ function updateStory(tx){
             $.mobile.changePage("#details");
             
         },  errorCB );
-        
+        */
     }
 }
 function successUpdated(){
