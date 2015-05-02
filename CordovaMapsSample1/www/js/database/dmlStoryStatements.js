@@ -47,8 +47,8 @@ function updateStory(tx){
         if(loadMap !==  '')
         {
           //  alert("a selectat o locatie ----" + loadMap + "----");
-            var lat = mymarker.getPosition().lat();
-            var lng = mymarker.getPosition().lng();
+            var lat = marker.getPosition().lat();
+            var lng = marker.getPosition().lng();
             
             alert("Position : " + lat + " " + lng);
             "UPDATE story \n\
@@ -160,25 +160,11 @@ function addStoryInTrip(){
 }
 
 /*
- * clears the fields of the add story page and sets to none the div where the
- * map is shown
- * @returns {undefined}
- */
-function clearStoryFields(){
-    $("#story_title").val('');
-    $("#story_desc").val('');
-    $("#rating_simple").val('0'); 
-    $("#mapsDiv").val('');
-    $("#mapsDiv").css("display","none");
-    $(".story-photos").children().remove();
-}
-/*
  * gets the data from the fields and inserts it in database a new record
  */
 function insertDBStory(tx)
 {
-    
-    // alert("sa ma cac in el de proiect");
+
     
     var story_date = document.getElementById("story-date").value;
     var story_title = document.getElementById("story_title").value;
@@ -188,13 +174,13 @@ function insertDBStory(tx)
         var idTrip =  window.localStorage.getItem("id_trip_shown"); 
         
         var loadMap = document.getElementById('mapsDiv').innerHTML;
-        // alert("loadMap : " + loadMap);
+         alert("loadMap : ---" + loadMap + "--- ");
         var sql;
         if(loadMap !==  '')
         {
           //  alert("a selectat o locatie ----" + loadMap + "----");
-            var lat = mymarker.getPosition().lat();
-            var lng = mymarker.getPosition().lng();
+            var lat = marker.getPosition().lat();
+            var lng = marker.getPosition().lng();
             
             alert("Position : " + lat + " " + lng);
             
@@ -207,7 +193,7 @@ function insertDBStory(tx)
              sql = 'INSERT INTO STORY (title,description, date, Rate, idTrip) VALUES \n\
                     ("'+story_title+'","'+story_desc+'","'+story_date+'",'+rating+','+idTrip+')';
         }
-
+        
         tx.executeSql(
             sql,[], 
             function(tx, result){
@@ -305,8 +291,13 @@ function selectStoriesByDate(date, indexTrip){
     );
 }
 function selectStoryById(){
+    
+
+    
     idStory =   window.localStorage.getItem("selected_story"); 
-     sql =  "SELECT s.*,i.img_path            \n\
+    alert("story selected is" + idStory);
+    
+    sql =  "SELECT s.*,i.img_path            \n\
             FROM STORY  s                     \n\
             INNER JOIN images  i              \n\
             ON i.idStory = s.id               \n\
@@ -319,6 +310,7 @@ function selectStoryById(){
         },
         errorCB
     );
+    
 }
 
 /*
@@ -384,5 +376,6 @@ function renderStoriesDetails(tx, result){
 }
 
 function renderEditStory(tx, result){
+  
     populateStoryData(result);
 }
