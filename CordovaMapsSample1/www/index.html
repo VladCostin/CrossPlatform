@@ -259,7 +259,8 @@
             <input type="hidden" name="selectedDay" id="selectedDay" value="">
             <div data-role="header">
                 <a data-role="button" data-rel="back" href="#page1" data-icon="back"
-                   data-iconpos="left" class="ui-btn-left">
+                   data-iconpos="left" class="ui-btn-left" id="backButton" 
+                   onclick="clearStoryFields()">
                 </a>
                 <h1 id="addressHeader">Create Story</h1>
             </div>
@@ -285,7 +286,7 @@
                 <div id="mapsDiv" style="display: none;"></div>
                 Rate
                 <div class="rating">
-                    <input name="rating" value="0" id="rating_simple" > 
+                    <input name="rating" value="0" id="rating_simple" style="visibility: hidden"> 
                     
                 </div>
             </div>
