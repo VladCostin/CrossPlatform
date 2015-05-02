@@ -129,7 +129,7 @@ function populateStoriesDetails(result){
         $("#story-details-header").text("Day "+day_num);
         for (var i = 0; i < result.length; i++)
         {   
-
+           
             images='';
             img = result[i].img;
             if(img.length>0 ){
@@ -192,6 +192,9 @@ function updateStoryList(){
 
 }
 function populateStoryData(result){ 
+    
+    alert("Nr data retrieved populateStoryData : " + result.rows.length); 
+    
     console.log(result.rows.item(0));
     date = result.rows.item(0).date;
     title = result.rows.item(0).title;
@@ -203,8 +206,10 @@ function populateStoryData(result){
     
     alert("lat este: --" + lat+"--");
     if(lat !== null)
+    {
         setMapVisible();
-    
+        locationMap.setMarkerProperly(lat,lng);
+    }
     
     $("#story-date").val(date);
     $("#story_title").val(title);
@@ -250,4 +255,58 @@ function setMapVisible()
 {
     document.getElementById('mapsDiv').style.display = 'block';
     document.getElementById("pac-input").style.visibility = "visible";
+}
+/*
+ * sets the map to be invisible after inserting, canceling, pressing back button
+ */
+function setMapInvisible()
+{
+    document.getElementById('mapsDiv').style.display = 'none';
+    document.getElementById("pac-input").style.visibility = "hidden";
+}
+/*
+ * 
+ */
+function getMapVisibility()
+{
+    if(  document.getElementById('mapsDiv').style.display === 'none')
+        return false;
+    else
+        return true;
+}
+
+/*
+ * clears the fields of the add story page and sets to none the div where the
+ * map is shown
+ * @returns {undefined}
+ */
+function clearStoryFields(){
+    initDate();
+    /*
+    if(getMapVisibility() === true)
+        alert("map it is visible");
+    else
+        alert("map is invisible");
+    */
+    setMapInvisible();
+    $("#story_title").val('');
+    $("#story_desc").val('');
+    $("#rating_simple").val('0'); 
+  //  $("#mapsDiv").css("display","none");
+    $(".story-photos").children().remove();
+}
+/*
+ * initializes the date again, after selecting the story
+ */
+function initDate(){
+    var date = new Date();
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+
+    var today = year + "-" + month + "-" + day;       
+    $("#story-date").attr("value", today);
 }

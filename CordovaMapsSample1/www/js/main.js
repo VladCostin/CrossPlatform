@@ -70,25 +70,10 @@ $(document).ready(function() {
    
    //cancel story
    $("#cancelStory").on( "click", function(){
-        //clear fields
-        $("#story-title").val('');
-        $("#desc-story").val('');
-        $("#rating_simple").val('0'); 
-        $(".story-photos").children().remove();
+       clearStoryFields();
    });
 });
-function initDate(){
-    var date = new Date();
-    var day = date.getDate();
-    var month = date.getMonth() + 1;
-    var year = date.getFullYear();
 
-    if (month < 10) month = "0" + month;
-    if (day < 10) day = "0" + day;
-
-    var today = year + "-" + month + "-" + day;       
-    $("#story-date").attr("value", today);
-}
 function onDeviceReady() {
 
     console.log("Ready");
