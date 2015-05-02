@@ -28,6 +28,7 @@
         console.log(myLocation);
         map.setCenter(myLocation);
         mymarker.setPosition(myLocation);
+        marker.setPosition(myLocation);
     }
     ,
     geolocationError: function(error)

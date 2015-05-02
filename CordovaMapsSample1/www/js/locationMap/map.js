@@ -48,6 +48,7 @@
         
         google.maps.event.addListener(marker, 'click',this.showData);
         google.maps.event.addListener(map, 'click', this.setMarker);
+        google.maps.event.addListener(marker, 'dragend', this.panAtDragging );
         // Listen for the event fired when the user selects an item from the
         // pick list. Retrieve the matching places for that item.
         google.maps.event.addListener(searchBox, 'places_changed', this.searchPlace);
@@ -71,6 +72,9 @@
        alert("I pressed the marker, should something happen now");
    }
    ,
+   /*
+    * retrieves a list of places and the marker position is set to one of them
+    */
    searchPlace: function()
    {
         var places = searchBox.getPlaces();
@@ -86,17 +90,44 @@
                 anchor: new google.maps.Point(17, 34),
                 scaledSize: new google.maps.Size(25, 25)
             };
-
+            marker.setPosition(place.geometry.location);
                     // Create a marker for each place.
+            /* just another marker
+             * we won't use it, we will use marker
             var marker = new google.maps.Marker({
                 map: map,
                 icon: image,
                 title: place.name,
                 position: place.geometry.location
-            });  
+            });
+            */
             map.panTo(place.geometry.location);
         }
 
+   },
+   /*
+    * if the user moves the location, the map pants to that location
+    */
+   panAtDragging: function(location)
+   {
+        map.panTo(location.latLng);
+   },
+   /*
+    * after selecting a story from history
+    * set the marker properly
+    */
+   setMarkerProperly: function(lat,lng)
+   {
+       var positionToMove = new google.maps.LatLng(lat, lng);
+       marker.setPosition(positionToMove);
+       map.panTo(positionToMove);
+   },
+   resetMarkerPosition: function()
+   {
+        var lat = mymarker.getPosition().lat();
+        var lng = mymarker.getPosition().lng();
+        this.setMarkerProperly(lat,lng);
+        
    }
     
 };
