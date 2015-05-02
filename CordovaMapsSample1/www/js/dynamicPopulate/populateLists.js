@@ -254,7 +254,7 @@ function addMap()
 function setMapVisible()
 {
     document.getElementById('mapsDiv').style.display = 'block';
-    document.getElementById("pac-input").style.visibility = "visible";
+    document.getElementById("pac-input").style.display = "block";
 }
 /*
  * sets the map to be invisible after inserting, canceling, pressing back button
@@ -262,7 +262,7 @@ function setMapVisible()
 function setMapInvisible()
 {
     document.getElementById('mapsDiv').style.display = 'none';
-    document.getElementById("pac-input").style.visibility = "hidden";
+    document.getElementById("pac-input").style.display = "none";
 }
 /*
  * 
