@@ -121,6 +121,20 @@ function addStoryInTrip(){
         if(title != ''){
             date = $("#story-date").val();
             desc  = $("#story_desc").val();
+            //lat = $("#lat").val();
+            //lng = $("#lng").val();
+
+            if( getMapVisibility() === true)
+            {
+                lat = marker.getPosition().lat();
+                lng = marker.getPosition().lng();
+            }
+            else
+            {
+                lat = null;
+                lng = null;
+            }
+
 
             //get images
             images= '';
@@ -137,6 +151,7 @@ function addStoryInTrip(){
                 rating += '<span class="heart"></span>';
             }
 
+            alert("valorile de adaugat sunt : " + lat + "--" + lng);
             //adding story to day
             //adding html
             nextId++;
@@ -149,6 +164,9 @@ function addStoryInTrip(){
                                '     <p class="story_date">'+date+'</p>'+
                                '     <p class="story_desc">'+desc+'</p>'+ images  +      
                                '     <div class="rating">'+   rating        +                   
+                               '     <input type="hidden" class="story_lat" value='+lat+'>'+
+                               '     <input type="hidden" class="story_lng" value='+lng+'>'+
+
                                '     </div>'+
                                ' </div>';
             $("#set").append( str ).trigger('create');

@@ -20,11 +20,19 @@ function insertAllStories(tx, idTrip){
         story_date = $story.find(".story_date").text();
         rating = $story.find("input.story_rating").val();
         rating = (rating=='')? 0 : rating;
-        
+        lat = $story.find("input.story_lat").val();
+        lng = $story.find("input.story_lng").val();
+        var sql;
+        if(lat !== 'null')
+             sql = 'INSERT INTO STORY (title,description, date,lat, lng, Rate, idTrip) VALUES ("'+story_title+'","'+story_desc+'","'+story_date+'",'+lat+','+lng+','+rating+','+idTrip+')';
+        else
+             sql = 'INSERT INTO STORY (title,description, date, Rate, idTrip) VALUES ("'+story_title+'","'+story_desc+'","'+story_date+'",'+rating+','+idTrip+')';
+        alert("datele provenite din story sunt : " + lat + " " + lng);
 
-        var sql = 'INSERT INTO STORY (title,description, date, Rate, idTrip) VALUES ("'+story_title+'","'+story_desc+'","'+story_date+'",'+rating+','+idTrip+')';
+        /*
+        var sql = 'INSERT INTO STORY (title,description, date,lat, lng, Rate, idTrip) VALUES ("'+story_title+'","'+story_desc+'","'+story_date+'",'+lat+','+lng+','+rating+','+idTrip+')';
         //var sql = 'INSERT INTO STORY (title,description, date, rate, idTrip) VALUES (?,?,?,?,?)';
-        
+        */
 
         tx.executeSql(sql,[], 
             function(tx, result){
@@ -36,6 +44,7 @@ function insertAllStories(tx, idTrip){
        
             }
         , errorCB);
+        
    });
     //clean fields from New Trip Page
     clear();
