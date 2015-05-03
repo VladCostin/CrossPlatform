@@ -193,7 +193,7 @@ function updateStoryList(){
 }
 function populateStoryData(result){ 
     
-    alert("Nr data retrieved populateStoryData : " + result.rows.length); 
+   // alert("Nr data retrieved populateStoryData : " + result.rows.length); 
     
     console.log(result.rows.item(0));
     date = result.rows.item(0).date;
@@ -203,8 +203,8 @@ function populateStoryData(result){
     lat  = result.rows.item(0).LAT;
     lng  = result.rows.item(0).LNG;
     
-    alert("data : " + result.rows.item(0).title + " " + result.rows.item(0).description + " " + result.rows.item(0).date);
-    alert("lat este: --" + lat+"--");
+   // alert("data : " + result.rows.item(0).title + " " + result.rows.item(0).description + " " + result.rows.item(0).date);
+   // alert("lat este: --" + lat+"--");
     if(lat !== null &&  (typeof lat !== 'undefined'))
     {
         setMapVisible();
@@ -218,11 +218,22 @@ function populateStoryData(result){
     
     img = '';
     for(i=0; i < result.rows.length; i++){
-        img += "<div class='image-wrap'><div class='deleteImg'></div><img src='"+result.rows.item(i).img_path+"' alt=''></div>";
+        img += "<div class='image-wrap'>           \n\
+                    <div class='deleteImg'></div>  \n\
+                    <img src='"+result.rows.item(i).img_path+"' alt=''>\n\
+                </div>";
     }
-    $("#story-photos").append( img ).trigger('create');
-    
-}
+    console.log(img);
+    //$( "#story-photos" ).after( "<p>Test</p>" );
+    $(".story-photos").append( img ).trigger('create');
+  
+    /*
+     $(".story-photos").append("CACAT" );
+     alert($('.story-photos').val());
+     $('.story-photos').val("CACAT");
+     alert($('.story-photos').val());
+    */
+}   
 
 /*
  * adds a map when selecting the option to specify the location
