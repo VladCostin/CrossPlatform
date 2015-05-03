@@ -173,10 +173,10 @@ function insertDBStory(tx)
         var rating =  window.localStorage.getItem("rating", rating);
         var idTrip =  window.localStorage.getItem("id_trip_shown"); 
         
-        var loadMap = document.getElementById('mapsDiv').innerHTML;
-         alert("loadMap : ---" + loadMap + "--- ");
-        var sql;
-        if(loadMap !==  '')
+        //var loadMap = document.getElementById('mapsDiv').innerHTML;
+        // alert("loadMap : ---" + loadMap + "--- ");
+        //var sql;
+        if(getMapVisibility() ===  true)
         {
           //  alert("a selectat o locatie ----" + loadMap + "----");
             var lat = marker.getPosition().lat();
@@ -297,16 +297,26 @@ function selectStoryById(){
     idStory =   window.localStorage.getItem("selected_story"); 
     alert("story selected is" + idStory);
     
-    sql =  "SELECT s.*,i.img_path            \n\
-            FROM STORY  s                     \n\
-            INNER JOIN images  i              \n\
+    //sql =  "SELECT * FROM STORY   WHERE id = " + idStory;      
+     //sql =  "SELECT * FROM images";   
+    /*
+    sql =  "SELECT i.img_path            \n\
+            FROM images i                     \n\
             ON i.idStory = s.id               \n\
             WHERE s.id = " + idStory;
-
+    
+    */
+   
+    sql =  "SELECT s.*,i.img_path            \n\
+            FROM STORY  s                     \n\
+            LEFT JOIN images  i              \n\
+            ON i.idStory = s.id               \n\
+            WHERE s.id = " + idStory;
+    
     dbShell.transaction(
         function(tx)
         {   
-            tx.executeSql(sql, [], renderEditStory, errorCBSelect);
+            tx.executeSql(sql, [], renderEditStory, errorCBSELECTEDIT);
         },
         errorCB
     );
@@ -354,6 +364,11 @@ function errorCB(tx)
     alert("Error processing DB : " + tx.code);
 }
 
+function errorCBSELECTEDIT(tx)
+{
+    alert("errorCBSELECTEDIT Error processing DB : " + tx.code);
+}
+
 function errorCBSelect(tx)
 {
     alert("Error processing DB Select: " + tx.code);
@@ -364,8 +379,10 @@ function renderListStoriesDemo(tx, result)
     var htmlString = '';
     for(var i = 0; i < result.rows.length; i++)
     {
-        htmlString += result.rows.item(i).id + " " + result.rows.item(i).title+ " " + result.rows.item(i).description + " " + result.rows.item(i).date + " " + result.rows.item(i).rate;
+     //   htmlString += result.rows.item(i).id + " " + result.rows.item(i).title+ " " + result.rows.item(i).description + " " + result.rows.item(i).date + " " + result.rows.item(i).rate;
+          htmlString += result.rows.item(0).id_img + " " + result.rows.item(0).idStory + " " + result.rows.item(0).img_path + " ";
     }
+    alert(htmlString);
 }
 
 function renderListStories(tx, result)
@@ -377,5 +394,8 @@ function renderStoriesDetails(tx, result){
 
 function renderEditStory(tx, result){
   
+//    alert("number results " + result.rows.length);
+  //   alert("data : " + result.rows.item(0).id + " " + result.rows.item(0).idStory + " " + result.rows.item(0).img_path); 
+   // alert("data : " + result.rows.item(0).title + " " + result.rows.item(0).description + " " + result.rows.item(0).date);
     populateStoryData(result);
 }

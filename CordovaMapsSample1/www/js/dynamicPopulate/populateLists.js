@@ -203,9 +203,9 @@ function populateStoryData(result){
     lat  = result.rows.item(0).LAT;
     lng  = result.rows.item(0).LNG;
     
-    
+    alert("data : " + result.rows.item(0).title + " " + result.rows.item(0).description + " " + result.rows.item(0).date);
     alert("lat este: --" + lat+"--");
-    if(lat !== null)
+    if(lat !== null &&  (typeof lat !== 'undefined'))
     {
         setMapVisible();
         locationMap.setMarkerProperly(lat,lng);
@@ -215,13 +215,13 @@ function populateStoryData(result){
     $("#story_title").val(title);
     $("#story_desc").val(desc);
     $("#rating_simple").val(rate);
-    
+    /*
     img = '';
     for(i=0; i < result.rows.length; i++){
         img += "<div class='image-wrap'><div class='deleteImg'></div><img src='"+result.rows.item(i).img_path+"' alt=''></div>";
     }
     $("#story-photos").append( img ).trigger('create');
-
+    */
 }
 
 /*
