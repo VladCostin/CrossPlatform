@@ -39,25 +39,26 @@ function updateStory(tx){
         storyId = window.localStorage.getItem("selected_story");
         sql = "DELETE FROM images WHERE idStory="+storyId;
         tx.executeSql(sql,[], successDeleted ,  errorCB );
-        
-        
-        var loadMap = document.getElementById('mapsDiv').innerHTML;
-        // alert("loadMap : " + loadMap);
+       
       
-        if(loadMap !==  '')
+        if(getMapVisibility() ===  true)
         {
           //  alert("a selectat o locatie ----" + loadMap + "----");
             var lat = marker.getPosition().lat();
             var lng = marker.getPosition().lng();
             
-            alert("Position : " + lat + " " + lng);
-            "UPDATE story \n\
+            alert("getMapVisibility() ==  true : " + lat + " " + lng + " ");
+          //  sql = " UPDATE story set lat = 50 where id =" + storyId;
+            
+            sql = "UPDATE story set title = '" + title + "', description = '"+ desc + "' , date = '" + date + "' , lat = " + lat + " , lng = " + lng + "  WHERE id="+storyId; 
+            
+            
+           /*  sql = "UPDATE story \n\
                SET  title='"+title+"',\n\
                     description='"+desc+"',\n\
-                    date='"+date+',\n\
-                    lat =' + lat+', \n\
-                    lng =' + lng+' \n\
-                    WHERE id='+storyId;
+                    date='"+date+"'\n\
+               WHERE id="+storyId;
+            */
         }
         else
         {
@@ -66,9 +67,10 @@ function updateStory(tx){
                     description='"+desc+"',\n\
                     date='"+date+"'\n\
                WHERE id="+storyId;
-             alert("nu a selectat nicio locatie");
+             alert("getMapVisibility() !==  true");
 
         }
+        
         tx.executeSql(sql,[], 
         function(tx, result){
             alert("Successfully Updated!");
@@ -77,7 +79,7 @@ function updateStory(tx){
             $.mobile.changePage("#details");
             
         },  errorCB );
-        
+        clearStoryFields();
         /*
         //remove images and add again
 
@@ -164,7 +166,7 @@ function addStoryInTrip(){
  */
 function insertDBStory(tx)
 {
-
+    alert("intra si aici, in sertDBStory");
     
     var story_date = document.getElementById("story-date").value;
     var story_title = document.getElementById("story_title").value;
@@ -297,16 +299,6 @@ function selectStoryById(){
     idStory =   window.localStorage.getItem("selected_story"); 
     alert("story selected is" + idStory);
     
-    //sql =  "SELECT * FROM STORY   WHERE id = " + idStory;      
-     //sql =  "SELECT * FROM images";   
-    /*
-    sql =  "SELECT i.img_path            \n\
-            FROM images i                     \n\
-            ON i.idStory = s.id               \n\
-            WHERE s.id = " + idStory;
-    
-    */
-   
     sql =  "SELECT s.*,i.img_path            \n\
             FROM STORY  s                     \n\
             LEFT JOIN images  i              \n\
@@ -396,6 +388,6 @@ function renderEditStory(tx, result){
   
 //    alert("number results " + result.rows.length);
   //   alert("data : " + result.rows.item(0).id + " " + result.rows.item(0).idStory + " " + result.rows.item(0).img_path); 
-   // alert("data : " + result.rows.item(0).title + " " + result.rows.item(0).description + " " + result.rows.item(0).date);
+  //  alert("data : " + result.rows.item(0).title + " " + result.rows.item(0).description + " " + result.rows.item(0).date + " " + result.rows.item(0).img_path);
     populateStoryData(result);
 }

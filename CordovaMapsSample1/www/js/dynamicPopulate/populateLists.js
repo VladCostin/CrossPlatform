@@ -263,6 +263,7 @@ function setMapInvisible()
 {
     document.getElementById('mapsDiv').style.display = 'none';
     document.getElementById("pac-input").style.display = "none";
+    locationMap.resetMarkerPosition();
 }
 /*
  * 
@@ -288,8 +289,9 @@ function clearStoryFields(){
     else
         alert("map is invisible");
     */
-    setMapInvisible();
-    locationMap.resetMarkerPosition();
+    if(getMapVisibility() === true)
+        setMapInvisible();
+
     $("#story_title").val('');
     $("#story_desc").val('');
     $("#rating_simple").val('0'); 
