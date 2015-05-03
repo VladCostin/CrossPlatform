@@ -215,13 +215,13 @@ function populateStoryData(result){
     $("#story_title").val(title);
     $("#story_desc").val(desc);
     $("#rating_simple").val(rate);
-    /*
+    
     img = '';
     for(i=0; i < result.rows.length; i++){
         img += "<div class='image-wrap'><div class='deleteImg'></div><img src='"+result.rows.item(i).img_path+"' alt=''></div>";
     }
     $("#story-photos").append( img ).trigger('create');
-    */
+    
 }
 
 /*
@@ -289,6 +289,7 @@ function clearStoryFields(){
         alert("map is invisible");
     */
     setMapInvisible();
+    locationMap.resetMarkerPosition();
     $("#story_title").val('');
     $("#story_desc").val('');
     $("#rating_simple").val('0'); 
