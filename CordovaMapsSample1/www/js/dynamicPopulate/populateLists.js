@@ -215,6 +215,12 @@ function populateStoryData(result){
     $("#story_title").val(title);
     $("#story_desc").val(desc);
     $("#rating_simple").val(rate);
+    //refresh rating
+    $("#rating_simple").webwidget_rating_simple({
+        refresh:rate,
+        directory: 'css/images'
+
+    });
     
     img = '';
     for(i=0; i < result.rows.length; i++){
@@ -306,6 +312,11 @@ function clearStoryFields(){
     $("#story_title").val('');
     $("#story_desc").val('');
     $("#rating_simple").val('0'); 
+    $("#rating_simple").webwidget_rating_simple({
+        refresh:"0",
+        directory: 'css/images'
+
+    });
   //  $("#mapsDiv").css("display","none");
     $(".story-photos").children().remove();
 }

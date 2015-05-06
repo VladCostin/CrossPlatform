@@ -8,40 +8,55 @@ var previous_pos_marker = {};
 
 var stories=[];
 var nextId = 1;
-
+var prevPage ="";
 $(document).ready(function() {
     document.addEventListener("deviceready", onDeviceReady, false);
     //for testing in Chrome browser uncomment
      //  onDeviceReady();
   
     //call datepicker if browser is used
-    if (!Modernizr.touch || !Modernizr.inputtypes.date) {
+    /*if (!Modernizr.touch || !Modernizr.inputtypes.date) {
             var $datepicker = $('#story-date').pikaday({
             firstDay: 1,
             minDate: new Date('2000-01-01'),
             maxDate: new Date('2020-12-31'),
             yearRange: [2000,2020],
-            theme: 'dark-theme'
+            theme: 'dark-theme'^¨^¸
         });
-    } 
-    //collabsable
+    } */
+    $("#story").live('pagebeforeshow', function(event, data) {
+        prevPage = data.prevPage.attr('id');
+        console.log(prevPage);
+        if(prevPage =="details"){
+            selectStoryById();
+        }
+    });
+      $("#list").live('pagebeforeshow', function(event, data) {
+        prevPage = data.prevPage.attr('id');
+        if(prevPage =="story"){
+            updateStoryList();
+        }
+    });
+    //init date
+    initDate();
+  
    
     //rating toggle btn
     $("#rating_simple").webwidget_rating_simple({
         rating_star_length: '5',
-        rating_initial_value: '',
+        rating_initial_value: '0',
         rating_function_name: '',
         directory: 'css/images'
     });
-   
-  
-   //init date
-   var d = new Date();
-   var strDate = (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
-   $("#story-date").val(strDate);
-   
-   //delete story
+     
+   //edit story btn
+   $(".btn-edit-story-view").live( "click", function(){
+        window.localStorage.setItem("selected_story", $(this).parent().attr("data-id"));
+   });
+   //delete story from the page but not from DB
    $(".btn-delete-story-view").live( "click", function(){
+        deleteStories("id",$(this).parent().attr("data-id"));
+
        $(this).parent().parent().remove();
    });
    $(".btn-delete-story").live( "click", function(){
@@ -54,19 +69,10 @@ $(document).ready(function() {
    
    //cancel story
    $("#cancelStory").on( "click", function(){
-        //clear fields
-        $("#story-title").val('');
-        $("#desc-story").val('');
-        $("#rating_simple").val('0'); 
-        $(".story-photos").children().remove();
+       clearStoryFields();
    });
 });
-function story(number, date, title, desc, imgs)
-{
-    this.number=number;
-    this.date = date;
-    
-}
+
 function onDeviceReady() {
 
     console.log("Ready");

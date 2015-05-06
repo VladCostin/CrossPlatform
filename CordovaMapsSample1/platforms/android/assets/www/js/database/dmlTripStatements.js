@@ -6,11 +6,82 @@
 
 function createTrip()
 {
-   //alert("the button for creating a trip has been pushed");
     dbShell.transaction(insertDBTrip, errorCB);
 
-    //clean fields
+}
+
+function insertAllStories(tx, idTrip){
+
+    $( ".day-story .story_data" ).each(function( index ) {
+
+        var $story = $(this);
+        story_title = $story.find(".story_title").text();
+        story_desc = $story.find(".story_desc").text();
+        story_date = $story.find(".story_date").text();
+        rating = $story.find("input.story_rating").val();
+        rating = (rating=='')? 0 : rating;
+        lat = $story.find("input.story_lat").val();
+        lng = $story.find("input.story_lng").val();
+        var sql;
+        if(lat !== 'null')
+             sql = 'INSERT INTO STORY (title,description, date,lat, lng, Rate, idTrip) VALUES ("'+story_title+'","'+story_desc+'","'+story_date+'",'+lat+','+lng+','+rating+','+idTrip+')';
+        else
+             sql = 'INSERT INTO STORY (title,description, date, Rate, idTrip) VALUES ("'+story_title+'","'+story_desc+'","'+story_date+'",'+rating+','+idTrip+')';
+        alert("datele provenite din story sunt : " + lat + " " + lng);
+
+        /*
+        var sql = 'INSERT INTO STORY (title,description, date,lat, lng, Rate, idTrip) VALUES ("'+story_title+'","'+story_desc+'","'+story_date+'",'+lat+','+lng+','+rating+','+idTrip+')';
+        //var sql = 'INSERT INTO STORY (title,description, date, rate, idTrip) VALUES (?,?,?,?,?)';
+        */
+
+        tx.executeSql(sql,[], 
+            function(tx, result){
+                $story.find("img").each(function() {
+                    img_path = $(this).attr("src");
+                    insertImagesToStory(tx,img_path,result.insertId);
+                });
+                tx.executeSql('SELECT * FROM Story', [], renderListStoriesDemo,errorCBSelect);
+       
+            }
+        , errorCB);
+        
+   });
+    //clean fields from New Trip Page
     clear();
+}
+
+function successInsertionStory2(tx)
+{
+    tx.executeSql('SELECT * FROM Story', [], renderListStoriesDemo,errorCBSelect);
+}
+function successInsertionImages(tx)
+{
+    console.log("Successfully inserted images!");
+}
+function insertImagesToStory(tx, img_path,storyId){
+    sql = 'INSERT INTO Images (img_path, idStory) VALUES ("'+img_path+'",'+storyId+')';
+
+    tx.executeSql(sql, [], successInsertionImages,errorCB);
+
+}
+function insertDBTrip(tx)
+{
+    trip_title=$("#trip-title").val();
+    trip_desc= $("#trip_description").val(); 
+    
+    
+    var sql = 'INSERT INTO TRIP (title,description) VALUES (?,?)';
+    tx.executeSql(
+            sql,[trip_title,trip_desc],
+            function(tx, result){
+                insertAllStories(tx, result.insertId);
+                selectQueryDBTrip(tx);
+            },
+            errorCB
+        );
+   
+    
+     
 }
 function clear(){
     $("#trip-title").val("");
@@ -19,53 +90,6 @@ function clear(){
     $(".day-story").children().remove();
 
 }
-function insertAllStories(tx, idTrip){
-    $( ".day-story .ui-collapsible" ).each(function( index ) {
-          //console.log( index + ": " + $( this ).text() );
-        story_title = $(this).find(".story_title").text();
-        story_desc = $(this).find(".story_desc").text();
-        story_date = $(this).find(".story_date").text();
-        rating = $(this).find(".story_rating").text();
-        
-        var sql = 'INSERT INTO STORY (title,description, date, rate, idTrip) VALUES (?,?,?,?,?)';
-        tx.executeSql(sql,[story_title,story_desc,story_date,rating, idTrip], successInsertionStory, errorCB);
-        
-        $(this).find("img").each(function() {
-            img_path = $(this).attr("src");
-            insertImagesToStory(img_path,storyId);
-        });
-
-   });
-}
-function insertImagesToStory(img_path,storyId){
-    console.log("storyId="+storyId+" img_src="+img_path);
-}
-function insertDBTrip(tx)
-{
-    var title=document.getElementById("trip-title").value;
-    var description = document.getElementById("trip_description").value; 
-    
-     alert("isnertDBTrip valorile sunt ---" + title + "---" + description + "----");
-    
-   var sql = 'INSERT INTO TRIP (title,description) VALUES (?,?)';
-   console.log(title+" "+description);
-   //tx.executeSql(sql,[title,description],  selectQueryDBTrip, errorCB);
-    tx.executeSql(
-            sql,[title,description],
-            function(tx, result){
-                console.log('Returned ID: ' + result.insertId);
-                insertAllStories(tx, result.insertId);
-                selectQueryDBTrip(tx);
-            },
-            errorCB
-        );
-   
- //  tx.executeSql(sql,[title,description], successInsertionTrip, errorCB);
- 
-    //insertStories
-    
-}
-
 /*
  * function called when the user presses delete trip, after accesing a trip
  */
@@ -73,7 +97,7 @@ function deleteTrip()
 {
   
     var indexTrip = window.localStorage.getItem("id_trip_shown");
-    // alert("the trip index is ----" + indexTrip+ "---");
+    alert("the trip index is ----" + indexTrip+ "---");
      
     deleteStories("idTrip",indexTrip);
      
@@ -133,7 +157,7 @@ function selectQueryDBTripTitle(indexTrip)
 
 function errorCB(tx)
 {
-  console.log("Error processing DB : " + tx.code);
+  alert("Error processing DB : " + tx.code);
 }
 
 function errorCBSelect(tx)

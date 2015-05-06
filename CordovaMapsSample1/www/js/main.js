@@ -44,12 +44,11 @@ $(document).ready(function() {
     //rating toggle btn
     $("#rating_simple").webwidget_rating_simple({
         rating_star_length: '5',
-        rating_initial_value: '',
+        rating_initial_value: '0',
         rating_function_name: '',
         directory: 'css/images'
     });
-   
-  
+     
    //edit story btn
    $(".btn-edit-story-view").live( "click", function(){
         window.localStorage.setItem("selected_story", $(this).parent().attr("data-id"));

@@ -9,22 +9,24 @@ var dbShell;
 
 function createDatabase()
 {
-    
+    window.__webSqlDebugModeOn = true;
+
     dbShell = window.openDatabase
     ("Database Sample", "1.0", "Cordova Sample", 2 * 1024 * 1024);
     dbShell.transaction(createDB, errorCB, successDB);
     
-    
+    window.localStorage.setItem("initMap", null);
     
   //    loadMainPage();
 }
 function createDB(tx)
 {
-  //  tx.executeSql('DROP TABLE IF EXISTS TRIP');
-  //  tx.executeSql('DROP TABLE IF EXISTS STORY');
+    tx.executeSql('DROP TABLE IF EXISTS TRIP');
+    tx.executeSql('DROP TABLE IF EXISTS STORY');
+    tx.executeSql('DROP TABLE IF EXISTS Images');
     
     tx.executeSql('CREATE TABLE IF NOT EXISTS TRIP(id integer primary key autoincrement,title TEXT,description TEXT)');
-    tx.executeSql('CREATE TABLE IF NOT EXISTS STORY(id integer primary key autoincrement,title TEXT,description TEXT,date TEXT,Rate integer, idTrip NOT NULL,  FOREIGN KEY (idTrip) REFERENCES TRIP (id))');
+    tx.executeSql('CREATE TABLE IF NOT EXISTS STORY(id integer primary key autoincrement,title TEXT,description TEXT,date TEXT,LAT REAL, LNG REAL, Rate integer, idTrip NOT NULL,  FOREIGN KEY (idTrip) REFERENCES TRIP (id) ON DELETE CASCADE)');
     tx.executeSql('CREATE TABLE IF NOT EXISTS Images(id_img integer primary key autoincrement,img_path TEXT, idStory NOT NULL,  FOREIGN KEY (idStory) REFERENCES STORY (id))');
 
     //tx.executeSql('CREATE TABLE IF NOT EXISTS TRIP(id_trip integer primary key autoincrement,trip_title TEXT,trip_desc TEXT)');
@@ -41,5 +43,5 @@ function errorCB(tx)
 
 function successDB(tx)
 {
-    alert("YEAAAH");
+    //alert("YEAAAH");
 }

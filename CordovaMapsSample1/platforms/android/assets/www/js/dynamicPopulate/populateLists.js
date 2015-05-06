@@ -52,7 +52,9 @@ function populateListMainPage(result)
 function populateTripDetailsPage(result)
 {
     // var listItemTitle = document.createElement("li");
-    var header = document.getElementById("header");
+    $("h1#header").text(result.rows.item(0).title);
+    $("#general-text").text(result.rows.item(0).description);
+   /* var header = document.getElementById("header");
     if (result.rows.length > 1)
         header.innerHTML = "Error, multiple values have been returdned";
     else
@@ -60,7 +62,7 @@ function populateTripDetailsPage(result)
         header.innerHTML = "Error, no values returned";
     else
         header.innerHTML = result.rows.item(0).title;
-
+    */
     // alert("id-ul este : " + result.rows.item(0).id);
 
     window.localStorage.setItem("id_trip_shown", result.rows.item(0).id);
@@ -72,8 +74,7 @@ function populateTripDetailsPage(result)
  */
 function populateListStoriesData(result)
 {
-     alert("populateListStories : ---");
-
+     //alert("populateListStories : ---");
        
     var ul = document.getElementById("listDays");
     /*
@@ -84,33 +85,90 @@ function populateListStoriesData(result)
     while (ul.childNodes.length > 1) {
         ul.removeChild(ul.lastChild);
     }
-    
-    
+
     for (var i = 0; i < result.rows.length; i++)
-    {
+    {           
+
         var listItemTitle = document.createElement("li");
         var linkStoriesFromDate = document.createElement("a");
         linkStoriesFromDate.href = "#details";
-        linkStoriesFromDate.innerHTML = result.rows.item(i).a;
+        linkStoriesFromDate.innerHTML = "Day "+(i+1)+" "+result.rows.item(i).date;
         linkStoriesFromDate.rel = "external";
+        var att1 = document.createAttribute("data-date");       // Create a "class" attribute
+        att1.value = result.rows.item(i).date;                       
+        linkStoriesFromDate.setAttributeNode(att1); 
+        
+        var att3 = document.createAttribute("data-day_num");       // Create a "class" attribute
+        att3.value =  i ;                     
+        linkStoriesFromDate.setAttributeNode(att3); 
+        
         setClickEventDataStory(linkStoriesFromDate);
         listItemTitle.appendChild(linkStoriesFromDate);
         ul.appendChild(listItemTitle);
     }
-    
+     //update listview
+    $( "#listDays" ).listview( "refresh" );
+
 }   
 
-function populateStoriesFromOneDay(date)
-{
-    alert("Data aleasa este : " + date);
-    window.localStorage.setItem("day_current_shown", date);   
+function getStoriesFromOneDay(date,indexTrip)
+{   
+    selectStoriesByDate(date, indexTrip); 
+    
 }
+//TODO IMAGES, RATING
+function populateStoriesDetails(result){
 
+    if(result.length>0){
+        //delete first
+        $("#stories_details_day").children().remove();
+
+        $(".details-headline").text(result[0].date);
+        day_num = parseInt(window.localStorage.getItem("day_num_selected"))+1;
+
+        $("#story-details-header").text("Day "+day_num);
+        for (var i = 0; i < result.length; i++)
+        {   
+           
+            images='';
+            img = result[i].img;
+            if(img.length>0 ){
+                for (j=0; j<img.length; j++){
+                    images += '<img src="'+img[j]+'" alt="">';
+                }
+            }
+            rateNum = result[i].Rate;
+            rating = '<input type="hidden" class="story_rating" value="'+rateNum+'">';
+            if(rateNum !=0  && rateNum !='' ){
+                for (j=1; j<= rateNum; j++){
+                    rating += '<span class="heart"></span>';
+                }
+            }
+            var story = '  <div class="story">'+
+                    '    <div class="edit-story" data-id="'+result[i].id+'">'+
+                    '         <a  href="#story" class="btn-edit-story-view" > '+
+                    '         </a>'+
+                    '         <a  href="#" class="btn-delete-story-view" >'+
+                    '         </a>'+
+                    '        <div class="seperator"></div>'+
+                    '    </div>'+
+                    '    <div class="story-title"><h2>'+result[i].title+'</h2></div>'+
+                    '    <div class="story-details"><p>'+result[i].description+'</p>'+images +                   
+                    '        <div class="map"></div> '+
+                    '        <div class="rating">'+rating+
+                    '        </div>'+
+                    '    </div>'+
+                    '</div>';
+              $("#stories_details_day").append( story ).trigger('create');
+        }
+    }
+}
 function setClickEventDataStory(date)
-{
-   // alert(date.innerHTML);
+{  
     date.addEventListener('click', function () {
-        populateStoriesFromOneDay(date.innerHTML)
+        tripShown =  window.localStorage.getItem("id_trip_shown");
+        getStoriesFromOneDay(date.getAttribute("data-date"),tripShown);
+        window.localStorage.setItem("day_num_selected", date.getAttribute("data-day_num") );
     }, false);
 }
 
@@ -126,4 +184,154 @@ function setClickEventToTrip(li)
         selectQueryDBTripTitle(li.id);
         selectQueryDateStory(li.id);
     }, false);
+}
+
+function updateStoryList(){
+    idTrip =  window.localStorage.getItem("id_trip_shown"); 
+    selectQueryDateStory(idTrip);
+
+}
+function populateStoryData(result){ 
+    
+   // alert("Nr data retrieved populateStoryData : " + result.rows.length); 
+    
+    console.log(result.rows.item(0));
+    date = result.rows.item(0).date;
+    title = result.rows.item(0).title;
+    desc = result.rows.item(0).description;
+    rate = result.rows.item(0).Rate;
+    lat  = result.rows.item(0).LAT;
+    lng  = result.rows.item(0).LNG;
+    
+   // alert("data : " + result.rows.item(0).title + " " + result.rows.item(0).description + " " + result.rows.item(0).date);
+   // alert("lat este: --" + lat+"--");
+    if(lat !== null &&  (typeof lat !== 'undefined'))
+    {
+        setMapVisible();
+        locationMap.setMarkerProperly(lat,lng);
+    }
+    
+    $("#story-date").val(date);
+    $("#story_title").val(title);
+    $("#story_desc").val(desc);
+    $("#rating_simple").val(rate);
+    //refresh rating
+    $("#rating_simple").webwidget_rating_simple({
+        refresh:rate,
+        directory: 'css/images'
+
+    });
+    
+    img = '';
+    for(i=0; i < result.rows.length; i++){
+        img += "<div class='image-wrap'>           \n\
+                    <div class='deleteImg'></div>  \n\
+                    <img src='"+result.rows.item(i).img_path+"' alt=''>\n\
+                </div>";
+    }
+    console.log(img);
+    //$( "#story-photos" ).after( "<p>Test</p>" );
+    $(".story-photos").append( img ).trigger('create');
+  
+    /*
+     $(".story-photos").append("CACAT" );
+     alert($('.story-photos').val());
+     $('.story-photos').val("CACAT");
+     alert($('.story-photos').val());
+    */
+}   
+
+/*
+ * adds a map when selecting the option to specify the location
+ */
+function addMap()
+{
+      if(window.localStorage.getItem("initMap") == "null")
+      {
+            
+            window.localStorage.setItem("initMap", "true");
+            alert("este prima oara");
+            locationMap.initMap();
+            locationManager.curr_loc();
+      }
+      else
+      {
+          alert("nu este prima oara : " + window.localStorage.getItem("initMap"));
+      }
+
+      setMapVisible();
+
+}
+
+/*
+ * shows the map again, in case :
+ * - the user wants to update a story that has a location associated
+ * - the user selected : save location
+ */
+function setMapVisible()
+{
+    document.getElementById('mapsDiv').style.display = 'block';
+    document.getElementById("pac-input").style.display = "block";
+}
+/*
+ * sets the map to be invisible after inserting, canceling, pressing back button
+ */
+function setMapInvisible()
+{
+    document.getElementById('mapsDiv').style.display = 'none';
+    document.getElementById("pac-input").style.display = "none";
+    locationMap.resetMarkerPosition();
+}
+/*
+ * 
+ */
+function getMapVisibility()
+{
+    if(  document.getElementById('mapsDiv').style.display === 'none')
+        return false;
+    else
+        return true;
+}
+
+/*
+ * clears the fields of the add story page and sets to none the div where the
+ * map is shown
+ * @returns {undefined}
+ */
+function clearStoryFields(){
+    initDate();
+    /*
+    if(getMapVisibility() === true)
+        alert("map it is visible");
+    else
+        alert("map is invisible");
+    */
+    if(getMapVisibility() === true)
+        setMapInvisible();
+
+    $("#story_title").val('');
+    $("#story_desc").val('');
+    $("#rating_simple").val('0'); 
+    $("#rating_simple").webwidget_rating_simple({
+        refresh:"0",
+        directory: 'css/images'
+
+    });
+  //  $("#mapsDiv").css("display","none");
+    $(".story-photos").children().remove();
+}
+/*
+ * initializes the date again, after selecting the story
+ */
+function initDate(){
+    var date = new Date();
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+
+    var today = year + "-" + month + "-" + day;       
+    $("#story-date").attr("value", today);
 }
