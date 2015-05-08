@@ -52,11 +52,11 @@
                         },
                         {
                             "xml": "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\" />",
-                            "count": 1
+                            "count": 2
                         },
                         {
                             "xml": "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\" />",
-                            "count": 1
+                            "count": 2
                         },
                         {
                             "xml": "<uses-permission android:name=\"android.permission.RECORD_AUDIO\" />",
@@ -109,6 +109,9 @@
             "PACKAGE_NAME": "com.coolappz.CordovaMapsSample1"
         },
         "cordova-plugin-device-motion": {
+            "PACKAGE_NAME": "com.coolappz.CordovaMapsSample1"
+        },
+        "cordova-plugin-geolocation": {
             "PACKAGE_NAME": "com.coolappz.CordovaMapsSample1"
         }
     },

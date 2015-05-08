@@ -122,13 +122,12 @@ function addStoryInTrip(){
             for (i=1; i<=rateNum; i++){
                 rating += '<span class="heart"></span>';
             }
-            console.log(images);
 
             //adding story to day
             //adding html
             nextId++;
             var str =    ' <div class="story-btn">'+
-                               '     <a  href="#story" class="btn-delete-story" ></a>'+
+                               '     <a  href="#" class="btn-delete-story" ></a>'+
                               // '     <a  href="#" class="btn-edit-story" ></a>'+
                                ' </div>'+
                                ' <div data-role="collapsible" class="story_data" id="set'+nextId+'" data-collapsed="true">'+
@@ -140,11 +139,11 @@ function addStoryInTrip(){
                                '     <input type="hidden" class="story_lat" value="'+lat+'">'+
                                '     <input type="hidden" class="story_lng" value="'+lng+'">'+                           
                                ' </div>';
-                       console.log(str);
             $("#set").append( str ).trigger('create');
-
+      
             //clear fields
             clearStoryFields();
+            alert('Story '+title+' was added to trip.');
         } else {
             alert('Please fill title!');
         }

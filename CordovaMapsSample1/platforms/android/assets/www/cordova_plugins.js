@@ -354,7 +354,8 @@ module.exports.metadata =
     "cordova-plugin-device-orientation": "1.0.1-dev",
     "cordova-plugin-console": "1.0.1-dev",
     "cordova-plugin-device": "1.0.1-dev",
-    "cordova-plugin-device-motion": "1.1.1-dev"
+    "cordova-plugin-device-motion": "1.1.1-dev",
+    "cordova-plugin-geolocation": "1.0.1-dev"
 }
 // BOTTOM OF METADATA
 });
