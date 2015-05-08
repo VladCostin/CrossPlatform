@@ -8,9 +8,7 @@
 {
     
     curr_loc: function()
-    {
-       alert("location");
-        var geolocationOptions = 
+    {   var geolocationOptions = 
                 { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true };
         
         navigator.geolocation.getCurrentPosition(this.geolocationSuccess, 
@@ -21,7 +19,7 @@
     ,
     geolocationSuccess: function(pos)
     {
-        alert("the function has succesfully retrieved the data 2: " +
+        console.log("the function has succesfully retrieved the data 2: " +
             pos.coords.latitude + " " + pos.coords.longitude);
     
         var myLocation = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
@@ -33,7 +31,7 @@
     ,
     geolocationError: function(error)
     {
-        alert("the function has finished with an error : " + error.message);
+        console.log("the function has finished with an error : " + error.message);
     }
     
     

@@ -27,7 +27,6 @@ function insertAllStories(tx, idTrip){
              sql = 'INSERT INTO STORY (title,description, date,lat, lng, Rate, idTrip) VALUES ("'+story_title+'","'+story_desc+'","'+story_date+'",'+lat+','+lng+','+rating+','+idTrip+')';
         else
              sql = 'INSERT INTO STORY (title,description, date, Rate, idTrip) VALUES ("'+story_title+'","'+story_desc+'","'+story_date+'",'+rating+','+idTrip+')';
-        alert("datele provenite din story sunt : " + lat + " " + lng);
 
         /*
         var sql = 'INSERT INTO STORY (title,description, date,lat, lng, Rate, idTrip) VALUES ("'+story_title+'","'+story_desc+'","'+story_date+'",'+lat+','+lng+','+rating+','+idTrip+')';
@@ -97,7 +96,6 @@ function deleteTrip()
 {
   
     var indexTrip = window.localStorage.getItem("id_trip_shown");
-    alert("the trip index is ----" + indexTrip+ "---");
      
     deleteStories("idTrip",indexTrip);
      
@@ -132,7 +130,6 @@ function selectQueryDBAllTrips()
 
 function selectQueryDBTrip(tx)
 {
-  //  alert("am inserat ceva");
     tx.executeSql('SELECT * FROM TRIP order by id desc', [],renderListTrip,errorCBSelect);
     
 }
@@ -142,7 +139,6 @@ function selectQueryDBTrip(tx)
  */
 function selectQueryDBTripTitle(indexTrip)
 {
-    // alert("selectQueryDBTripTitle CACAT  : " + indexTrip);
   
     dbShell.transaction(
         function(tx)
@@ -157,23 +153,21 @@ function selectQueryDBTripTitle(indexTrip)
 
 function errorCB(tx)
 {
-  alert("Error processing DB : " + tx.code);
+  console.log("Error processing DB : " + tx.code);
 }
 
 function errorCBSelect(tx)
 {
-    alert("Error processing DB Select: " + tx.code);
+    console.log("Error processing DB Select: " + tx.code);
 }
 
 function renderTripDetail(tx,result)
 {
-   // alert("renderTripDetail : " );
     populateTripDetailsPage(result);
 }
 
 
 function renderListTrip(tx, result)
 {      
-   // alert("renderListTrip : " );
     populateListMainPage(result);
 }

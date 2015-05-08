@@ -20,7 +20,7 @@
             zoom: 15
         });
     
-        mymarker = new google.maps.Marker({
+         mymarker = new google.maps.Marker({
             clickable: false,
             icon: new google.maps.MarkerImage('http://maps.gstatic.com/mapfiles/mobile/mobileimgs2.png',
             new google.maps.Size(22,22),
@@ -31,7 +31,7 @@
             map: map
         });
        
-        marker = new google.maps.Marker({
+         marker = new google.maps.Marker({
             position: map.getCenter(),
             map: map,
             title: 'Click to zoom',
@@ -62,7 +62,6 @@
     */
    setMarker: function(e)
    {
-       alert("intra aici : " + e.latLng);
        map.panTo(e.latLng);
        marker.setPosition(e.latLng);
    }

@@ -21,9 +21,9 @@ function createDatabase()
 }
 function createDB(tx)
 {
-    tx.executeSql('DROP TABLE IF EXISTS TRIP');
-    tx.executeSql('DROP TABLE IF EXISTS STORY');
-    tx.executeSql('DROP TABLE IF EXISTS Images');
+   // tx.executeSql('DROP TABLE IF EXISTS TRIP');
+  //  tx.executeSql('DROP TABLE IF EXISTS STORY');
+  //  tx.executeSql('DROP TABLE IF EXISTS Images');
     
     tx.executeSql('CREATE TABLE IF NOT EXISTS TRIP(id integer primary key autoincrement,title TEXT,description TEXT)');
     tx.executeSql('CREATE TABLE IF NOT EXISTS STORY(id integer primary key autoincrement,title TEXT,description TEXT,date TEXT,LAT REAL, LNG REAL, Rate integer, idTrip NOT NULL,  FOREIGN KEY (idTrip) REFERENCES TRIP (id) ON DELETE CASCADE)');
@@ -38,7 +38,7 @@ function createDB(tx)
 
 function errorCB(tx)
 {
-    alert("Error processing DB : " + tx.code);
+    console.log("Error processing DB : " + tx.code);
 }
 
 function successDB(tx)

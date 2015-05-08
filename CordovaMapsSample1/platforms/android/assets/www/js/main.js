@@ -26,12 +26,11 @@ $(document).ready(function() {
     } */
     $("#story").live('pagebeforeshow', function(event, data) {
         prevPage = data.prevPage.attr('id');
-        console.log(prevPage);
         if(prevPage =="details"){
             selectStoryById();
         }
     });
-      $("#list").live('pagebeforeshow', function(event, data) {
+    $("#list").live('pagebeforeshow', function(event, data) {
         prevPage = data.prevPage.attr('id');
         if(prevPage =="story"){
             updateStoryList();
@@ -70,6 +69,47 @@ $(document).ready(function() {
    //cancel story
    $("#cancelStory").on( "click", function(){
        clearStoryFields();
+   });
+   
+   //share btn
+   $("#share").on( "click", function(){
+       console.log("test");
+        var doc = new jsPDF();
+        doc.fromHTML($('div#details').get(0), 15, 15, {
+	'width': 170
+	//'elementHandlers': specialElementHandlers
+});  
+       /* doc.setTextColor(38,1,38);
+        doc.setFontSize(22);
+        doc.text(20, 20, 'Trip Title');
+        doc.line(20, 30, 60, 20); // horizontal line
+        
+        doc.setFontSize(18);
+        doc.text(20, 40, 'Day1 : 15-21-2015');
+        
+        doc.setFontSize(16);
+        doc.text(20, 60, 'Story Titlw');
+        doc.text(20, 70, 'Story desc. Excelent Day!');
+        //var imgData = 'data:image/jpeg;base64,/img/1.jpg';
+       // doc.addImage(imgData, 'JPEG', 40, 80, 180, 160);
+        //var imgData = 'data:image/jpeg;base64,/img/1.jpg';
+       // doc.addImage(imgData, 'JPEG', 40, 80, 180, 160);
+        doc.line(20, 280, 60, 20); // horizontal line
+
+        //again
+         doc.setFontSize(18);
+        doc.text(20, 40, 'Day1 : 15-21-2015');
+        
+        doc.setFontSize(16);
+        doc.text(20, 60, 'Story Titlw');
+        doc.text(20, 70, 'Story desc. Excelent Day!');
+        var imgData = 'data:image/jpeg;base64,/img/1.jpg';
+       // doc.addImage(imgData, 'JPEG', 40, 80, 180, 160);
+        //var imgData = 'data:image/jpeg;base64,/img/1.jpg';
+       // doc.addImage(imgData, 'JPEG', 40, 80, 180, 160);
+        doc.line(20, 280, 60, 20); // horizontal line
+        */
+       doc.save('Test.pdf');
    });
 });
 

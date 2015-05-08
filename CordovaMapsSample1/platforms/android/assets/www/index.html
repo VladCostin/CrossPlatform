@@ -35,6 +35,13 @@
         <script src="js/pikaday.js"></script>
         <script src="js/pikaday.jquery.js"></script>
         <script src="js/rating_simple.js"></script>
+        
+        <script src="js/jspdf.js"></script>
+        <script type="text/javascript" src="js/jspdf.plugin.standard_fonts_metrics.js"></script> 
+        <script type="text/javascript" src="js/jspdf.plugin.split_text_to_size.js"></script>               
+        <script type="text/javascript" src="js/jspdf.plugin.from_html.js"></script>
+        <script src="js/FileSaver.min.js"></script>
+
         <script src="js/database/dmlTripStatements.js"></script>
         <script src="js/database/dmlStoryStatements.js"></script>
         <script src="js/database/ddlStatement.js"></script>
@@ -78,7 +85,7 @@
         <!-- List page -->
         <div data-dom-cache="false" data-role="page" id="list">
             <div data-role="header" >
-                <a data-role="button" href="#share" data-icon="share" data-iconpos="left"
+                <a data-role="button" href="#share" data-icon="share" id="share" data-iconpos="left"
                    class="ui-btn-right"  style="width: 35px;">
                 </a>
                 <a data-role="button" data-rel="back" href="#page1" data-icon="back"
@@ -250,7 +257,11 @@
                     <input name="story-title" id="story_title" placeholder="Story Title..." value="" type="text">
                     <textarea name="desc-story" id="story_desc" placeholder="Description..." rows="10" cols="10"></textarea>
                 </div>
-            
+                 Rate
+                <div class="rating">
+                    <input name="rating" value="0" id="rating_simple" type="hidden"> 
+                    
+                </div>
                 <div class="big-buttons">
                     <a href="#" data-role="button"   class="call-camera-btn" ><div class="btn camera-btn">Take a picture</div> </a>
                     <a href="#" data-role="button"   class="select-pic-btn"><div class="btn pic-btn">Select a picture </div> </a>
@@ -258,17 +269,13 @@
                 
                </div>
                 <div class="story-photos">
-                    <div class="image-wrap"><div class="deleteImg"></div><img style="height:300px" src="img/1.jpg"></div>
-                    <div class="image-wrap"><div class="deleteImg"></div><img src="img/2.jpg"></div>
+                    <!--div class="image-wrap"><div class="deleteImg"></div><img style="height:300px" src="img/1.jpg"></div>
+                    <div class="image-wrap"><div class="deleteImg"></div><img src="img/2.jpg"></div-->
 
                 </div>
                 <input id="pac-input" class="controls" type="text" placeholder="Search Box" style="display: none">
                 <div id="mapsDiv" style="display: none"></div>
-                Rate
-                <div class="rating">
-                    <input name="rating" value="0" id="rating_simple" type="hidden"> 
-                    
-                </div>
+               
             </div>
             <div class="custom-footer">
                 <a data-role="button"  data-rel="back" href="#page1" id="cancelStory" style="margin: 0.5em; float: left" data-icon="delete"

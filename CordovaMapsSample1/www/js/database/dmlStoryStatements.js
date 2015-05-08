@@ -28,50 +28,45 @@ function createStory()
     }
 }
 function updateStory(tx){
-    
-    alert("intra in updateStory");
-    
+        
     date = $("#story-date").val();
     title = $("#story_title").val();
     if(title != '' ){
         desc = $("#story_desc").val();
         rating =  $("#rating_simple").val();
         storyId = window.localStorage.getItem("selected_story");
-        sql = "DELETE FROM images WHERE idStory="+storyId;
-        tx.executeSql(sql,[], successDeleted ,  errorCB );
-       
-      
-        if(getMapVisibility() ===  true)
-        {
-          //  alert("a selectat o locatie ----" + loadMap + "----");
+
+        if(getMapVisibility() ===  true) {
             var lat = marker.getPosition().lat();
             var lng = marker.getPosition().lng();
-            
-            alert("getMapVisibility() ==  true : " + lat + " " + lng + " ");
-          //  sql = " UPDATE story set lat = 50 where id =" + storyId;
-            
-            sql = "UPDATE story set title = '" + title + "', description = '"+ desc + "' , date = '" + date + "' , lat = " + lat + " , lng = " + lng + "  WHERE id="+storyId; 
-            
-            
-           /*  sql = "UPDATE story \n\
-               SET  title='"+title+"',\n\
+                        
+            updateSql = "UPDATE story SET title = '" + title + 
+                          "', description = '"+ desc + 
+                          "' , date = '" + date + 
+                          "' , lat = " + lat + 
+                          " , lng = " + lng + 
+                          ", Rate ="+ rating +
+                    "  WHERE id="+storyId; 
+        } else {
+            updateSql = "UPDATE story \n\
+                SET  title='"+title+"',\n\
                     description='"+desc+"',\n\
-                    date='"+date+"'\n\
-               WHERE id="+storyId;
-            */
+                    date='"+date+"',\n\
+                    Rate ="+rating+" \n\
+                WHERE id="+storyId;
         }
-        else
-        {
-            sql = "UPDATE story \n\
-               SET  title='"+title+"',\n\
-                    description='"+desc+"',\n\
-                    date='"+date+"'\n\
-               WHERE id="+storyId;
-             alert("getMapVisibility() !==  true");
+        //remove images and add again
 
-        }
+        deleteSql = "DELETE FROM images WHERE idStory="+storyId;
+        tx.executeSql(deleteSql,[], successDeleted ,  errorCB );
         
-        tx.executeSql(sql,[], 
+        $(".story-photos img").each(function(){
+            src = $(this).attr("src");
+            console.log(src);
+            insertSql = "INSERT INTO Images (img_path,idStory) VALUES('"+src+"',"+idStory+")";
+            tx.executeSql(insertSql,[], successUpdated ,  errorCB );
+        });
+        tx.executeSql(updateSql,[], 
         function(tx, result){
             alert("Successfully Updated!");
             tripShown =  window.localStorage.getItem("id_trip_shown");
@@ -80,31 +75,6 @@ function updateStory(tx){
             
         },  errorCB );
         clearStoryFields();
-        /*
-        //remove images and add again
-
-        
-        $(".story-photos img").each(function(){
-            src = $(this).attr("src");
-            console.log(src);
-            sql = "INSERT INTO Images (img_path,idStory) VALUES('"+src+"',"+idStory+")";
-            tx.executeSql(sql,[], successUpdated ,  errorCB );
-        });
-        
-        sql = "UPDATE story \n\
-               SET  title='"+title+"',\n\
-                    description='"+desc+"',\n\
-                    date='"+date+"'\n\
-               WHERE id="+storyId;
-        tx.executeSql(sql,[], 
-        function(tx, result){
-            alert("Successfully Updated!");
-            tripShown =  window.localStorage.getItem("id_trip_shown");
-            selectStoriesByDate(date, tripShown);
-            $.mobile.changePage("#details");
-            
-        },  errorCB );
-        */
     }
 }
 function successUpdated(){
@@ -125,7 +95,7 @@ function addStoryInTrip(){
             //lng = $("#lng").val();
 
             if( getMapVisibility() === true)
-            {
+            {   addMap();
                 lat = marker.getPosition().lat();
                 lng = marker.getPosition().lng();
             }
@@ -140,9 +110,11 @@ function addStoryInTrip(){
             images= '';
             $(".story-photos  img").each(function() {
                 images += $(this).prop('outerHTML');
+                
             });
             images = (images != null) ? images : '';
-            //loc = {lat,lng};
+            
+
             //rating
             
             rateNum = $("#rating_simple").val();
@@ -150,8 +122,8 @@ function addStoryInTrip(){
             for (i=1; i<=rateNum; i++){
                 rating += '<span class="heart"></span>';
             }
+            console.log(images);
 
-            alert("valorile de adaugat sunt : " + lat + "--" + lng);
             //adding story to day
             //adding html
             nextId++;
@@ -162,13 +134,13 @@ function addStoryInTrip(){
                                ' <div data-role="collapsible" class="story_data" id="set'+nextId+'" data-collapsed="true">'+
                                '    <h3 class="story_title">'+title+'</h3>'+
                                '     <p class="story_date">'+date+'</p>'+
-                               '     <p class="story_desc">'+desc+'</p>'+ images  +      
-                               '     <div class="rating">'+   rating        +                   
-                               '     <input type="hidden" class="story_lat" value='+lat+'>'+
-                               '     <input type="hidden" class="story_lng" value='+lng+'>'+
-
-                               '     </div>'+
+                               '     <p class="story_desc">'+desc+'</p>'+ 
+                               '     <div class="rating">'+ rating + '</div>'+
+                                     images  +      
+                               '     <input type="hidden" class="story_lat" value="'+lat+'">'+
+                               '     <input type="hidden" class="story_lng" value="'+lng+'">'+                           
                                ' </div>';
+                       console.log(str);
             $("#set").append( str ).trigger('create');
 
             //clear fields
@@ -184,7 +156,6 @@ function addStoryInTrip(){
  */
 function insertDBStory(tx)
 {
-    alert("intra si aici, in sertDBStory");
     
     var story_date = document.getElementById("story-date").value;
     var story_title = document.getElementById("story_title").value;
@@ -198,18 +169,14 @@ function insertDBStory(tx)
         //var sql;
         if(getMapVisibility() ===  true)
         {
-          //  alert("a selectat o locatie ----" + loadMap + "----");
             var lat = marker.getPosition().lat();
             var lng = marker.getPosition().lng();
-            
-            alert("Position : " + lat + " " + lng);
-            
+                       
             sql = 'INSERT INTO STORY (title,description, date,LAT,LNG, Rate, idTrip) VALUES \n\
                     ("'+story_title+'","'+story_desc+'","'+story_date+'",'+ lat + ',' + lng + ',' +rating+','+idTrip+')';
         }
         else
         {
-             alert("nu a selectat nicio locatie");
              sql = 'INSERT INTO STORY (title,description, date, Rate, idTrip) VALUES \n\
                     ("'+story_title+'","'+story_desc+'","'+story_date+'",'+rating+','+idTrip+')';
         }
@@ -261,13 +228,15 @@ function selectStoriesByDate(date, indexTrip){
             AND date = '"+date+"'                ";
     sql2 =  "SELECT i.*                          \n\
             FROM STORY  s                       \n\
-            INNER JOIN Images   i               \n\
+            Left JOIN Images   i               \n\
             ON i.idStory = s.id                 \n\
             WHERE idTrip = "+indexTrip+"        \n\
             AND s.date = '"+date+"'                ";
+           
     dbShell.transaction(
         function(tx)
-        {   
+        {    
+           selectImages(tx);
             //renderStoriesDetails 
             tx.executeSql(sql1, [], 
             function(tx, result1)
@@ -310,17 +279,23 @@ function selectStoriesByDate(date, indexTrip){
         errorCB
     );
 }
+function selectImages(tx){
+    tx.executeSql("SELECT * FROM  Images" , [],
+    function(tx, result4)
+            {  for (i=0; i< result4.rows.length ; i++){
+                    console.log(result4.rows.item(i)) ;
+                }
+            } 
+            ,errorCB);
+}
 function selectStoryById(){
-    
 
-    
     idStory =   window.localStorage.getItem("selected_story"); 
-    alert("story selected is" + idStory);
     
     sql =  "SELECT s.*,i.img_path            \n\
-            FROM STORY  s                     \n\
+            FROM STORY  s                    \n\
             LEFT JOIN images  i              \n\
-            ON i.idStory = s.id               \n\
+            ON i.idStory = s.id              \n\
             WHERE s.id = " + idStory;
     
     dbShell.transaction(
@@ -329,8 +304,7 @@ function selectStoryById(){
             tx.executeSql(sql, [], renderEditStory, errorCBSELECTEDIT);
         },
         errorCB
-    );
-    
+    );   
 }
 
 /*
@@ -339,7 +313,6 @@ function selectStoryById(){
 function deleteDay()
 {
     var date = window.localStorage.getItem("day_current_shown");
-    alert("the day to be deleted is : " + date);
     deleteStories('date',date);
 }
 
@@ -371,17 +344,17 @@ function deleteStories(key,val)
 
 function errorCB(tx)
 {
-    alert("Error processing DB : " + tx.code);
+    console.log("Error processing DB : " + tx.code);
 }
 
 function errorCBSELECTEDIT(tx)
 {
-    alert("errorCBSELECTEDIT Error processing DB : " + tx.code);
+    console.log("errorCBSELECTEDIT Error processing DB : " + tx.code);
 }
 
 function errorCBSelect(tx)
 {
-    alert("Error processing DB Select: " + tx.code);
+    console.log("Error processing DB Select: " + tx.code);
 }
 
 function renderListStoriesDemo(tx, result)
@@ -392,7 +365,6 @@ function renderListStoriesDemo(tx, result)
      //   htmlString += result.rows.item(i).id + " " + result.rows.item(i).title+ " " + result.rows.item(i).description + " " + result.rows.item(i).date + " " + result.rows.item(i).rate;
           htmlString += result.rows.item(0).id_img + " " + result.rows.item(0).idStory + " " + result.rows.item(0).img_path + " ";
     }
-    alert(htmlString);
 }
 
 function renderListStories(tx, result)
@@ -403,9 +375,5 @@ function renderStoriesDetails(tx, result){
 }
 
 function renderEditStory(tx, result){
-  
-//    alert("number results " + result.rows.length);
-  //   alert("data : " + result.rows.item(0).id + " " + result.rows.item(0).idStory + " " + result.rows.item(0).img_path); 
-  //  alert("data : " + result.rows.item(0).title + " " + result.rows.item(0).description + " " + result.rows.item(0).date + " " + result.rows.item(0).img_path);
     populateStoryData(result);
 }

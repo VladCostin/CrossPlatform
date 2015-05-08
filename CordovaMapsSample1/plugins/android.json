@@ -17,11 +17,27 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"Media\"><param name=\"android-package\" value=\"org.apache.cordova.media.AudioHandler\" /></feature>",
+                            "xml": "<feature name=\"Capture\"><param name=\"android-package\" value=\"org.apache.cordova.mediacapture.Capture\" /></feature>",
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"NetworkStatus\"><param name=\"android-package\" value=\"org.apache.cordova.networkinformation.NetworkManager\" /></feature>",
+                            "xml": "<feature name=\"FileTransfer\"><param name=\"android-package\" value=\"org.apache.cordova.filetransfer.FileTransfer\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Contacts\"><param name=\"android-package\" value=\"org.apache.cordova.contacts.ContactManager\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Compass\"><param name=\"android-package\" value=\"org.apache.cordova.deviceorientation.CompassListener\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Device\"><param name=\"android-package\" value=\"org.apache.cordova.device.Device\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Accelerometer\"><param name=\"android-package\" value=\"org.apache.cordova.devicemotion.AccelListener\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -32,7 +48,7 @@
                     "/*": [
                         {
                             "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
-                            "count": 3
+                            "count": 4
                         },
                         {
                             "xml": "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\" />",
@@ -47,15 +63,19 @@
                             "count": 1
                         },
                         {
-                            "xml": "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\" />",
+                            "xml": "<uses-permission android:name=\"android.permission.RECORD_VIDEO\" />",
                             "count": 1
                         },
                         {
-                            "xml": "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\" />",
+                            "xml": "<uses-permission android:name=\"android.permission.READ_CONTACTS\" />",
                             "count": 1
                         },
                         {
-                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
+                            "xml": "<uses-permission android:name=\"android.permission.WRITE_CONTACTS\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\" />",
                             "count": 1
                         }
                     ]
@@ -70,13 +90,25 @@
         "cordova-plugin-file": {
             "PACKAGE_NAME": "com.coolappz.CordovaMapsSample1"
         },
-        "cordova-plugin-geolocation": {
+        "cordova-plugin-media-capture": {
             "PACKAGE_NAME": "com.coolappz.CordovaMapsSample1"
         },
-        "cordova-plugin-media": {
+        "cordova-plugin-file-transfer": {
             "PACKAGE_NAME": "com.coolappz.CordovaMapsSample1"
         },
-        "cordova-plugin-network-information": {
+        "cordova-plugin-contacts": {
+            "PACKAGE_NAME": "com.coolappz.CordovaMapsSample1"
+        },
+        "cordova-plugin-device-orientation": {
+            "PACKAGE_NAME": "com.coolappz.CordovaMapsSample1"
+        },
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "com.coolappz.CordovaMapsSample1"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.coolappz.CordovaMapsSample1"
+        },
+        "cordova-plugin-device-motion": {
             "PACKAGE_NAME": "com.coolappz.CordovaMapsSample1"
         }
     },

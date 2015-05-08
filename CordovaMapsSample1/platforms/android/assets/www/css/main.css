@@ -418,6 +418,9 @@ input.ui-input-text, textarea.ui-input-text {
     height:100%;
    
 }
+.story-photos{
+    margin-bottom:50px;
+}
 .story-photos .deleteImg{
  
     background: url("images/icons-18-yellow.png") repeat scroll -70px 50% rgba(0, 0, 0, 0);
