@@ -343,6 +343,7 @@ function resetMapLocation()
     y = $("#mapContainerDate").find("#pac-input").remove();
     $("#contentStory").append(y);
     $("#contentStory").append(x);
-    locationManager.curr_loc();
+    locationMap.clearMarkers();
+  //  locationManager.curr_loc();
     setMapInvisible();
 }

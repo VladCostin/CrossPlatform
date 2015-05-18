@@ -298,7 +298,6 @@ function selectStoriesLocation(id, date)
             FROM STORY                           \n\
             WHERE idTrip = " + id +"        \n\
             AND date = '"+date+"' " ;
-    alert(sql);
      
     dbShell.transaction(
         function(tx)
@@ -402,6 +401,7 @@ function renderEditStory(tx, result){
 }
 function renderStoriesLocations(tx,result)
 {
+    /*
     var htmlString = '';
     for(var i = 0; i < result.rows.length; i++)
     {
@@ -409,4 +409,7 @@ function renderStoriesLocations(tx,result)
           htmlString +=  result.rows.item(i).LAT + " " + result.rows.item(i).LNG + ", ";
     }
     alert("renderStoriesLocations" + htmlString);
+    */
+    //alert("renderStoriesLocations : " + result.rows.length);
+   locationMap.showAllPlaces(result);
 }
