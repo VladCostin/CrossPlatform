@@ -231,6 +231,8 @@ function populateStoryData(result){
  */
 function addMap()
 {
+    
+    //  alert(window.localStorage.getItem("initMap"));
       if(window.localStorage.getItem("initMap") == "null")
       {
             window.localStorage.setItem("initMap", "true");
@@ -308,4 +310,26 @@ function initDate(){
 
     var today = year + "-" + month + "-" + day;       
     $("#story-date").attr("value", today);
+}
+
+function moveMapdiv()
+{
+  //  alert("start moving the map");
+    x = $("#contentStory").find("#mapsDiv").remove();
+    y = $("#contentStory").find("#pac-input").remove(); 
+    $("#mapContainerDate").append(y);
+    $("#mapContainerDate").append(x);
+    addMap();
+  //  alert("moved");
+}
+
+function resetMapLocation()
+{
+    
+    x = $("#mapContainerDate").find("#mapsDiv").remove();
+    y = $("#mapContainerDate").find("#pac-input").remove();
+    $("#contentStory").append(y);
+    $("#contentStory").append(x);
+    locationManager.curr_loc();
+    setMapInvisible();
 }
