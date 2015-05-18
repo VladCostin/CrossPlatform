@@ -115,12 +115,15 @@ function getStoriesFromOneDay(date,indexTrip)
 }
 function populateStoriesDetails(result){
 
+    //alert("afiseaza datele zilei selectate " + result[0].date);
     if(result.length>0){
         //delete first
         $("#stories_details_day").children().remove();
 
         $(".details-headline").text(result[0].date);
         day_num = parseInt(window.localStorage.getItem("day_num_selected"))+1;
+        window.localStorage.setItem("date-selected",result[0].date);
+
 
         $("#story-details-header").text("Day "+day_num);
         for (var i = 0; i < result.length; i++)
@@ -311,7 +314,9 @@ function initDate(){
     var today = year + "-" + month + "-" + day;       
     $("#story-date").attr("value", today);
 }
-
+/*
+ * moves the map div from the create story to see all locations from one day
+ */
 function moveMapdiv()
 {
   //  alert("start moving the map");
@@ -320,9 +325,17 @@ function moveMapdiv()
     $("#mapContainerDate").append(y);
     $("#mapContainerDate").append(x);
     addMap();
+    
+    var idTrip = window.localStorage.getItem("id_trip_shown");
+    var date = window.localStorage.getItem("date-selected");
+    selectStoriesLocation(idTrip, date);
+   // alert( window.localStorage.getItem("date-selected"));
+   // alert(window.localStorage.getItem("id_trip_shown"));
   //  alert("moved");
 }
-
+/*
+ * removes the map from show all location from one day to create story
+ */
 function resetMapLocation()
 {
     

@@ -287,6 +287,29 @@ function selectImages(tx){
             } 
             ,errorCB);
 }
+
+
+function selectStoriesLocation(id, date)
+{
+  //  alert("selectStoriesLocation " + id);
+
+  
+    sql =  "SELECT lat, lng                          \n\
+            FROM STORY                           \n\
+            WHERE idTrip = " + id +"        \n\
+            AND date = '"+date+"' " ;
+    alert(sql);
+     
+    dbShell.transaction(
+        function(tx)
+        { //  alert(valueId);
+            tx.executeSql(sql, [],renderStoriesLocations,errorCBSelect);
+        },
+        errorCB
+    );
+    
+}
+
 function selectStoryById(){
 
     idStory =   window.localStorage.getItem("selected_story"); 
@@ -303,7 +326,8 @@ function selectStoryById(){
             tx.executeSql(sql, [], renderEditStory, errorCBSELECTEDIT);
         },
         errorCB
-    );   
+    );  
+    
 }
 
 /*
@@ -375,4 +399,14 @@ function renderStoriesDetails(tx, result){
 
 function renderEditStory(tx, result){
     populateStoryData(result);
+}
+function renderStoriesLocations(tx,result)
+{
+    var htmlString = '';
+    for(var i = 0; i < result.rows.length; i++)
+    {
+     //   htmlString += result.rows.item(i).id + " " + result.rows.item(i).title+ " " + result.rows.item(i).description + " " + result.rows.item(i).date + " " + result.rows.item(i).rate;
+          htmlString +=  result.rows.item(i).LAT + " " + result.rows.item(i).LNG + ", ";
+    }
+    alert("renderStoriesLocations" + htmlString);
 }
