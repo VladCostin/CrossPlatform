@@ -70,47 +70,12 @@ $(document).ready(function() {
    $("#cancelStory").on( "click", function(){
        clearStoryFields();
    });
-   
-   //share btn
-   $("#share").on( "click", function(){
-       console.log("test");
-        var doc = new jsPDF();
-        doc.fromHTML($('div#details').get(0), 15, 15, {
-	'width': 170
-	//'elementHandlers': specialElementHandlers
-});  
-       /* doc.setTextColor(38,1,38);
-        doc.setFontSize(22);
-        doc.text(20, 20, 'Trip Title');
-        doc.line(20, 30, 60, 20); // horizontal line
-        
-        doc.setFontSize(18);
-        doc.text(20, 40, 'Day1 : 15-21-2015');
-        
-        doc.setFontSize(16);
-        doc.text(20, 60, 'Story Titlw');
-        doc.text(20, 70, 'Story desc. Excelent Day!');
-        //var imgData = 'data:image/jpeg;base64,/img/1.jpg';
-       // doc.addImage(imgData, 'JPEG', 40, 80, 180, 160);
-        //var imgData = 'data:image/jpeg;base64,/img/1.jpg';
-       // doc.addImage(imgData, 'JPEG', 40, 80, 180, 160);
-        doc.line(20, 280, 60, 20); // horizontal line
-
-        //again
-         doc.setFontSize(18);
-        doc.text(20, 40, 'Day1 : 15-21-2015');
-        
-        doc.setFontSize(16);
-        doc.text(20, 60, 'Story Titlw');
-        doc.text(20, 70, 'Story desc. Excelent Day!');
-        var imgData = 'data:image/jpeg;base64,/img/1.jpg';
-       // doc.addImage(imgData, 'JPEG', 40, 80, 180, 160);
-        //var imgData = 'data:image/jpeg;base64,/img/1.jpg';
-       // doc.addImage(imgData, 'JPEG', 40, 80, 180, 160);
-        doc.line(20, 280, 60, 20); // horizontal line
-        */
-       doc.save('Test.pdf');
+    $("#share").on( "click", function(){
+          idTrip = window.localStorage.getItem("id_trip_shown");
+       selectStoriesByTrip(idTrip);
+       
    });
+
 });
 
 function onDeviceReady() {
@@ -119,7 +84,20 @@ function onDeviceReady() {
     //$(window).bind('pageshow resize orientationchange', function(e) { // resize page if needed
     //    maxHeight();
     //});
-    
+       //share btn
+   $("#share").click(function(e){
+        e.stopImmediatePropagation();
+        e.preventDefault();
+       // var message = {
+       //      text: "Image test",
+       //     image: "http://cordova.apache.org/images/cordova_bot.png"
+       // };
+        //window.socialmessage.send(message);
+       // window.plugins.socialsharing.share('Message, image and link', null, 'https://www.google.nl/images/srpr/logo4w.png', 'http://www.x-services.nl')
+       idTrip = window.localStorage.getItem("id_trip_shown");
+       selectStoriesByTrip(idTrip);
+
+   });
     $('.call-camera-btn').click(function(e){
         e.stopImmediatePropagation();
         e.preventDefault();
@@ -259,7 +237,7 @@ function MyApplication() {
                         };
                         
         navigator.camera.getPicture(
-            function(imgData) {
+            function(imgData) {              
                 var img = $('<div class="image-wrap"><div class="deleteImg"></div><img src="'+imgData+'"></div>');
                 //img.attr('src', imgData);
                 img.appendTo('.story-photos');
@@ -271,12 +249,10 @@ function MyApplication() {
 
         return false;
     };
-    
     this.tagLocation = function(){
     };
     
     this.callCamera = function() {
-        console.log("here");
         if (!navigator.camera) {
             alert("Camera API not supported", "Error");
             return;

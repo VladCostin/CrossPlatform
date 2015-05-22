@@ -10,7 +10,7 @@
     curr_loc: function()
     {   var geolocationOptions = 
                 { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true };
-        
+      //  alert("intru si in curr_loc");
         navigator.geolocation.getCurrentPosition(this.geolocationSuccess, 
                                          this.geolocationError, 
                                          geolocationOptions);
@@ -24,6 +24,8 @@
     
         var myLocation = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
         console.log(myLocation);
+    //    alert(myLocation);
+         
         map.setCenter(myLocation);
         mymarker.setPosition(myLocation);
         marker.setPosition(myLocation);
@@ -31,6 +33,7 @@
     ,
     geolocationError: function(error)
     {
+    //     alert("eroare geoLocation");
         console.log("the function has finished with an error : " + error.message);
     }
     

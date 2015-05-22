@@ -51,7 +51,6 @@
             $(".webwidget_rating_simple").remove();
             e = h;
             init();
-
         }
     }
 })(jQuery);

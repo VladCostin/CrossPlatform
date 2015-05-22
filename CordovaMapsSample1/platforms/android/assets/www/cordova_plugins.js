@@ -29,6 +29,20 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/cordova-plugin-social-message/www/socialmessage.js",
+        "id": "cordova-plugin-social-message.SocialMessage",
+        "clobbers": [
+            "socialmessage"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-device/www/device.js",
+        "id": "cordova-plugin-device.device",
+        "clobbers": [
+            "device"
+        ]
+    },
+    {
         "file": "plugins/cordova-plugin-file/www/DirectoryEntry.js",
         "id": "cordova-plugin-file.DirectoryEntry",
         "clobbers": [
@@ -301,45 +315,10 @@ module.exports = [
         ]
     },
     {
-        "file": "plugins/cordova-plugin-device-orientation/www/CompassError.js",
-        "id": "cordova-plugin-device-orientation.CompassError",
+        "file": "plugins/nl.x-services.plugins.socialsharing/www/SocialSharing.js",
+        "id": "nl.x-services.plugins.socialsharing.SocialSharing",
         "clobbers": [
-            "CompassError"
-        ]
-    },
-    {
-        "file": "plugins/cordova-plugin-device-orientation/www/CompassHeading.js",
-        "id": "cordova-plugin-device-orientation.CompassHeading",
-        "clobbers": [
-            "CompassHeading"
-        ]
-    },
-    {
-        "file": "plugins/cordova-plugin-device-orientation/www/compass.js",
-        "id": "cordova-plugin-device-orientation.compass",
-        "clobbers": [
-            "navigator.compass"
-        ]
-    },
-    {
-        "file": "plugins/cordova-plugin-device/www/device.js",
-        "id": "cordova-plugin-device.device",
-        "clobbers": [
-            "device"
-        ]
-    },
-    {
-        "file": "plugins/cordova-plugin-device-motion/www/Acceleration.js",
-        "id": "cordova-plugin-device-motion.Acceleration",
-        "clobbers": [
-            "Acceleration"
-        ]
-    },
-    {
-        "file": "plugins/cordova-plugin-device-motion/www/accelerometer.js",
-        "id": "cordova-plugin-device-motion.accelerometer",
-        "clobbers": [
-            "navigator.accelerometer"
+            "window.plugins.socialsharing"
         ]
     }
 ];
@@ -347,15 +326,14 @@ module.exports.metadata =
 // TOP OF METADATA
 {
     "org.apache.cordova.camera": "0.3.6",
-    "cordova-plugin-file": "2.0.1-dev",
-    "cordova-plugin-media-capture": "1.0.1-dev",
-    "cordova-plugin-file-transfer": "1.1.1-dev",
-    "cordova-plugin-contacts": "1.0.1-dev",
-    "cordova-plugin-device-orientation": "1.0.1-dev",
+    "cordova-plugin-social-message": "0.3.1",
     "cordova-plugin-console": "1.0.1-dev",
     "cordova-plugin-device": "1.0.1-dev",
-    "cordova-plugin-device-motion": "1.1.1-dev",
-    "cordova-plugin-geolocation": "1.0.1-dev"
+    "cordova-plugin-file": "2.0.1-dev",
+    "cordova-plugin-media-capture": "1.0.1-dev",
+    "cordova-plugin-file-transfer": "1.2.1-dev",
+    "cordova-plugin-contacts": "1.0.1-dev",
+    "nl.x-services.plugins.socialsharing": "4.3.18"
 }
 // BOTTOM OF METADATA
 });

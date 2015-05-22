@@ -127,6 +127,35 @@
         var lng = mymarker.getPosition().lng();
         this.setMarkerProperly(lat,lng);
         
-   }
+   },
+   showAllPlaces : function(listLocations)
+   {
+        markers = [];
+        bounds = new google.maps.LatLngBounds();
+     //   alert("intra in showAllPlaces");
+        for (var i = 0; i < listLocations.rows.length; i++)
+        {
+         //   alert(listLocations.rows.item(i).LAT + " " + listLocations.rows.item(i).LNG);
+            this.addMarker(new google.maps.LatLng(listLocations.rows.item(i).LAT, listLocations.rows.item(i).LNG));
+        } 
+      //  map.fitBounds(bounds);
+   },
+   
+   addMarker: function(location) 
+   {
+        var marker = new google.maps.Marker({
+        position: location,
+        map: map}); 
+        markers.push(marker);
+        bounds.extend(location);
+    },
+    
+    clearMarkers: function()
+    {
+        for(i = 0; i < markers.length; i++)
+            markers[i].setMap(null);
+        markers = [];
+    }
+    
     
 };

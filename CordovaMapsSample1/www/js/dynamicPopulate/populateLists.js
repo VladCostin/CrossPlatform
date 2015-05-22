@@ -191,7 +191,7 @@ function updateStoryList(){
 
 }
 function populateStoryData(result){ 
-    console.log(result.rows.item(0));
+   // console.log(result.rows.item(0));
     date = result.rows.item(0).date;
     title = result.rows.item(0).title;
     desc = result.rows.item(0).description;
@@ -201,8 +201,8 @@ function populateStoryData(result){
     
     if(lat !== null &&  (typeof lat !== 'undefined')){
         addMap();
-        console.log(lat);
-        console.log(lng);
+        //console.log(lat);
+        //console.log(lng);
         locationMap.setMarkerProperly(lat,lng);
     }
     
@@ -211,11 +211,10 @@ function populateStoryData(result){
     $("#story_desc").val(desc);
     $("#rating_simple").val(rate);
     //refresh rating
-    $("#rating_simple").webwidget_rating_simple({
-        refresh:rate,
-        directory: 'css/images'
-
-    });
+   // $("#rating_simple").webwidget_rating_simple({
+    //    refresh:rate,
+    //    directory: 'css/images'
+   // });
     img = '';
     if(result.rows.item(0).img_path != null){
         for(i=0; i < result.rows.length; i++){

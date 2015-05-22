@@ -17,12 +17,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.IsolatedStorage;
+using System.Linq;
 using System.Net;
 using System.Runtime.Serialization;
 using System.Windows;
 using System.Security;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using WPCordovaClassLib.Cordova.JSON;
 
 namespace WPCordovaClassLib.Cordova.Commands
 {
@@ -91,6 +93,8 @@ namespace WPCordovaClassLib.Cordova.Commands
         // Private instance of the main WebBrowser instance
         // NOTE: Any access to this object needs to occur on the UI thread via the Dispatcher
         private WebBrowser browser;
+
+
 
         /// <summary>
         /// Uploading response info
@@ -216,6 +220,32 @@ namespace WPCordovaClassLib.Cordova.Commands
         }
 
         /// <summary>
+        /// Represents a request header passed from Javascript to upload/download operations
+        /// </summary>
+        [DataContract]
+        protected struct Header
+        {
+            [DataMember(Name = "name")]
+            public string Name;
+
+            [DataMember(Name = "value")]
+            public string Value;
+        }
+
+        protected static bool HasJsonDotNet = false;
+        public FileTransfer()
+        {
+            // look for Newtonsoft.Json availability
+            foreach(System.Reflection.Assembly assembly in AppDomain.CurrentDomain.GetAssemblies() )
+            {
+                if (assembly.GetType("Newtonsoft.Json.ConstructorHandling") != null)
+                {
+                    FileTransfer.HasJsonDotNet = true;
+                    break;
+                }
+            }
+        }
+
         /// Helper method to copy all relevant cookies from the WebBrowser control into a header on
         /// the HttpWebRequest
         /// </summary>
@@ -363,6 +393,11 @@ namespace WPCordovaClassLib.Cordova.Commands
                 webRequest.ContentType = "multipart/form-data; boundary=" + Boundary;
                 webRequest.Method = uploadOptions.Method;
 
+                DownloadRequestState reqState = new DownloadRequestState();
+                InProcDownloads[uploadOptions.Id] = reqState;
+                reqState.options = uploadOptions;
+                reqState.request = webRequest;
+
                 // Associate cookies with the request
                 // This is an async call, so we need to await it in order to preserve proper control flow
                 await CopyCookiesFromWebBrowser(webRequest);
@@ -379,12 +414,6 @@ namespace WPCordovaClassLib.Cordova.Commands
                     }
                 }
 
-                DownloadRequestState reqState = new DownloadRequestState();
-                reqState.options = uploadOptions;
-                reqState.request = webRequest;
-
-                InProcDownloads[uploadOptions.Id] = reqState;
-
                 webRequest.BeginGetRequestStream(uploadCallback, reqState);
             }
             catch (Exception /*ex*/)
@@ -398,34 +427,22 @@ namespace WPCordovaClassLib.Cordova.Commands
         {
             try
             {
-                Dictionary<string, string> result = new Dictionary<string, string>();
-
-                string temp = jsonHeaders.StartsWith("{") ? jsonHeaders.Substring(1) : jsonHeaders;
-                temp = temp.EndsWith("}") ? temp.Substring(0, temp.Length - 1) : temp;
-
-                string[] strHeaders = temp.Split(',');
-                for (int n = 0; n < strHeaders.Length; n++)
+                if (FileTransfer.HasJsonDotNet)
                 {
-                    // we need to use indexOf in order to WP7 compatible
-                    int splitIndex = strHeaders[n].IndexOf(':');
-                    if (splitIndex > 0)
-                    {
-                        string[] split = new string[2];
-                        split[0] = strHeaders[n].Substring(0, splitIndex);
-                        split[1] = strHeaders[n].Substring(splitIndex + 1);
-
-                        split[0] = JSON.JsonHelper.Deserialize<string>(split[0]);
-                        split[1] = JSON.JsonHelper.Deserialize<string>(split[1]);
-                        result[split[0]] = split[1];
-                    }
+                    return JsonHelper.Deserialize<Header[]>(jsonHeaders,true)
+                        .ToDictionary(header => header.Name, header => header.Value);
                 }
-                return result;
+                else
+                {
+                    return JsonHelper.Deserialize<Header[]>(jsonHeaders)
+                        .ToDictionary(header => header.Name, header => header.Value);
+                }
             }
             catch (Exception)
             {
                 Debug.WriteLine("Failed to parseHeaders from string :: " + jsonHeaders);
             }
-            return null;
+            return new Dictionary<string, string>();
         }
 
         public async void download(string options)

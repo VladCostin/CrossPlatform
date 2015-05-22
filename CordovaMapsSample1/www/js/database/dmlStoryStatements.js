@@ -220,6 +220,7 @@ function selectQueryDateStory(indexTrip)
     );
   
 }
+
 function selectStoriesByDate(date, indexTrip){
     sql1 =  "SELECT *                          \n\
             FROM STORY                           \n\
@@ -235,7 +236,7 @@ function selectStoriesByDate(date, indexTrip){
     dbShell.transaction(
         function(tx)
         {    
-           selectImages(tx);
+          // selectImages(tx);
             //renderStoriesDetails 
             tx.executeSql(sql1, [], 
             function(tx, result1)
@@ -289,20 +290,20 @@ function selectImages(tx){
 }
 
 
-function selectStoriesLocation(id, date)
+function selectStoriesByTrip(indexTrip)
 {
-  //  alert("selectStoriesLocation " + id);
-
   
-    sql =  "SELECT lat, lng                          \n\
-            FROM STORY                           \n\
-            WHERE idTrip = " + id +"        \n\
-            AND date = '"+date+"' " ;
-     
+    sql =  "SELECT i.*  ,  s.*  \n\
+            FROM STORY  s                                  \n\
+            Left JOIN Images   i                           \n\
+            ON i.idStory = s.id                            \n\
+            WHERE s.idTrip = "+indexTrip+"                 \n\ ";
+  
+     console.log(sql);
     dbShell.transaction(
         function(tx)
-        { //  alert(valueId);
-            tx.executeSql(sql, [],renderStoriesLocations,errorCBSelect);
+        { 
+            tx.executeSql(sql, [],shareStories,errorCBSelect);
         },
         errorCB
     );
@@ -399,6 +400,39 @@ function renderStoriesDetails(tx, result){
 function renderEditStory(tx, result){
     populateStoryData(result);
 }
+function shareStories(tx, result){
+    console.log(result.rows);
+    subject = $("#header").text();
+    title = "";
+    images = [];
+    addedStory =[];
+    for (var i = 0; i < result.rows.length; i++)
+    {   
+        if($.inArray(result.rows.item(i).idStory, addedStory) == -1){
+            addedStory.push(result.rows.item(i).idStory);
+            title += (i+1)+". "+result.rows.item(i).title +"\n" + result.rows.item(i).description +" \n";
+        }
+       // images = ['https://www.google.nl/images/srpr/logo4w.png','www/image.gif'];
+       // var imageUri = result.rows.item(i).img_path;
+       // if(imageUri != null){  
+           // if (imageUri.substring(0,21)=="content://com.android") {
+           //     photo_split=imageUri.split("%3A");
+            //    imageUri="content://media/external/images/media/"+photo_split[1];
+           // }
+            //alert(imageUri);
+            //imageUri = imageUri.replace("%", "%25");
+
+        //    images.push(imageUri);
+       // }
+        
+    }
+    img=["file:///storage/sdcard0/DCIM/Camera/IMG_20150515_155250.jpg","file:///storage/sdcard0/DCIM/Camera/IMG_20150515_162109.jpg"];
+        //alert(img);
+
+    window.plugins.socialsharing.share(title, subject, img, null);
+
+}
+
 function renderStoriesLocations(tx,result)
 {
     /*
