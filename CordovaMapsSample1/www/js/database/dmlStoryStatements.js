@@ -330,6 +330,26 @@ function selectStoryById(){
     
 }
 
+function selectStoriesLocation(id, date)
+{
+  //  alert("selectStoriesLocation " + id);
+
+  
+    sql =  "SELECT lat, lng                          \n\
+            FROM STORY                           \n\
+            WHERE idTrip = " + id +"        \n\
+            AND date = '"+date+"' " ;
+     
+    dbShell.transaction(
+        function(tx)
+        { //  alert(valueId);
+            tx.executeSql(sql, [],renderStoriesLocations,errorCBSelect);
+        },
+        errorCB
+    );
+    
+}
+
 /*
  * deletes the stories associated to one day 
  */
